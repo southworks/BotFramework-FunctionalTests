@@ -25,9 +25,13 @@ namespace FunctionalTests
             var testBot = new TestBotClient(new EnvironmentBotTestConfiguration());
 
             await testBot.StartConversation(cancellationTokenSource.Token);
+            Thread.Sleep(200);
             await testBot.SendMessageAsync("Hi", cancellationTokenSource.Token);
+            Thread.Sleep(200);
             await testBot.AssertReplyAsync("Me no nothin", cancellationTokenSource.Token);
+            Thread.Sleep(200);
             await testBot.SendMessageAsync("skill", cancellationTokenSource.Token);
+            Thread.Sleep(200);
             await testBot.AssertReplyAsync("Echo: skill", cancellationTokenSource.Token);
         }
 
@@ -39,11 +43,17 @@ namespace FunctionalTests
             var testBot = new TestBotClient(new EnvironmentBotTestConfiguration());
 
             await testBot.StartConversation(cancellationTokenSource.Token);
+            Thread.Sleep(200);
             await testBot.SendMessageAsync("Hi", cancellationTokenSource.Token);
+            Thread.Sleep(200);
             await testBot.AssertReplyAsync("Me no nothin", cancellationTokenSource.Token);
+            Thread.Sleep(200);
             await testBot.SendMessageAsync("skill", cancellationTokenSource.Token);
+            Thread.Sleep(200);
             await testBot.AssertReplyAsync("Echo: skill", cancellationTokenSource.Token);
+            Thread.Sleep(200);
             await testBot.SendMessageAsync("end", cancellationTokenSource.Token);
+            Thread.Sleep(200);
             await testBot.AssertReplyAsync("Received endOfConversation", cancellationTokenSource.Token);
         }
     }
