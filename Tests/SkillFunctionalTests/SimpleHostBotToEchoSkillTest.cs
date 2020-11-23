@@ -15,6 +15,7 @@ using ActivityTypes = Microsoft.Bot.Connector.DirectLine.ActivityTypes;
 namespace SkillFunctionalTests
 {
     [Trait("TestCategory", "FunctionalTests")]
+    [Collection("Wait for bot warmup")]
     public class SimpleHostBotToEchoSkillTest
     {
         private readonly string _transcriptsFolder = Directory.GetCurrentDirectory() + @"/SourceTranscripts";
