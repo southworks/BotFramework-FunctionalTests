@@ -77,6 +77,7 @@ namespace SkillFunctionalTests
                         retries--;
 
                         //_logger.LogInformation($"Retrying the test. Retries = {retries}");
+                        Console.WriteLine(e.Message);
                         Console.WriteLine($"Retrying the test. Retries = {retries}");
                         Thread.Sleep(waitMs);
                         continue;
