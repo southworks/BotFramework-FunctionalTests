@@ -23,11 +23,11 @@ namespace SkillFunctionalTests
 
         public BotWarmupFixture()
         {
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile("appsettings.Development.json", true, true)
-                .AddEnvironmentVariables()
-                .Build();
+            //var configuration = new ConfigurationBuilder()
+            //    .AddJsonFile("appsettings.json")
+            //    .AddJsonFile("appsettings.Development.json", true, true)
+            //    .AddEnvironmentVariables()
+            //    .Build();
 
             //NullLoggerFactory loggerFactory;
 
@@ -70,7 +70,7 @@ namespace SkillFunctionalTests
                         Assert.Equal("Hello and welcome!", activity.Text);
                     });
                 }
-                catch
+                catch (Exception e)
                 {
                     if (retries > 0)
                     {

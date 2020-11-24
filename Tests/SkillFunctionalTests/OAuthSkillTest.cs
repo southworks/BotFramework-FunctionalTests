@@ -20,6 +20,7 @@ namespace SkillFunctionalTests
     [Trait("TestCategory", "FunctionalTests")]
     [Trait("TestCategory", "OAuth")]
     [Trait("TestCategory", "SkipForV3Bots")]
+    [Collection("Wait for bot warmup")]
     public class OAuthSkillTest
     {
         private readonly string _transcriptsFolder = Directory.GetCurrentDirectory() + @"/SourceTranscripts";
