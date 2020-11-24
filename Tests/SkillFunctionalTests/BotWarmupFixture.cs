@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Bot.Schema;
 using Newtonsoft.Json;
 using TranscriptTestRunner;
@@ -27,7 +28,7 @@ namespace SkillFunctionalTests
             result.Wait();
         }
 
-        private async System.Threading.Tasks.Task WarmupManualTest()
+        private async Task WarmupManualTest()
         {
             Console.WriteLine("Starting bot warmup.");
 
@@ -71,7 +72,8 @@ namespace SkillFunctionalTests
             }
         }
 
-        private async System.Threading.Tasks.Task WarmupShouldSignIn()
+        [Fact(Timeout = 2000)]
+        private async Task WarmupShouldSignIn()
         {
             Console.WriteLine("Starting bot warmup.");
 
@@ -101,10 +103,10 @@ namespace SkillFunctionalTests
                     });
 
                     // Execute the SignIn.
-                    await runner.ClientSignInAsync(signInUrl);
+                    // await runner.ClientSignInAsync(signInUrl);
 
                     // Execute the rest of the conversation.
-                    await runner.RunTestAsync(Path.Combine(_transcriptsFolder, "ShouldSignIn2.transcript"));
+                    // await runner.RunTestAsync(Path.Combine(_transcriptsFolder, "ShouldSignIn2.transcript"));
                 }
                 catch (Exception e)
                 {
