@@ -50,8 +50,6 @@ namespace SkillFunctionalTests
         [Fact]
         public async Task ShouldSignIn()
         {
-            Console.WriteLine("Debug: Starting ShouldSignIn test");
-
             var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), _logger);
             var signInUrl = string.Empty;
 
