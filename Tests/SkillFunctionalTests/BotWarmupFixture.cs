@@ -122,7 +122,7 @@ namespace SkillFunctionalTests
                     else
                     {
                         Console.WriteLine("Bot warmup failed.");
-                        throw new Exception($"Bot warmup failed: {e}");
+                        throw new Exception($"Bot warmup failed: {e.Message}");
                     }
                 }
 
