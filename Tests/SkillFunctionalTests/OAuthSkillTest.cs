@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -81,11 +82,12 @@ namespace SkillFunctionalTests
                     // Execute the rest of the conversation.
                     await runner.RunTestAsync(Path.Combine(_transcriptsFolder, "ShouldSignIn2.transcript"));
                 }
-                catch
+                catch (Exception e)
                 {
                     if (retries > 0)
                     {
                         retries--;
+                        _logger.LogInformation(e.Message);
                         _logger.LogInformation($"Retrying the test. Retries = {retries}");
                         Thread.Sleep(waitMs);
                         continue;
