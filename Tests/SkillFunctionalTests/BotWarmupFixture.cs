@@ -1,20 +1,18 @@
-﻿using System;
-using System.IO;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using System;
 using System.Threading;
 using Microsoft.Bot.Schema;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using TranscriptTestRunner;
 using TranscriptTestRunner.XUnit;
 using Xunit;
-using Xunit.Abstractions;
 using ActivityTypes = Microsoft.Bot.Connector.DirectLine.ActivityTypes;
 
 namespace SkillFunctionalTests
 {
     /// <summary>
-    /// This xUnit <see cref="ICollectionFixture{TFixture}"/> lets tests wait for the deployed bot to warm up.
+    /// This xUnit class fixture lets tests wait for the deployed bot to warm up <see cref="ICollectionFixture{TFixture}"/>.
     /// </summary>
     public class BotWarmupFixture
     {
