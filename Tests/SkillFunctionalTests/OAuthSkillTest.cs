@@ -47,7 +47,7 @@ namespace SkillFunctionalTests
             _logger = loggerFactory.CreateLogger<OAuthSkillTest>();
         }
 
-        [Fact]
+        [Fact(Timeout = 2000)]
         public async Task ShouldSignIn()
         {
             var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), _logger);
