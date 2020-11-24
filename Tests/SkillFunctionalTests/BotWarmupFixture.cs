@@ -53,6 +53,8 @@ namespace SkillFunctionalTests
 
         public async System.Threading.Tasks.Task WarmupManualTest()
         {
+            Console.WriteLine("Verifying bot is warmed up.");
+
             var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), null);
 
             int retries = 3;        // This gives a chance for the newly deployed bot to warm up.
