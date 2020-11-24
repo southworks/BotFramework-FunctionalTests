@@ -56,52 +56,26 @@ namespace SkillFunctionalTests
             var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), _logger);
             var signInUrl = string.Empty;
 
-            int retries = 3;        // This gives a chance for the newly deployed bot to warm up.
-            int waitMs = 60 * 1000;
+            // Execute the first part of the conversation.
+            await runner.RunTestAsync(Path.Combine(_transcriptsFolder, "ShouldSignIn1.transcript"));
 
-            while (retries >= 0)
+            // Obtain the signIn url.
+            await runner.AssertReplyAsync(activity =>
             {
-                try
-                {
-                    // Execute the first part of the conversation.
-                    await runner.RunTestAsync(Path.Combine(_transcriptsFolder, "ShouldSignIn1.transcript"));
+                Assert.Equal(ActivityTypes.Message, activity.Type);
+                Assert.True(activity.Attachments.Count > 0);
 
-                    // Obtain the signIn url.
-                    await runner.AssertReplyAsync(activity =>
-                    {
-                        Assert.Equal(ActivityTypes.Message, activity.Type);
-                        Assert.True(activity.Attachments.Count > 0);
+                var card = JsonConvert.DeserializeObject<SigninCard>(JsonConvert.SerializeObject(activity.Attachments.FirstOrDefault().Content));
+                signInUrl = card.Buttons[0].Value?.ToString();
 
-                        var card = JsonConvert.DeserializeObject<SigninCard>(JsonConvert.SerializeObject(activity.Attachments.FirstOrDefault().Content));
-                        signInUrl = card.Buttons[0].Value?.ToString();
+                Assert.False(string.IsNullOrEmpty(signInUrl));
+            });
 
-                        Assert.False(string.IsNullOrEmpty(signInUrl));
-                    });
+            // Execute the SignIn.
+            await runner.ClientSignInAsync(signInUrl);
 
-                    // Execute the SignIn.
-                    await runner.ClientSignInAsync(signInUrl);
-
-                    // Execute the rest of the conversation.
-                    await runner.RunTestAsync(Path.Combine(_transcriptsFolder, "ShouldSignIn2.transcript"));
-                }
-                catch (Exception e)
-                {
-                    if (retries > 0)
-                    {
-                        retries--;
-                        _logger.LogInformation(e.Message);
-                        _logger.LogInformation($"Retrying the test. Retries = {retries}");
-                        Thread.Sleep(waitMs);
-                        continue;
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                break;
-            }
+            // Execute the rest of the conversation.
+            await runner.RunTestAsync(Path.Combine(_transcriptsFolder, "ShouldSignIn2.transcript"));
         }
     }
 }

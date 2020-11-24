@@ -14,51 +14,24 @@ using ActivityTypes = Microsoft.Bot.Connector.DirectLine.ActivityTypes;
 namespace SkillFunctionalTests
 {
     /// <summary>
-    /// Set up Bot Warmup collection so tests will wait for deployed bot to warm up.
+    /// This xUnit <see cref="ICollectionFixture{TFixture}"/> lets tests wait for the deployed bot to warm up.
     /// </summary>
     public class BotWarmupFixture
     {
-        //private readonly ILogger<SimpleHostBotToEchoSkillTest> _logger;
-        //private readonly ITestOutputHelper output = null;
-
         public BotWarmupFixture()
         {
-            //var configuration = new ConfigurationBuilder()
-            //    .AddJsonFile("appsettings.json")
-            //    .AddJsonFile("appsettings.Development.json", true, true)
-            //    .AddEnvironmentVariables()
-            //    .Build();
-
-            //NullLoggerFactory loggerFactory;
-
-            //    LoggerFactory.null.Create(builder =>
-            //{
-            //    builder
-            //        .AddConfiguration(configuration)
-            //        .AddConsole()
-            //        .AddDebug()
-            //        .AddFile(Directory.GetCurrentDirectory() + @"/Logs/Log.json", isJson: true)
-            //        .AddXunit(output);
-            //});
-
-            // = (ILogger<SimpleHostBotToEchoSkillTest>)loggerFactory.CreateLogger<OAuthSkillTest>();
-
-            //OAuthSkillTest ost = new OAuthSkillTest(_output);
-
-            // OAuthSkillTest.ShouldSignIn() waits for the bot to warm up.
-            //var result = ost.ShouldSignIn();
             var result = WarmupManualTest();
             result.Wait();
         }
 
-        public async System.Threading.Tasks.Task WarmupManualTest()
+        private async System.Threading.Tasks.Task WarmupManualTest()
         {
-            Console.WriteLine("Verifying bot is warmed up.");
+            Console.WriteLine("Starting bot warmup.");
 
             var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), null);
 
-            int retries = 3;        // This gives a chance for the newly deployed bot to warm up.
-            int waitMs = 60 * 1000;
+            int retries = 6;                        // Defines the allowed warmup period.
+            int timeBetweenRetriesMs = 30 * 1000;
 
             while (retries >= 0)
             {
@@ -78,18 +51,19 @@ namespace SkillFunctionalTests
                     {
                         retries--;
 
-                        //_logger.LogInformation($"Retrying the test. Retries = {retries}");
                         Console.WriteLine(e.Message);
                         Console.WriteLine($"Waiting for warmup. Retries = {retries}");
-                        Thread.Sleep(waitMs);
+                        Thread.Sleep(timeBetweenRetriesMs);
                         continue;
                     }
                     else
                     {
+                        Console.WriteLine("Bot warmup failed.");
                         throw;
                     }
                 }
 
+                Console.WriteLine("Bot warmup completed.");
                 break;
             }
         }
