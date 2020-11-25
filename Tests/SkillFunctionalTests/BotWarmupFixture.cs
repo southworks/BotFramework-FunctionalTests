@@ -21,14 +21,18 @@ namespace SkillFunctionalTests
     public class BotWarmupFixture
     {
         private readonly string _transcriptsFolder = Directory.GetCurrentDirectory() + @"/SourceTranscripts";
-        
+
         public BotWarmupFixture()
         {
+            Console.WriteLine("Debug: Start 1st warmup");
             var result = WarmupManualTest();
             result.Wait();
-            Console.WriteLine("Do warmup again.");
+
+            Console.WriteLine("Debug: 1st warmup completed. Start 2nd warmup");
+
             var result2 = WarmupManualTest();
             result2.Wait();
+            Console.WriteLine("Debug: 2nd warmup completed");
         }
 
         private async Task WarmupManualTest()
