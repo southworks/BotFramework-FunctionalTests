@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Schema;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using TranscriptTestRunner;
 using TranscriptTestRunner.XUnit;
@@ -21,6 +22,7 @@ namespace SkillFunctionalTests
     public class BotWarmupFixture
     {
         private readonly string _transcriptsFolder = Directory.GetCurrentDirectory() + @"/SourceTranscripts";
+        private readonly ILogger<BotWarmupFixture> _logger;
 
         public BotWarmupFixture()
         {
@@ -39,7 +41,7 @@ namespace SkillFunctionalTests
         {
             Console.WriteLine($"Starting bot warmup {logMessage}.");
 
-            var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), null);
+            var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), _logger);
 
             int retries = 6;                        // Defines the allowed warmup period.
             int timeBetweenRetriesMs = 30 * 1000;
