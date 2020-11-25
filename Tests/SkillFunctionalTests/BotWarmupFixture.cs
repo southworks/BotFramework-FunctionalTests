@@ -29,11 +29,11 @@ namespace SkillFunctionalTests
             var result = WarmupManualTest("1");
             result.Wait();
 
-            Console.WriteLine("Debug: 1st warmup completed. Start 2nd warmup");
+            Console.WriteLine("Debug: 1st warmup completed. ");
 
-            var result2 = WarmupManualTest("2");
-            result2.Wait();
-            Console.WriteLine("Debug: 2nd warmup completed");
+            //var result2 = WarmupManualTest("2");
+            //result2.Wait();
+            //Console.WriteLine("Debug: 2nd warmup completed");
         }
 
         private async Task WarmupManualTest(string logMessage)
