@@ -24,8 +24,11 @@ namespace SkillFunctionalTests
         
         public BotWarmupFixture()
         {
-            var result = WarmupShouldSignIn();
+            var result = WarmupManualTest();
             result.Wait();
+            Console.WriteLine("Do warmup again.");
+            var result2 = WarmupManualTest();
+            result2.Wait();
         }
 
         private async Task WarmupManualTest()
