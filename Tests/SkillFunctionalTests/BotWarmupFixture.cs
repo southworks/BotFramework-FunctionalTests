@@ -22,7 +22,6 @@ namespace SkillFunctionalTests
     public class BotWarmupFixture
     {
         private readonly string _transcriptsFolder = Directory.GetCurrentDirectory() + @"/SourceTranscripts";
-        private readonly ILogger<BotWarmupFixture> _logger;
 
         public BotWarmupFixture()
         {
@@ -41,7 +40,7 @@ namespace SkillFunctionalTests
         {
             Console.WriteLine($"Starting bot warmup {logMessage}.");
 
-            var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), _logger);
+            var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), null);
 
             int retries = 6;                        // Defines the allowed warmup period.
             int timeBetweenRetriesMs = 30 * 1000;
