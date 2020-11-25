@@ -83,7 +83,7 @@ namespace SkillFunctionalTests
             var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), null);
             var signInUrl = string.Empty;
 
-            int retries = 6;                        // Defines the allowed warmup period.
+            int retries = 4;                        // Defines the allowed warmup period.
             int timeBetweenRetriesMs = 30 * 1000;
 
             while (retries >= 0)
