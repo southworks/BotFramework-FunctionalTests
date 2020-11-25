@@ -25,19 +25,19 @@ namespace SkillFunctionalTests
         public BotWarmupFixture()
         {
             Console.WriteLine("Debug: Start 1st warmup");
-            var result = WarmupManualTest();
+            var result = WarmupManualTest("1");
             result.Wait();
 
             Console.WriteLine("Debug: 1st warmup completed. Start 2nd warmup");
 
-            var result2 = WarmupManualTest();
+            var result2 = WarmupManualTest("2");
             result2.Wait();
             Console.WriteLine("Debug: 2nd warmup completed");
         }
 
-        private async Task WarmupManualTest()
+        private async Task WarmupManualTest(string logMessage)
         {
-            Console.WriteLine("Starting bot warmup.");
+            Console.WriteLine($"Starting bot warmup {logMessage}.");
 
             var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), null);
 
