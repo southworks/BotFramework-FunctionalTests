@@ -40,8 +40,6 @@ namespace SkillFunctionalTests
         {
             Console.WriteLine($"Starting bot warmup {logMessage}.");
 
-            var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), null);
-
             int retries = 6;                        // Defines the allowed warmup period.
             int timeBetweenRetriesMs = 30 * 1000;
 
@@ -49,6 +47,8 @@ namespace SkillFunctionalTests
             {
                 try
                 {
+                    var runner = new XUnitTestRunner(new TestClientFactory(ClientType.DirectLine).GetTestClient(), null);
+
                     await runner.SendActivityAsync(new Activity(ActivityTypes.ConversationUpdate));
 
                     await runner.AssertReplyAsync(activity =>
