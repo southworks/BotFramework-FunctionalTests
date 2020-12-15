@@ -53,7 +53,7 @@ stages:
             displayName: 'Zip Bot'
 
           # Create App Service and Bot Channel Registration
-          - template: ../createAppService.yml
+          - template: ../generic/createAppService.yml
             parameters:
               appId: '${{ bot.appId }}'
               appSecret: '${{ bot.appSecret }}'
@@ -62,7 +62,7 @@ stages:
 
           # Configure OAuth
           - ${{ if eq(bot.type, 'Skill') }}:
-            - template: ../configureOAuth.yml
+            - template: ../generic/configureOAuth.yml
               parameters:
                 appId: '${{ bot.appId }}'
                 appSecret: '${{ bot.appSecret }}'
@@ -70,7 +70,7 @@ stages:
                 botGroup: '${{ parameters.resourceGroup }}'
 
           # Deploy bot
-          - template: ../deploy.yml
+          - template: ../generic/zipDeploy.yml
             parameters:
               botName: '${{ bot.name }}'
               botGroup: '${{ parameters.resourceGroup }}'
