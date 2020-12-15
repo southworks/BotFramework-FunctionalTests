@@ -44,7 +44,7 @@ variables:
   # DependeciesVersionSkillsV3: (optional) define in Azure
 
 stages:
-  - template: generic/prepareResources.yml
+  - template: prepare.yml
     parameters:
       resourceGroups: 
         - id: 'Prepare_DotNetGroup'
