@@ -75,9 +75,9 @@ stages:
       - name: EchoSkillBotDotnet
         botName: bffnechoskillbotdotnet
         appId: $(BffnEchoSkillBotDotnetAppId)
-        testFilter: '&TestCategory==WaterfallEchoTests'
+        testFilter: '&TestCategory=WaterfallEchoTests'
 
       # - name: WaterfallSkillBotDotnet
       #   botName: bffnechoskillbotv3js
       #   appId: $(BffnWaterfallSkillBotDotnetAppId)
-      #   testFilter: '&TestCategory==WaterfallTests'
+      #   testFilter: '&TestCategory=WaterfallTests'
