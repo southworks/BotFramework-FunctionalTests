@@ -13,6 +13,7 @@ using Xunit.Abstractions;
 namespace SkillFunctionalTests
 {
     [Trait("TestCategory", "FunctionalTests")]
+    [Trait("TestCategory", "WaterfallEchoTests")]
     public class WaterfallBotsTests
     {
         private readonly string _transcriptsFolder = Directory.GetCurrentDirectory() + @"/SourceTranscripts";

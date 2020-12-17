@@ -62,3 +62,22 @@ stages:
         botName: bffnechoskillbotv3js
         appId: $(BffnEchoSkillBotV3JSAppId)
         testFilter: '&TestCategory!=SkipForV3Bots'
+
+- template: runScenarioStage.yml
+  parameters:
+    Consumers:
+      - name: WaterfallHostBotDotnet
+        botName: bffnwaterfallhostbotdotnet
+        resourceGroup: "$(ResourceGroup)-DotNet"
+        language: "DotNet"
+
+    Skills:
+      - name: EchoSkillBotDotnet
+        botName: bffnechoskillbotdotnet
+        appId: $(BffnEchoSkillBotDotnetAppId)
+        testFilter: '&TestCategory==WaterfallEchoTests'
+
+      # - name: WaterfallSkillBotDotnet
+      #   botName: bffnechoskillbotv3js
+      #   appId: $(BffnWaterfallSkillBotDotnetAppId)
+      #   testFilter: '&TestCategory==WaterfallTests'
