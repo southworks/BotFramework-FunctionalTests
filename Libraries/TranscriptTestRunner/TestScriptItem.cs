@@ -39,6 +39,15 @@ namespace TranscriptTestRunner
         public string Text { get; set; }
 
         /// <summary>
+        /// Gets the attachments.
+        /// </summary>
+        /// <value>
+        /// The attachments.
+        /// </value>
+        [JsonProperty("attachments")]
+        public List<TestScriptAttachment> Attachments { get; } = new List<TestScriptAttachment>();
+
+        /// <summary>
         /// Gets the activity assertion collection.
         /// </summary>
         /// <value>

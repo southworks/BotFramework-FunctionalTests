@@ -306,6 +306,22 @@ namespace TranscriptTestRunner
                             Text = scriptActivity.Text
                         };
 
+                        if (scriptActivity.Attachments.Count > 0)
+                        {
+                            var sendAttachments = new List<Attachment>();
+                            foreach (var attachment in scriptActivity.Attachments)
+                            {
+                                sendAttachments.Add(new Attachment
+                                {
+                                    Name = attachment.Name,
+                                    ContentType = attachment.ContentType,
+                                    ContentUrl = attachment.ContentUrl
+                                });
+                            }
+
+                            sendActivity.Attachments = sendAttachments;
+                        }
+
                         await SendActivityAsync(sendActivity, cancellationToken).ConfigureAwait(false);
                         break;
 
