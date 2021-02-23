@@ -20,12 +20,10 @@ steps:
   displayName: 'Use .Net Core sdk 2.1.x'
   inputs:
     version: 2.1.x
-
 - task: UseDotNet@2
-  displayName: 'Use .Net Core sdk 3.1.101'
+  displayName: 'Use .Net Core sdk 3.1.x'
   inputs:
-    version: 3.1.X
-
+    version: 3.1.x
 - task: NuGetToolInstaller@1
   displayName: 'Use NuGet '
 
