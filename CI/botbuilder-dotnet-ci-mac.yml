@@ -32,12 +32,12 @@ steps:
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: Microsoft.Bot.Builder-Standard.sln
+    restoreSolution: SkillFunctionalTests.sln
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
-    projects: Microsoft.Bot.Builder.sln
+    projects: SkillFunctionalTests.sln
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
