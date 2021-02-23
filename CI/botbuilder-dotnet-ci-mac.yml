@@ -44,8 +44,6 @@ steps:
     command: test
     projects: |
      Tests/**/*Tests.csproj
-     
-    arguments: '-v n  --configuration $(BuildConfiguration) --no-build --no-restore --filter "TestCategory!=IgnoreInAutomatedBuild&TestCategory!=FunctionalTests&TestCategory!=WindowsOnly"
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: build folder'
