@@ -13,7 +13,7 @@ steps:
     restoreSolution: '$(Parameters.solution)'
 
 - task: VSBuild@1
-  displayName: 'Build solution Microsoft.Bot.Builder.sln'
+  displayName: 'Build solution SkillFunctionalTests.sln'
   inputs:
     solution: '$(Parameters.solution)'
     vsVersion: 16.0
