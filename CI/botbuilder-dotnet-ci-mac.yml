@@ -25,9 +25,10 @@ steps:
   displayName: 'Use NuGet '
 
 - task: NuGetCommand@2
-  displayName: 'NuGet restore'
   inputs:
+    command: 'restore'
     restoreSolution: 'SkillFunctionalTests.sln'
+    feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
