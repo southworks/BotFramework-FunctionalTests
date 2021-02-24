@@ -31,7 +31,7 @@ steps:
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: SkillFunctionalTests-Standard.sln
+    restoreSolution: '**/*.sln'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
