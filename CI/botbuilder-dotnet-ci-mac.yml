@@ -18,6 +18,14 @@ steps:
 
 - task: NuGetToolInstaller@1
   displayName: 'Use NuGet '
+  
+- task: UseDotNet@2
+  displayName: 'Use .Net Core sdk 2.1.x'
+  inputs:
+    packageType: sdk
+    version: 2.1.x
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+    includePreviewVersions: true
 
 - task: NuGetCommand@2
   inputs:
