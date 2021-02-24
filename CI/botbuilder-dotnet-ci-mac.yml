@@ -34,12 +34,10 @@ steps:
   displayName: 'dotnet build'
   inputs:
     projects: SkillFunctionalTests.sln
-
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'test'
+    command: 'build'
     projects: 'BotFramework-FunctionalTests\Bots\DotNet\FunctionalTestsBots.sln'
-
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: build folder'
   inputs:
