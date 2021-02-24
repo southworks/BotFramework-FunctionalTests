@@ -24,10 +24,11 @@ steps:
     command: 'restore'
     restoreSolution: 'Bots\DotNet\FunctionalTestsBots.sln'
     feedsToUse: 'select'
+
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
   inputs:
-    command: 'test'
-    projects: 'Bots\DotNet\FunctionalTestsBots.sln'
+    projects: Bots\DotNet\FunctionalTestsBots.sln
 
 
 - task: PublishBuildArtifacts@1
