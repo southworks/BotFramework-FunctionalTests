@@ -59,7 +59,7 @@ stages:
       PublishCoverage: true
     steps:
     - template: ci-build-steps.yml
-    - template: ci-test-steps.yml
+    
   - job: Release_Windows_Configuration_31
     variables:
       BuildConfiguration: Release
@@ -67,5 +67,5 @@ stages:
       PublishCoverage: true
     steps:
     - template: ci-build-steps.yml
-    - template: ci-test-steps.yml
+   
 
