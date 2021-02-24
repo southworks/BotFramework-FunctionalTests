@@ -41,8 +41,7 @@ steps:
   displayName: 'dotnet test'
   inputs:
     command: test
-    projects: |
-     Tests/SkillFunctionalTests/SkillFunctionalTests.csproj
+    projects: 'Tests/SkillFunctionalTests/SkillFunctionalTests.csproj'
      
     arguments: '-v n  --configuration $(BuildConfiguration) --no-build --no-restore --filter "TestCategory!=IgnoreInAutomatedBuild&TestCategory!=FunctionalTests&TestCategory!=WindowsOnly" --collect:"Code Coverage" --settings $(Build.SourcesDirectory)\CodeCoverage.runsettings'
 
