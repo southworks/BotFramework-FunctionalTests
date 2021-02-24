@@ -36,14 +36,6 @@ steps:
     projects: SkillFunctionalTests.sln
 
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'restore'
-    restoreSolution: 'FunctionalTestsBots-Standard.sln'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: 'BotFramework-FunctionalTests\Bots\DotNet\FunctionalTestsBots.sln'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: build folder'
   inputs:
