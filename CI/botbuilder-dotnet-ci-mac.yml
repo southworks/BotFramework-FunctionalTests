@@ -27,8 +27,8 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: 'SkillFunctionalTests.sln'
-    feedsToUse: 'select'
+    restoreSolution: 'SkillFunctionalTests-Standard.sln'
+    
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
