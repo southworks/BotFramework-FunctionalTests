@@ -34,3 +34,10 @@ jobs:
 
         pip install -r Bots/Python/Skills/CodeFirst/ProactiveSkillBot/requirements.txt
 
+  - task: PythonScript@0
+    displayName: Run a Python script
+    inputs:
+      scriptSource: inline
+      script: "script:  'Bots/Python/Consumers/CodeFirst/SimpleGovHostBot/app.py' \n\n"
+      failOnStderr: true
+
