@@ -8,7 +8,7 @@ variables:
 jobs:
 - job: Build
   pool:
-    vmImage: macos-10.14
+    vmImage: Hosted Ubuntu 1604
   steps:
   - task: UsePythonVersion@0
     displayName: Use Python $(PYTHON_VERSION)
