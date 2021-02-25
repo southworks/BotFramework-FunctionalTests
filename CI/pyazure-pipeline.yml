@@ -8,7 +8,7 @@ jobs:
     vmImage: macos-10.14
   steps:
   - task: UsePythonVersion@0
-    displayName: Use Python 3.x.x
+    displayName: Use Python '3.x.x'
     inputs:
       versionSpec: '3.x.x'
 
