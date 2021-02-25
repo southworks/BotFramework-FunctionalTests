@@ -9,7 +9,7 @@ jobs:
   - task: UsePythonVersion@0
     displayName: Use Python version
     inputs:
-      versionSpec: '3.x.x'
+      versionSpec: '3.6.x'
 
   - task: CmdLine@2
     displayName: Install dependencies
