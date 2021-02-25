@@ -2,18 +2,15 @@
 # Multi-job configuration must be converted to matrix strategy: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml#multi-job-configuration
 variables:
   # Container registry service connection established during pipeline creation
-  python.36: 3.6.x
-  python.37: 3.7.x
-  python.38: 3.8.x
 jobs:
 - job: Build
   pool:
-    vmImage: Hosted Ubuntu 1604
+    vmImage: macos-10.14
   steps:
   - task: UsePythonVersion@0
-    displayName: Use Python $(PYTHON_VERSION)
+    displayName: Use Python 3.x.x
     inputs:
-      versionSpec: '$(PYTHON_VERSION)'
+      versionSpec: '3.x.x'
 
   - task: CmdLine@2
     displayName: Install dependencies
