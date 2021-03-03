@@ -108,20 +108,20 @@ stages:
       steps:
       - template: functionalTestSteps.yml
 
-- stage: Cleanup
-  dependsOn:
-  - Deploy
-  - Test
-  condition: and(or(succeeded('Build'), failed('Prepare')), ne(variables['DeleteResourceGroup'], 'false'))
-  jobs:
-    - job: Delete_RG
-      steps:
-      - checkout: none  # Don't sync sources
-      - task: AzureCLI@1
-        displayName: 'Delete Resource Group'
-        inputs:
-          azureSubscription: $(AzureSubscription)
-          scriptLocation: inlineScript
-          inlineScript: |
-           call az group delete -n "$(PyDotNetV3HostBotName)-RG" --yes --no-wait
-           call az group delete -n "$(PyDotNetV3SkillBotName)-RG" --yes --no-wait
+# - stage: Cleanup
+#   dependsOn:
+#   - Deploy
+#   - Test
+#   condition: and(or(succeeded('Build'), failed('Prepare')), ne(variables['DeleteResourceGroup'], 'false'))
+#   jobs:
+#     - job: Delete_RG
+#       steps:
+#       - checkout: none  # Don't sync sources
+#       - task: AzureCLI@1
+#         displayName: 'Delete Resource Group'
+#         inputs:
+#           azureSubscription: $(AzureSubscription)
+#           scriptLocation: inlineScript
+#           inlineScript: |
+#            call az group delete -n "$(PyDotNetV3HostBotName)-RG" --yes --no-wait
+#            call az group delete -n "$(PyDotNetV3SkillBotName)-RG" --yes --no-wait
