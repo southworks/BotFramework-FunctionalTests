@@ -4,7 +4,7 @@
     inputs:
       versionSpec: '3.8.x'
 
-- task: Bash@3
+  - task: Bash@3
     inputs:
       targetType: 'inline'
       script: |
