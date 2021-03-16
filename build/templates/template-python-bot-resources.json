@@ -28,7 +28,7 @@
     },
     "botSku": {
       "type": "string",
-      "defaultValue": "S1",
+      "defaultValue": "S2",
       "metadata": {
         "description": "The pricing tier of the Bot Service Registration. Acceptable values are F0 and S1."
       }
