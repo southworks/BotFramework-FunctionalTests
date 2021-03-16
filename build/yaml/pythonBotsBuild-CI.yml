@@ -4,15 +4,10 @@
     inputs:
       versionSpec: '3.8.x'
 
-  - task: CmdLine@2
-    displayName: Install dependencies
+- task: Bash@3
     inputs:
-      script: >
-        python -m pip install --upgrade pip
-        pip install -r Bots/Python/Consumers/CodeFirst/SimpleGovHostBot/requirements.txt
-        pip install -r Bots/Python/Consumers/CodeFirst/SimpleHostBot/requirements.txt
-        pip install -r Bots/Python/Skills/CodeFirst/CardSkillBot/requirements.txt
-        pip install -r Bots/Python/Skills/CodeFirst/EchoSkillBot/requirements.txt
-        pip install -r Bots/Python/Skills/CodeFirst/MultiturnSkillBot/requirements.txt
-        pip install -r Bots/Python/Skills/CodeFirst/ProactiveSkillBot/requirements.txt
+      targetType: 'inline'
+      script: |
+        python -m pip install --upgrade pip;
+        find ./Bots -type f -name "requirements.txt" -exec pip install -r "{}" \;
       failOnStderr: true
