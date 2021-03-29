@@ -32,9 +32,3 @@ steps:
     PathtoPublish: build
     ArtifactName: build
 
-- powershell: |
-   cd ..
-   ls -R
-  displayName: 'Dir workspace'
-  continueOnError: true
-  condition: succeededOrFailed()
