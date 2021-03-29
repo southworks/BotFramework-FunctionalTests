@@ -12,3 +12,8 @@
       python -m pip install --upgrade pip;
       find ./Bots -type f -name "requirements.txt" -exec pip install -r "{}" \;
      failOnStderr: true
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: build folder'
+    inputs:
+      PathtoPublish: build
+      ArtifactName: build
