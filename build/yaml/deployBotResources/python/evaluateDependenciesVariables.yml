@@ -51,10 +51,10 @@ steps:
               $versionNumber = ""
               $preFlag = "--pre"
             }
-            STABLE { 
+            STABLE {
               $versionNumber = ""
             }
-            default { 
+            default {
               $versionNumber = "${{ parameters.version }}"
               $condition = "=="
             }
