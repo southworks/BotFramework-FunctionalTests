@@ -47,7 +47,13 @@ steps:
         $tags = ""
         switch -regex ("${{ parameters.version }}") {
           "^($null||LATEST||STABLE)$" {
-            if("${{ parameters.version }}" -notin "STABLE"){
+            if ("${{ parameters.version }}" -in "STABLE" and "${{ parameters.registry }}".ToUpper() -in "ARTIFACTS") {
+              [Console]::ForegroundColor = "red"
+              [Console]::Error.WriteLine("Stable versions of BotBuilder DotNet are not available for this source.")
+              [Console]::ResetColor()
+              exit 1 # Force exit
+            }
+            if("${{ parameters.version }}" -notin "STABLE") {
               $tags = "-PreRelease"
             }
             if ("${{ parameters.botType }}" -in "Host", "Skill") {
