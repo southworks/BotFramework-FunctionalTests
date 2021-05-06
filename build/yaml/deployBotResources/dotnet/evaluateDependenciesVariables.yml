@@ -47,7 +47,7 @@ steps:
         $tags = ""
         switch -regex ("${{ parameters.version }}") {
           "^($null||LATEST||STABLE)$" {
-            if ("${{ parameters.version }}" -in "STABLE" and "${{ parameters.registry }}".ToUpper() -in "ARTIFACTS") {
+            if (("${{ parameters.version }}" -in "STABLE") -and ($source -match $sourceDotNetArtifacts)) {
               [Console]::ForegroundColor = "red"
               [Console]::Error.WriteLine("Stable versions of BotBuilder DotNet are not available for this source.")
               [Console]::ResetColor()
