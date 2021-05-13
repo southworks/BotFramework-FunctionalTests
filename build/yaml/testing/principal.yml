@@ -9,12 +9,12 @@ parameters:
   - name: name
     displayName: Name
     type: string
-    default: $[coalesce('$[variables.Name]', '')]
+    default: $env:NAME
 
   - name: lastName
     displayName: lastName
     type: string
-    default: $[coalesce('$[variables.LastName]', '')]
+    default: $env:LASTNAME
 
 variables:
   BuildConfiguration: 'Debug'
