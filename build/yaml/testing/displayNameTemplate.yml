@@ -1,0 +1,14 @@
+parameters:
+  - name: name
+    type: string
+
+steps:
+  - task: AzureCLI@2
+    displayName: 'Display Name'
+    inputs:
+      azureSubscription: $(AzureSubscription)
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        $name = if([string]::IsNullOrEmpty("${{ parameters.name }}")) { "You" } Else { "${{ parameters.name }}" };
+        Write-Host "Hello $name";

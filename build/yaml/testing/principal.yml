@@ -1,0 +1,30 @@
+name: $(Build.BuildId)
+trigger: none
+pr: none
+
+pool:
+  vmImage: 'windows-2019'
+
+parameters:
+  - name: name
+    displayName: Name
+    type: string
+    default: $[coalesce('$[variables.Name]', '')]
+
+  - name: lastName
+    displayName: lastName
+    type: string
+    default: $[coalesce('$[variables.LastName]', '')]
+
+variables:
+  BuildConfiguration: 'Debug'
+  BuildPlatform: 'AnyCPU'
+  # Name: (optional) Define in Azure
+  # LastName: (optional) Define in Azure
+  # NameInt: $[coalesce('$[variables.Name]', '')]
+
+stages:
+  - template: jobTemplate.yml
+    parameters:
+      name: ${{ parameters.name }}
+      lastname: ${{ parameters.lastName }}

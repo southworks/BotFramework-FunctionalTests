@@ -1,0 +1,27 @@
+parameters:
+  - name: name
+    type: string
+  - name: lastName
+    type: string
+
+stages:
+  - stage: "DisplayName"
+    jobs:
+      - job: 'DisplayName'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - powershell: |
+              Write-Host "Name: ${{ parameters.name }}";
+              Write-Host "LastName: ${{ parameters.lastName }}";
+            displayName: 'Show variables'
+            failOnStderr: true
+
+          - template: displayNameTemplate.yml 
+            parameters:
+              name: '${{ parameters.name }}'
+
+          - template: displayNameTemplate.yml 
+            parameters:
+              name: '${{ parameters.lastName }}'
+
