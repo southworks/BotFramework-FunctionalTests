@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "async": "^1.5.2",
+    "applicationinsights": "^1.8.10",
     "base64url": "^3.0.0",
     "botbuilder": "^3.30.0",
     "busboy": "^0.2.13",

@@ -23,6 +23,7 @@ class DefaultConfig:
     PORT = 37020
     APP_ID = os.getenv("MicrosoftAppId")
     APP_PASSWORD = os.getenv("MicrosoftAppPassword")
+    APPINSIGHTS_INSTRUMENTATIONKEY = os.getenv("APPINSIGHTS_INSTRUMENTATIONKEY")
     SSO_CONNECTION_NAME = os.getenv("SsoConnectionName")
     SSO_CONNECTION_NAME_TEAMS = os.getenv("SsoConnectionNameTeams")
 

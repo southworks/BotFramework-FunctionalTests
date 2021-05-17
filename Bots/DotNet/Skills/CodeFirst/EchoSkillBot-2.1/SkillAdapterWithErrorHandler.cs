@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Builder.TraceExtensions;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
+using Microsoft.BotFrameworkFunctionalTests.EchoSkillBot21.Middleware;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -14,6 +16,9 @@ namespace Microsoft.BotFrameworkFunctionalTests.EchoSkillBot21
 {
     public class SkillAdapterWithErrorHandler : BotFrameworkHttpAdapter
     {
+        private IBotTelemetryClient _adapterBotTelemetryClient;
+        private Dictionary<string, string> _customProperties;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SkillAdapterWithErrorHandler"/> class to handle errors.
         /// </summary>
@@ -22,15 +27,27 @@ namespace Microsoft.BotFrameworkFunctionalTests.EchoSkillBot21
         /// <param name="authConfig">The configuration setting for the authentication.</param>
         /// <param name="logger">An instance of a logger.</param>
         /// <param name="conversationState">A state management object for the conversation.</param>
-        public SkillAdapterWithErrorHandler(IConfiguration configuration, ICredentialProvider credentialProvider, AuthenticationConfiguration authConfig, ILogger<BotFrameworkHttpAdapter> logger)
+        /// <param name="telemetryListenerMiddleware">The middleware for logging to Application Insightsr.</param>
+        /// <param name="botTelemetryClient">An instance of a telemetry client.</param>
+        public SkillAdapterWithErrorHandler(IConfiguration configuration, ICredentialProvider credentialProvider, AuthenticationConfiguration authConfig, ILogger<BotFrameworkHttpAdapter> logger, TelemetryListenerMiddleware telemetryListenerMiddleware, IBotTelemetryClient botTelemetryClient)
             : base(configuration, credentialProvider, authConfig, logger: logger)
         {
+            Use(telemetryListenerMiddleware);
+            _adapterBotTelemetryClient = botTelemetryClient;
+
+            _customProperties = new Dictionary<string, string>
+            {
+                { "Environment", "DotNet" },
+                { "Bot", "EchoSkillBot21" }
+            };
+
             OnTurnError = async (turnContext, exception) =>
             {
                 try
                 {
                     // Log any leaked exception from the application.
-                    logger.LogError(exception, $"[OnTurnError] unhandled error : {exception.Message}");
+                    //logger.LogError(exception, $"[OnTurnError] unhandled error : {exception.Message}");
+                    _adapterBotTelemetryClient.TrackException(new Exception($"[OnTurnError] unhandled error : {exception.Message}", exception), _customProperties);
 
                     // Send a message to the user
                     var errorMessageText = "The skill encountered an error or bug.";
@@ -55,7 +72,8 @@ namespace Microsoft.BotFrameworkFunctionalTests.EchoSkillBot21
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, $"Exception caught in SkillAdapterWithErrorHandler : {ex}");
+                    //logger.LogError(ex, $"Exception caught in SkillAdapterWithErrorHandler : {ex}");
+                    _adapterBotTelemetryClient.TrackException(new Exception($"Exception caught in SkillAdapterWithErrorHandler : {ex.Message}", ex), _customProperties);
                 }
             };
         }

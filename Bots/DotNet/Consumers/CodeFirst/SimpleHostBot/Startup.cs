@@ -2,10 +2,16 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.ApplicationInsights;
 using Microsoft.Bot.Builder.BotFramework;
+using Microsoft.Bot.Builder.Integration.ApplicationInsights.Core;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Builder.Integration.AspNet.Core.Skills;
 using Microsoft.Bot.Builder.Skills;
@@ -13,9 +19,12 @@ using Microsoft.Bot.Connector.Authentication;
 using Microsoft.BotFrameworkFunctionalTests.SimpleHostBot.Authentication;
 using Microsoft.BotFrameworkFunctionalTests.SimpleHostBot.Bots;
 using Microsoft.BotFrameworkFunctionalTests.SimpleHostBot.Dialogs;
+using Microsoft.BotFrameworkFunctionalTests.SimpleHostBot.Middleware;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 
 namespace Microsoft.BotFrameworkFunctionalTests.SimpleHostBot
 {
@@ -54,7 +63,22 @@ namespace Microsoft.BotFrameworkFunctionalTests.SimpleHostBot
             services.AddSingleton<SkillConversationIdFactoryBase, SkillConversationIdFactory>();
             services.AddHttpClient<SkillHttpClient>();
             services.AddSingleton<ChannelServiceHandler, SkillHandler>();
-            
+
+            // Add Application Insights services into service collection
+            services.AddApplicationInsightsTelemetry();
+
+            // Create the telemetry client.
+            services.AddSingleton<IBotTelemetryClient, BotTelemetryClient>();
+
+            // Add telemetry initializer that will set the correlation context for all telemetry items.
+            services.AddSingleton<ITelemetryInitializer, OperationCorrelationTelemetryInitializer>();
+
+            // Add telemetry initializer that sets the user ID and session ID (in addition to other bot-specific properties such as activity ID)
+            services.AddSingleton<ITelemetryInitializer, TelemetryBotIdInitializer>();
+
+            // Create the telemetry middleware (used by the telemetry initializer) to track conversation events
+            services.AddSingleton<TelemetryListenerMiddleware>();
+
             // Register the storage we'll be using for User and Conversation state. (Memory is great for testing purposes.)
             services.AddSingleton<IStorage, MemoryStorage>();
 
@@ -72,6 +96,18 @@ namespace Microsoft.BotFrameworkFunctionalTests.SimpleHostBot
                 // Register a ConfigurationChannelProvider -- this is only for Azure Gov.
                 services.AddSingleton<IChannelProvider, ConfigurationChannelProvider>();
             }
+
+            services.AddLogging(options =>
+            {
+                options.AddConsole();
+                options.SetMinimumLevel(LogLevel.Trace);
+
+                // hook the Application Insights Provider
+                options.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Trace);
+
+                // pass the InstrumentationKey provided under the appsettings
+                options.AddApplicationInsights(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
+            });
         }
 
         /// <summary>
@@ -79,12 +115,22 @@ namespace Microsoft.BotFrameworkFunctionalTests.SimpleHostBot
         /// </summary>
         /// <param name="app">The application request pipeline to be configured.</param>
         /// <param name="env">The web hosting environment.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <param name="logger">An instance of a logger.</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseExceptionHandler(options =>
+            {
+                options.Run(async context =>
+                {
+                    var ex = context.Features.Get<IExceptionHandlerFeature>();
+                    logger.LogError(ex as Exception, $"Exception caught in Startup : {ex}");
+                });
+            });
 
             app.UseDefaultFiles()
                 .UseStaticFiles()

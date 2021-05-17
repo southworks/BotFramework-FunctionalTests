@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
@@ -25,8 +26,10 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
         private readonly ILogger _logger;
         private readonly SkillHttpClient _skillClient;
         private readonly SkillsConfiguration _skillsConfig;
+        private IBotTelemetryClient _adapterBotTelemetryClient;
+        private Dictionary<string, string> _customProperties;
 
-        public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger, ConversationState conversationState, SkillHttpClient skillClient = null, SkillsConfiguration skillsConfig = null)
+        public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger, TelemetryListenerMiddleware telemetryListenerMiddleware, IBotTelemetryClient botTelemetryClient, ConversationState conversationState, SkillHttpClient skillClient = null, SkillsConfiguration skillsConfig = null)
             : base(configuration, logger)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -34,15 +37,24 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _skillClient = skillClient;
             _skillsConfig = skillsConfig;
+            
+            Use(telemetryListenerMiddleware);
+            _adapterBotTelemetryClient = botTelemetryClient;
+
+            _customProperties = new Dictionary<string, string>
+            {
+                { "Environment", "DotNet" },
+                { "Bot", "WaterfallHostBot" }
+            };
 
             OnTurnError = HandleTurnError;
-            Use(new LoggerMiddleware(logger));
         }
 
         private async Task HandleTurnError(ITurnContext turnContext, Exception exception)
         {
             // Log any leaked exception from the application.
-            _logger.LogError(exception, $"[OnTurnError] unhandled error : {exception.Message}");
+            //_logger.LogError(exception, $"[OnTurnError] unhandled error : {exception.Message}");
+            _adapterBotTelemetryClient.TrackException(new Exception($"[OnTurnError] unhandled error : {exception.Message}", exception), _customProperties);
 
             await SendErrorMessageAsync(turnContext, exception);
             await EndSkillConversationAsync(turnContext);
@@ -71,7 +83,8 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception caught in SendErrorMessageAsync : {ex}");
+                //_logger.LogError(ex, $"Exception caught in SendErrorMessageAsync : {ex}");
+                _adapterBotTelemetryClient.TrackException(new Exception($"Exception caught in SendErrorMessageAsync : {ex.Message}", ex), _customProperties);
             }
         }
 
@@ -102,7 +115,8 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception caught on attempting to send EndOfConversation : {ex}");
+                //_logger.LogError(ex, $"Exception caught on attempting to send EndOfConversation : {ex}");
+                _adapterBotTelemetryClient.TrackException(new Exception($"Exception caught on attempting to send EndOfConversation : {ex.Message}", ex), _customProperties);
             }
         }
 
@@ -117,7 +131,8 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception caught on attempting to Delete ConversationState : {ex}");
+                //_logger.LogError(ex, $"Exception caught on attempting to Delete ConversationState : {ex}");
+                _adapterBotTelemetryClient.TrackException(new Exception($"Exception caught on attempting to Delete ConversationState : {ex.Message}", ex), _customProperties);
             }
         }
     }
