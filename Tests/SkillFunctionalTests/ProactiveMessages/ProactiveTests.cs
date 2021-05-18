@@ -108,8 +108,9 @@ namespace SkillFunctionalTests.ProactiveMessages
             {
                 try
                 {
+                    Logger.LogInformation("URL: " + url);
                     var result = await client.GetAsync(url).ConfigureAwait(false);
-                    Logger.LogInformation("GetAsync response: " + result.StatusCode + ";" + result.Content);
+                    Logger.LogInformation("GetAsync response: " + result.StatusCode + ";" + result.ReasonPhrase);
                 }
                 catch (Exception error)
                 {
