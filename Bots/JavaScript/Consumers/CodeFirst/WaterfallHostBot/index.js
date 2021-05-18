@@ -240,14 +240,15 @@ try {
   });
 
   // Listen for incoming activities and route them to your bot main dialog.
-  server.post('/api/messages', async (req, res) => {
-    const request = await parseRequest(req);
-    telemetryClient.trackEvent({ name: 'WaterfallHostBot in /api/messages', properties: { ...properties, activity: request } });
-    adapter.processActivity(req, res, async (context) => {
-      telemetryClient.trackEvent({ name: 'WaterfallHostBot in /api/messages processActivity', properties: { ...properties, activity: context.activity } });
-      // route to bot activity handler.
-      await bot.run(context);
-    });
+    server.post('/api/messages', async (req, res) => {
+        telemetryClient.trackEvent({ name: 'WaterfallHostBot in /api/messages log request', properties: { request: req.toString() } });
+        const request = await parseRequest(req);
+        telemetryClient.trackEvent({ name: 'WaterfallHostBot in /api/messages', properties: { ...properties, activity: request } });
+        adapter.processActivity(req, res, async (context) => {
+            telemetryClient.trackEvent({ name: 'WaterfallHostBot in /api/messages processActivity', properties: { ...properties, activity: context.activity } });
+            // route to bot activity handler.
+            await bot.run(context);
+        });
   });
 
   // Create and initialize the skill classes
