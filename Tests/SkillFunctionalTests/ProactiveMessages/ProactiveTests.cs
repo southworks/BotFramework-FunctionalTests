@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -105,7 +106,16 @@ namespace SkillFunctionalTests.ProactiveMessages
             // Send a get request to the message's url to continue the conversation.
             using (var client = new HttpClient())
             {
-                await client.GetAsync(url).ConfigureAwait(false);
+                try
+                {
+                    var result = await client.GetAsync(url).ConfigureAwait(false);
+                    Logger.LogInformation("GetAsync response: " + result.StatusCode + ";" + result.Content);
+                }
+                catch (Exception error)
+                {
+                    Logger.LogInformation("Error in GetAsync: " + error);
+                    throw;
+                }
             }
 
             var testParamsEnd = new Dictionary<string, string>
