@@ -200,10 +200,13 @@ async def messages(req: Request) -> Response:
 async def notify(req: Request) -> Response:
     error = ""
     user = req.query.get("user")
+    LOGGER.info(f"Entered notify. User: {user}", extra={'custom_dimensions': {'Environment': 'Python', 'Bot': 'WaterfallSkillBot'}})
 
     continuation_parameters = CONTINUATION_PARAMETERS_STORE.get(user)
+    LOGGER.info(f"Continuation Parameter: {continuation_parameters}", extra={'custom_dimensions': {'Environment': 'Python', 'Bot': 'WaterfallSkillBot'}})
 
     if not continuation_parameters:
+        LOGGER.info("There's no continuation parameters.", extra={'custom_dimensions': {'Environment': 'Python', 'Bot': 'WaterfallSkillBot'}})
         return Response(
             content_type="text/html",
             status=HTTPStatus.OK,
@@ -214,9 +217,11 @@ async def notify(req: Request) -> Response:
     try:
 
         async def callback(context: TurnContext):
+            LOGGER.info(f"Callback called. User: { user }", extra={'custom_dimensions': {'Environment': 'Python', 'Bot': 'WaterfallSkillBot'}})
             await context.send_activity(f"Got proactive message for user: { user }")
             await BOT.on_turn(context)
 
+        LOGGER.info("Will continue conversation now...", extra={'custom_dimensions': {'Environment': 'Python', 'Bot': 'WaterfallSkillBot'}})
         await ADAPTER.continue_conversation(
             continuation_parameters.conversation_reference,
             callback,
@@ -229,6 +234,7 @@ async def notify(req: Request) -> Response:
                          extra={'custom_dimensions': {'Environment': 'Python', 'Bot': 'WaterfallSkillBot'}})
         error = err
 
+    LOGGER.info("Proactive Message sent. Returning response", extra={'custom_dimensions': {'Environment': 'Python', 'Bot': 'WaterfallSkillBot'}})
     return Response(
         content_type="text/html",
         status=HTTPStatus.OK,
