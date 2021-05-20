@@ -92,10 +92,10 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot.Dialogs
                 CallSkillActionStepAsync,
                 FinalStepAsync
             };
-            AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
+            AddDialog(new WaterfallDialog(nameof(MainDialog), waterfallSteps));
             
             // The initial child Dialog to run.
-            InitialDialogId = nameof(WaterfallDialog);
+            InitialDialogId = nameof(MainDialog);
         }
 
         /// <summary>

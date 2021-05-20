@@ -22,8 +22,8 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot.Dialogs.Sso
                 Title = "Sign In",
                 Timeout = 60000
             }));
-            AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[] { SignInStepAsync, DisplayTokenAsync }));
-            InitialDialogId = nameof(WaterfallDialog);
+            AddDialog(new WaterfallDialog(nameof(SsoSignInDialog), new WaterfallStep[] { SignInStepAsync, DisplayTokenAsync }));
+            InitialDialogId = nameof(SsoSignInDialog);
         }
 
         private async Task<DialogTurnResult> SignInStepAsync(WaterfallStepContext context, CancellationToken cancellationToken)

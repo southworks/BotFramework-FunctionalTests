@@ -24,9 +24,9 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot.Dialogs
                 Step2Async,
                 EndStepAsync
             };
-            AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
+            AddDialog(new WaterfallDialog(nameof(TangentDialog), waterfallSteps));
 
-            InitialDialogId = nameof(WaterfallDialog);
+            InitialDialogId = nameof(TangentDialog);
         }
 
         private async Task<DialogTurnResult> Step1Async(WaterfallStepContext stepContext, CancellationToken cancellationToken)
