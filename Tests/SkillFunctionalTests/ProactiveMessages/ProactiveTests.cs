@@ -103,10 +103,7 @@ namespace SkillFunctionalTests.ProactiveMessages
             });
 
             // Send a get request to the message's url to continue the conversation.
-            using (var client = new HttpClient())
-            {
-                await client.GetAsync(url).ConfigureAwait(false);
-            }
+            await HttpClient.GetAsync(url).ConfigureAwait(false);
 
             var testParamsEnd = new Dictionary<string, string>
             {
