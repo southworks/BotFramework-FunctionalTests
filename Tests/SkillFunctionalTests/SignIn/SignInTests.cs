@@ -1,9 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Schema;
@@ -18,13 +22,15 @@ using Xunit.Abstractions;
 namespace SkillFunctionalTests.SignIn
 {
     [Trait("TestCategory", "SignIn")]
-    public class SignInTests : ScriptTestBase
+    public class SignInTests : ScriptTestBase, IClassFixture<TestFixture>
     {
         private readonly string _testScriptsFolder = Directory.GetCurrentDirectory() + @"/SignIn/TestScripts";
+        private readonly TestFixture _testFixture;
 
-        public SignInTests(ITestOutputHelper output)
+        public SignInTests(ITestOutputHelper output, TestFixture testFixture)
             : base(output)
         {
+            _testFixture = testFixture;
         }
 
         public static IEnumerable<object[]> TestCases()
@@ -79,7 +85,7 @@ namespace SkillFunctionalTests.SignIn
             Logger.LogInformation(JsonConvert.SerializeObject(testCase, Formatting.Indented));
 
             var options = TestClientOptions[testCase.HostBot];
-            var runner = new XUnitTestRunner(new TestClientFactory(testCase.ChannelId, options, Logger).GetTestClient(), TestRequestTimeout, Logger);
+            var runner = new XUnitTestRunner(new TestClientFactory(testCase.ChannelId, options, Logger, _testFixture.HttpClientInvoker).GetTestClient(), TestRequestTimeout, Logger);
 
             var testParams = new Dictionary<string, string>
             {

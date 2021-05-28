@@ -18,13 +18,15 @@ using Xunit.Abstractions;
 namespace SkillFunctionalTests.ProactiveMessages
 {
     [Trait("TestCategory", "ProactiveMessages")]
-    public class ProactiveTests : ScriptTestBase
+    public class ProactiveTests : ScriptTestBase, IClassFixture<TestFixture>
     {
         private readonly string _testScriptsFolder = Directory.GetCurrentDirectory() + @"/ProactiveMessages/TestScripts";
+        private readonly TestFixture _testFixture;
 
-        public ProactiveTests(ITestOutputHelper output)
+        public ProactiveTests(ITestOutputHelper output, TestFixture testFixture)
             : base(output)
         {
+            _testFixture = testFixture;
         }
 
         public static IEnumerable<object[]> TestCases()
@@ -81,8 +83,8 @@ namespace SkillFunctionalTests.ProactiveMessages
             Logger.LogInformation(JsonConvert.SerializeObject(testCase, Formatting.Indented));
 
             var options = TestClientOptions[testCase.HostBot];
-            var runner = new XUnitTestRunner(new TestClientFactory(testCase.ChannelId, options, Logger).GetTestClient(), TestRequestTimeout, Logger);
-            
+            var runner = new XUnitTestRunner(new TestClientFactory(testCase.ChannelId, options, Logger, _testFixture.HttpClientInvoker).GetTestClient(), TestRequestTimeout, Logger);
+
             var testParamsStart = new Dictionary<string, string>
             {
                 { "DeliveryMode", testCase.DeliveryMode },
@@ -103,10 +105,7 @@ namespace SkillFunctionalTests.ProactiveMessages
             });
 
             // Send a get request to the message's url to continue the conversation.
-            using (var client = new HttpClient())
-            {
-                await client.GetAsync(url).ConfigureAwait(false);
-            }
+            await _testFixture.HttpClientInvoker.HttpClient.GetAsync(url).ConfigureAwait(false);
 
             var testParamsEnd = new Dictionary<string, string>
             {
