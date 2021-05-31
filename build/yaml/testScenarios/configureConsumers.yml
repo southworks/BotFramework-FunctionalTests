@@ -160,6 +160,7 @@ steps:
           param($groups, $bots)
           # Filter bots only if their resource exists in Azure.
 
+          Write-Host $(AddTimeStamp -text "Entered FilterBotsByResourceExistence function");
           if (-not $bots) {
             Write-Host $(AddTimeStamp -text $noBotsFoundMessage);
             return $bots;
@@ -172,9 +173,14 @@ steps:
             $function:AddTimeStamp = $using:AddTimeStampDef
             $bot = $_;
 
+            Write-Host $(AddTimeStamp -text "Parallel-Bot: '$($bot.key)'");
             if ($groups.Value -contains $bot.resourceGroup) {
+              Write-Host $(AddTimeStamp -text "bot.resourceGroup: '$($bot.resourceGroup)'");
+              Write-Host $(AddTimeStamp -text "bot.resourceBotName: '$($bot.resourceBotName)'");
+
               $exists = -not (az resource wait --exists --resource-group $bot.resourceGroup --name $bot.resourceBotName --resource-type Microsoft.Web/sites --interval 1 --timeout 6);
 
+              Write-Host $(AddTimeStamp -text "Exists: '$($exists)'");
               if ($exists) {
                 Write-Host $(AddTimeStamp -text "$($bot.key): Resource '$($bot.resourceBotName)' found.");
                 return $bot;
