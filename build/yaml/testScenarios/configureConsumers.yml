@@ -178,7 +178,8 @@ steps:
               Write-Host $(AddTimeStamp -text "bot.resourceGroup: '$($bot.resourceGroup)'");
               Write-Host $(AddTimeStamp -text "bot.resourceBotName: '$($bot.resourceBotName)'");
 
-              $exists = -not (az resource wait --exists --resource-group $bot.resourceGroup --name $bot.resourceBotName --resource-type Microsoft.Web/sites --interval 1 --timeout 6 --debug --output);
+              Write-Host -not (az resource wait --exists --resource-group $bot.resourceGroup --name $bot.resourceBotName --resource-type Microsoft.Web/sites --interval 1 --timeout 6 --debug);
+              $exists = -not (az resource wait --exists --resource-group $bot.resourceGroup --name $bot.resourceBotName --resource-type Microsoft.Web/sites --interval 1 --timeout 6 --debug);
 
               Write-Host $(AddTimeStamp -text "Exists: '$($exists)'");
               if ($exists) {
