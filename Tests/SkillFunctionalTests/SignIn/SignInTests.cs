@@ -93,6 +93,7 @@ namespace SkillFunctionalTests.SignIn
             await runner.AssertReplyAsync(activity =>
             {
                 Assert.Equal(ActivityTypes.Message, activity.Type);
+                Assert.NotNull(activity.Attachments);
                 Assert.True(activity.Attachments.Count > 0);
 
                 var card = JsonConvert.DeserializeObject<SigninCard>(JsonConvert.SerializeObject(activity.Attachments.FirstOrDefault().Content));
