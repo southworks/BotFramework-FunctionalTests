@@ -93,13 +93,13 @@ namespace SkillFunctionalTests.SignIn
             await runner.AssertReplyAsync(activity =>
             {
                 Assert.Equal(ActivityTypes.Message, activity.Type);
-                Assert.NotNull(activity.Attachments);
-                Assert.True(activity.Attachments.Count > 0);
+                Assert.True(activity.Attachments != null, "Activity.Attachments property is null.");
+                Assert.True(activity.Attachments.Count > 0, "Activity.Attachments property is empty.");
 
                 var card = JsonConvert.DeserializeObject<SigninCard>(JsonConvert.SerializeObject(activity.Attachments.FirstOrDefault().Content));
                 signInUrl = card.Buttons[0].Value?.ToString();
 
-                Assert.False(string.IsNullOrEmpty(signInUrl));
+                Assert.False(string.IsNullOrEmpty(signInUrl), "SignIn url is null or empty.");
             });
 
             // Execute the SignIn.
