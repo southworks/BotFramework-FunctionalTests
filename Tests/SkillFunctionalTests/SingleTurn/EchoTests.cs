@@ -41,7 +41,8 @@ namespace SkillFunctionalTests.SingleTurn
                 HostBot.SimpleHostBotDotNet,
                 HostBot.SimpleHostBotDotNet21,
                 HostBot.SimpleHostBotJS,
-                HostBot.SimpleHostBotPython,
+                
+                //HostBot.SimpleHostBotPython,
             };
 
             var targetSkills = new List<string>
@@ -52,7 +53,8 @@ namespace SkillFunctionalTests.SingleTurn
                 SkillBotNames.EchoSkillBotDotNetV3,
                 SkillBotNames.EchoSkillBotJS,
                 SkillBotNames.EchoSkillBotJSV3,
-                SkillBotNames.EchoSkillBotPython
+                
+                //SkillBotNames.EchoSkillBotPython
             };
 
             var scripts = new List<string> { "EchoMultiSkill.json" };
