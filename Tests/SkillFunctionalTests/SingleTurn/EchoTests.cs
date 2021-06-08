@@ -40,7 +40,8 @@ namespace SkillFunctionalTests.SingleTurn
                 HostBot.SimpleHostBotComposerDotNet,
                 HostBot.SimpleHostBotDotNet,
                 HostBot.SimpleHostBotDotNet21,
-                HostBot.SimpleHostBotJS,
+                
+                //HostBot.SimpleHostBotJS,
                 HostBot.SimpleHostBotPython,
             };
 
@@ -50,7 +51,8 @@ namespace SkillFunctionalTests.SingleTurn
                 SkillBotNames.EchoSkillBotDotNet,
                 SkillBotNames.EchoSkillBotDotNet21,
                 SkillBotNames.EchoSkillBotDotNetV3,
-                SkillBotNames.EchoSkillBotJS,
+                
+                //SkillBotNames.EchoSkillBotJS,
                 SkillBotNames.EchoSkillBotJSV3,
                 SkillBotNames.EchoSkillBotPython
             };

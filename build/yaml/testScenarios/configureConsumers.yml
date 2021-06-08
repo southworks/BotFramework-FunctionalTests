@@ -545,7 +545,6 @@ steps:
               "SimpleHostBotComposerDotNet",
               "SimpleHostBotDotNet",
               "SimpleHostBotDotNet21",
-              "SimpleHostBotJS",
               "SimpleHostBotPython"
             );
             skills    = @(
@@ -553,7 +552,6 @@ steps:
               "EchoSkillBotDotNet",
               "EchoSkillBotDotNet21",
               "EchoSkillBotDotNetV3",
-              "EchoSkillBotJS",
               "EchoSkillBotJSV3",
               "EchoSkillBotPython"
             );
@@ -562,12 +560,10 @@ steps:
             name      = "Waterfall"; 
             consumers = @(
               "WaterfallHostBotDotNet",
-              "WaterfallHostBotJS",
               "WaterfallHostBotPython"
             );
             skills    = @(
               "WaterfallSkillBotDotNet",
-              "WaterfallSkillBotJS",
               "WaterfallSkillBotPython"
             );
           }

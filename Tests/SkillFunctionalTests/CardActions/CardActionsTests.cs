@@ -39,7 +39,8 @@ namespace SkillFunctionalTests.CardActions
             var hostBots = new List<HostBot>
             {
                 HostBot.WaterfallHostBotDotNet,
-                HostBot.WaterfallHostBotJS,
+                
+                //HostBot.WaterfallHostBotJS,
                 HostBot.WaterfallHostBotPython,
 
                 // TODO: Enable this when the port to composer is ready
@@ -49,7 +50,8 @@ namespace SkillFunctionalTests.CardActions
             var targetSkills = new List<string>
             {
                 SkillBotNames.WaterfallSkillBotDotNet,
-                SkillBotNames.WaterfallSkillBotJS,
+                
+                //SkillBotNames.WaterfallSkillBotJS,
                 SkillBotNames.WaterfallSkillBotPython,
 
                 // TODO: Enable this when the port to composer is ready
