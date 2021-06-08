@@ -71,13 +71,10 @@ stages:
     parameters:
       appIds:
         EchoSkillBotComposerDotNet: "$(BFFNECHOSKILLBOTCOMPOSERDOTNETAPPID)"
-        EchoSkillBotDotNet: "$(BFFNECHOSKILLBOTDOTNETAPPID)"
-        EchoSkillBotDotNet21: "$(BFFNECHOSKILLBOTDOTNET21APPID)"
         EchoSkillBotDotNetV3: "$(BFFNECHOSKILLBOTDOTNETV3APPID)"
         EchoSkillBotJS: "$(BFFNECHOSKILLBOTJSAPPID)"
         EchoSkillBotJSV3: "$(BFFNECHOSKILLBOTJSV3APPID)"
         EchoSkillBotPython: "$(BFFNECHOSKILLBOTPYTHONAPPID)"
-        WaterfallSkillBotDotNet: "$(BFFNWATERFALLSKILLBOTDOTNETAPPID)"
         WaterfallSkillBotJS: "$(BFFNWATERFALLSKILLBOTJSAPPID)"
         WaterfallSkillBotPython: "$(BFFNWATERFALLSKILLBOTPYTHONAPPID)"
       azureSubscription: "$(AZURESUBSCRIPTION)"

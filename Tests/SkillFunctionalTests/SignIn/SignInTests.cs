@@ -38,7 +38,7 @@ namespace SkillFunctionalTests.SignIn
 
             var hostBots = new List<HostBot>
             {
-                HostBot.WaterfallHostBotDotNet,
+                //HostBot.WaterfallHostBotDotNet,
                 HostBot.WaterfallHostBotJS,
                 HostBot.WaterfallHostBotPython,
 
@@ -48,7 +48,7 @@ namespace SkillFunctionalTests.SignIn
 
             var targetSkills = new List<string>
             {
-                SkillBotNames.WaterfallSkillBotDotNet,
+                //SkillBotNames.WaterfallSkillBotDotNet,
                 SkillBotNames.WaterfallSkillBotJS,
                 SkillBotNames.WaterfallSkillBotPython,
                 
