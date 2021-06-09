@@ -131,6 +131,7 @@ variables:
   # BotPricingTier: (optional) Pricing Tier for the bots, default F0.
   # ResourceGroup: (optional) Name of the Resource Group where the bots will be deployed.
   # ResourceSuffix: (optional) Suffix to add to the resources' name to avoid collitions.
+  # VirtualNetworkGroup: (optional) Name of the Resource Group where the Virtual Network is located.
 
   ## Bots Configuration (Define these variables in Azure)
   # BffnEchoSkillBotComposerDotNetAppId: (optional) App Id for BffnEchoSkillBotComposerDotNet bot.
@@ -191,6 +192,8 @@ variables:
   InternalKeyVaultName: 'bffnbotkeyvault$(INTERNALRESOURCESUFFIX)'
   InternalResourceGroupName: $[coalesce(variables['RESOURCEGROUP'], 'bffnbots')]
   InternalResourceSuffix: $[coalesce(variables['RESOURCESUFFIX'], '')]
+  InternalVirtualNetworkName: 'bffnvirtualnetwork$(INTERNALRESOURCESUFFIX)'
+  InternalVirtualNetworkNameResourceGroup: $[coalesce(variables['VIRTUALNETWORKGROUP'], 'bffnshared')]
 
 stages:
 # Resource Groups
@@ -373,6 +376,8 @@ stages:
       keyVault: "$(INTERNALKEYVAULTNAME)"
       resourceGroup: "$(INTERNALRESOURCEGROUPNAME)-JS"
       resourceSuffix: $(INTERNALRESOURCESUFFIX)
+      virtualNetwork: "$(INTERNALVIRTUALNETWORKNAME)"
+      virtualNetworkRG: "$(INTERNALVIRTUALNETWORKNAMERESOURCEGROUP)"
       bots:
         - name: "bffnsimplehostbotjs"
           type: "Host"

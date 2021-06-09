@@ -24,6 +24,13 @@
       "type": "string",
       "defaultValue": ""
     },
+    "virtualNetworkName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "virtualNetworkResourceGroup": {
+      "type": "string"
+    },
     "appServicePlanName": {
       "type": "string"
     },
@@ -88,6 +95,10 @@
             {
               "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
               "value": "[if(empty(parameters('appInsightsName')), '', reference(resourceId(parameters('appServicePlanResourceGroup'),'Microsoft.Insights/components', parameters('appInsightsName')), '2015-05-01', 'Full').properties.ConnectionString)]"
+            },
+            {
+              "name": "WEBSITE_VNET_ROUTE_ALL",
+              "value": "1"
             },
             {
               "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
@@ -205,6 +216,19 @@
         "publishingCredentials": null,
         "storageResourceId": null
       }
-    }
+    },
+    {
+      "type": "Microsoft.Web/sites/virtualNetworkConnections",
+      "apiVersion": "2018-11-01",
+      "name": "[parameters('botName')]",
+      "location": "West US",
+      "dependsOn": [
+          "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
+      ],
+      "properties": {
+          "vnetResourceId": "[concat(parameters('/subscriptions', subscription().id, '/resourceGroups/', parameters('virtualNetworkResourceGroup'), '/providers/Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'), '/subnets/', parameters('default')]",
+          "isSwift": true
+      }
+  }
   ]
 }
