@@ -31,6 +31,9 @@
     "virtualNetworkResourceGroup": {
       "type": "string"
     },
+    "subnetName": {
+      "type": "string"
+    },
     "appServicePlanName": {
       "type": "string"
     },
@@ -226,7 +229,7 @@
           "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
       ],
       "properties": {
-          "subnetResourceId": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), 'javascript')]",
+          "subnetResourceId": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
           "swiftSupported": true
       }
     }

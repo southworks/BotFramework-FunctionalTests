@@ -125,6 +125,7 @@ stages:
               resourceSuffix: "${{ parameters.resourceSuffix }}"
               virtualNetwork: "${{ parameters.virtualNetwork }}"
               virtualNetworkRG: "${{ parameters.virtualNetworkRG }}"
+              subnetName: "python"
               templateFile: "build/templates/template-python-bot-resources.json"
 
           # Configure OAuth
