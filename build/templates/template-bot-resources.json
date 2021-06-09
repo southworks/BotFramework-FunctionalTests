@@ -226,7 +226,7 @@
           "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
       ],
       "properties": {
-          "vnetResourceId": "[concat(parameters('/subscriptions', subscription().id, '/resourceGroups/', parameters('virtualNetworkResourceGroup'), '/providers/Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'), '/subnets/', parameters('default')]",
+          "vnetResourceId": "[concat(parameters('/subscriptions', subscription().id, '/resourceGroups/', parameters('virtualNetworkResourceGroup'), '/providers/Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'), '/subnets/javascript')]",
           "isSwift": true
       }
   }
