@@ -50,7 +50,8 @@ namespace SkillFunctionalTests.SignIn
             {
                 SkillBotNames.WaterfallSkillBotDotNet,
                 SkillBotNames.WaterfallSkillBotJS,
-                SkillBotNames.WaterfallSkillBotPython,
+                
+                //SkillBotNames.WaterfallSkillBotPython,
                 
                 // TODO: Enable this when the port to composer is ready
                 //SkillBotNames.ComposerSkillBotDotNet

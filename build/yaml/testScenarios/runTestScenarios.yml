@@ -79,7 +79,6 @@ stages:
         EchoSkillBotPython: "$(BFFNECHOSKILLBOTPYTHONAPPID)"
         WaterfallSkillBotDotNet: "$(BFFNWATERFALLSKILLBOTDOTNETAPPID)"
         WaterfallSkillBotJS: "$(BFFNWATERFALLSKILLBOTJSAPPID)"
-        WaterfallSkillBotPython: "$(BFFNWATERFALLSKILLBOTPYTHONAPPID)"
       azureSubscription: "$(AZURESUBSCRIPTION)"
       buildConfiguration: "$(BUILDCONFIGURATION)"
       buildIdSuffix: $[stageDependencies.Download_Variables.Download_Variables.outputs['Set_Variables.DeploymentBuildSuffix']]

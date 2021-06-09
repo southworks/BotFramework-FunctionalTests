@@ -554,8 +554,7 @@ steps:
               "EchoSkillBotDotNet21",
               "EchoSkillBotDotNetV3",
               "EchoSkillBotJS",
-              "EchoSkillBotJSV3",
-              "EchoSkillBotPython"
+              "EchoSkillBotJSV3"
             );
           }
           @{ 
@@ -567,8 +566,7 @@ steps:
             );
             skills    = @(
               "WaterfallSkillBotDotNet",
-              "WaterfallSkillBotJS",
-              "WaterfallSkillBotPython"
+              "WaterfallSkillBotJS"
             );
           }
         )

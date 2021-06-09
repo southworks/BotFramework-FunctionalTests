@@ -52,7 +52,8 @@ namespace SkillFunctionalTests.SingleTurn
                 SkillBotNames.EchoSkillBotDotNetV3,
                 SkillBotNames.EchoSkillBotJS,
                 SkillBotNames.EchoSkillBotJSV3,
-                SkillBotNames.EchoSkillBotPython
+                
+                //SkillBotNames.EchoSkillBotPython
             };
 
             var scripts = new List<string> { "EchoMultiSkill.json" };
