@@ -221,7 +221,7 @@
       "type": "Microsoft.Web/sites/virtualNetworkConnections",
       "apiVersion": "2018-11-01",
       "name": "[parameters('botName')]",
-      "location": "West US",
+      "location": "[parameters('botLocation')]",
       "dependsOn": [
           "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
       ],
@@ -229,6 +229,6 @@
           "vnetResourceId": "[concat('/subscriptions', subscription().id, '/resourceGroups/', parameters('virtualNetworkResourceGroup'), '/providers/Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'), '/subnets/javascript')]",
           "isSwift": true
       }
-  }
+    }
   ]
 }
