@@ -41,7 +41,8 @@ namespace SkillFunctionalTests.FileUpload
             {
                 HostBot.WaterfallHostBotDotNet,
                 HostBot.WaterfallHostBotJS,
-                HostBot.WaterfallHostBotPython
+                
+                //HostBot.WaterfallHostBotPython
 
                 // TODO: Enable these when the port to composer is ready
                 //HostBotNames.ComposerHostBotDotNet

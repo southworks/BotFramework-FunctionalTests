@@ -39,7 +39,8 @@ namespace SkillFunctionalTests.MessageWithAttachment
             {
                 HostBot.WaterfallHostBotDotNet,
                 HostBot.WaterfallHostBotJS,
-                HostBot.WaterfallHostBotPython,
+                
+                //HostBot.WaterfallHostBotPython,
 
                 // TODO: Enable this when the port to composer is ready
                 //HostBot.ComposerHostBotDotNet
