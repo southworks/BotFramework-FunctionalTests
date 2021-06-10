@@ -221,7 +221,7 @@
       }
     },
     {
-      "condition": "[not(empty(parameters('virtualNetworkName'))), or(not(empty(parameters('virtualNetworkResourceGroup'))))]",
+      "condition": "[not(empty(parameters('virtualNetworkName')))]",
       "name": "[concat(parameters('botName'), '/virtualNetwork')]",
       "type": "Microsoft.Web/sites/config",
       "apiVersion": "2018-02-01",
