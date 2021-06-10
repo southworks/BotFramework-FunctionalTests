@@ -81,7 +81,7 @@
             },
             {
               "name": "WEBSITE_VNET_ROUTE_ALL",
-              "value": "1"
+              "value": "[if(empty(parameters('virtualNetworkName')), '', '1')]"
             },
             {
               "name": "MicrosoftAppId",
