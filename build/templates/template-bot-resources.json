@@ -101,7 +101,8 @@
             },
             {
               "name": "WEBSITE_VNET_ROUTE_ALL",
-              "value": "[if(empty(parameters('virtualNetworkName')), '', '1')]"
+              "condition": "[not(empty(parameters('virtualNetworkName')))]",
+              "value": "1"
             },
             {
               "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
