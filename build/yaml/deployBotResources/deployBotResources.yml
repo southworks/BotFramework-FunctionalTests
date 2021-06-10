@@ -192,7 +192,7 @@ variables:
   InternalKeyVaultName: 'bffnbotkeyvault$(INTERNALRESOURCESUFFIX)'
   InternalResourceGroupName: $[coalesce(variables['RESOURCEGROUP'], 'bffnbots')]
   InternalResourceSuffix: $[coalesce(variables['RESOURCESUFFIX'], '')]
-  InternalVirtualNetworkName: 'bffnvirtualnetwork$(INTERNALRESOURCESUFFIX)'
+  InternalVirtualNetworkName: $[coalesce(variables['VIRTUALNETWORKNAME'], '')]
   InternalVirtualNetworkResourceGroup: $[coalesce(variables['VIRTUALNETWORKGROUP'], 'bffnshared')]
 
 stages:
