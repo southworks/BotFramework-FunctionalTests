@@ -50,8 +50,9 @@ namespace SkillFunctionalTests.FileUpload
             var targetSkills = new List<string>
             {
                 SkillBotNames.WaterfallSkillBotDotNet,
-                SkillBotNames.WaterfallSkillBotJS,
-                SkillBotNames.WaterfallSkillBotPython
+                
+                //SkillBotNames.WaterfallSkillBotJS,
+                //SkillBotNames.WaterfallSkillBotPython
 
                 // TODO: Enable these when the port to composer is ready
                 //SkillBotNames.ComposerSkillBotDotNet
@@ -59,7 +60,15 @@ namespace SkillFunctionalTests.FileUpload
 
             var scripts = new List<string>
             {
-                "FileUpload1.json"
+                "FileUpload1.json",
+                "FileUpload2.json",
+                "FileUpload3.json",
+                "FileUpload4.json",
+                "FileUpload5.json",
+                "FileUpload6.json",
+                "FileUpload7.json",
+                "FileUpload8.json",
+                "FileUpload9.json"
             };
 
             var testCaseBuilder = new TestCaseBuilder();
@@ -104,7 +113,7 @@ namespace SkillFunctionalTests.FileUpload
             await runner.UploadAsync(file);
 
             // Execute the rest of the conversation.
-            await runner.RunTestAsync(Path.Combine(_testScriptsFolder, "FileUpload2.json"), testParams);
+            await runner.RunTestAsync(Path.Combine(_testScriptsFolder, "FileUploadFinal.json"), testParams);
         }
     }
 }
