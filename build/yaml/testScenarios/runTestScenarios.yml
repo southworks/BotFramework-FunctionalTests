@@ -90,13 +90,4 @@ stages:
         - name: Waterfall
           dependsOn: [Download_Variables]
           testCategories:
-            - Attachments
-            - CardActions
-            - ProactiveMessages
             - FileUpload
-            - SignIn
-
-        - name: SingleTurn
-          dependsOn: [Download_Variables]
-          testCategories:
-            - SingleTurn
