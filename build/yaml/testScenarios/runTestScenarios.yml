@@ -90,4 +90,8 @@ stages:
         - name: Waterfall
           dependsOn: [Download_Variables]
           testCategories:
+            - Attachments
+            - CardActions
+            - ProactiveMessages
             - FileUpload
+            - SignIn
