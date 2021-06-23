@@ -36,6 +36,9 @@
       "metadata": {
         "description": "The pricing tier of the Bot Service Registration. Acceptable values are F0 and S1."
       }
+    },
+    "projectTag": {
+      "type": "string"
     }
   },
   "variables": {
@@ -50,7 +53,7 @@
       "name": "[parameters('botName')]",
       "location": "[parameters('botLocation')]",
       "tags": {
-        "BFFN": "BFFN"
+        "Project": "[parameters('projectTag')]"
       },
       "kind": "app",
       "properties": {

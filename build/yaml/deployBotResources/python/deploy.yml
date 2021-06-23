@@ -39,6 +39,10 @@ parameters:
     displayName: Azure resources' name suffix
     type: string
 
+  - name: projectTag
+    displayName: Tag for bot's application service
+    type: string
+
 stages:
 - ${{ each bot in parameters.bots }}:
   - stage: "Deploy_${{ bot.name }}"
@@ -115,6 +119,7 @@ stages:
               botGroup: "${{ parameters.resourceGroup }}"
               botPricingTier: "${{ parameters.botPricingTier }}"
               resourceSuffix: "${{ parameters.resourceSuffix }}"
+              projectTag: "${{ parameters.projectTag }}"
               templateFile: "build/templates/template-python-bot-resources.json"
 
           # Configure OAuth
