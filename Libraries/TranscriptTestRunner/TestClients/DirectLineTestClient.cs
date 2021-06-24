@@ -296,6 +296,11 @@ namespace TranscriptTestRunner.TestClients
                     }
                 }
             }
+            catch (AggregateException aggEx)
+            {
+                _logger.LogError(aggEx, "Error in ListenAsync (AggregateException)");
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in ListenAsync");
@@ -365,7 +370,9 @@ namespace TranscriptTestRunner.TestClients
                 }
                 else
                 {
-                    _logger.LogDebug($"{DateTime.Now} Received data but the array was empty.");
+                    Console.WriteLine(_logger);
+                    _logger.Log(LogLevel.Debug, $"{DateTime.Now} Received data but the array was empty. (Log)");
+                    _logger.LogDebug($"{DateTime.Now} Received data but the array was empty. (LogDebug)");
                 }
             } 
             while (!rcvResult.EndOfMessage);
