@@ -298,12 +298,16 @@ namespace TranscriptTestRunner.TestClients
             }
             catch (AggregateException aggEx)
             {
-                _logger.LogError(aggEx, "Error in ListenAsync (AggregateException)");
-                throw;
-            }
-            catch (InvalidOperationException invEx)
-            {
-                _logger.LogError(invEx, "Error in ListenAsync (InvalidOperationException)");
+                aggEx.Handle(ex =>
+                {
+                    if (ex is InvalidOperationException)
+                    {
+                        _logger.LogDebug($"Message: {ex.Message}");
+                        _logger.LogError("Error in ListenAsync. An error occurred while writing to logger(s)");
+                    }
+
+                    return true;
+                });
                 throw;
             }
             catch (Exception ex)
