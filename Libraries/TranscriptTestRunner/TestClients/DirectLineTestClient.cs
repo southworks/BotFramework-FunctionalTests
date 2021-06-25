@@ -299,12 +299,11 @@ namespace TranscriptTestRunner.TestClients
             catch (AggregateException aggEx)
             {
                 _logger.LogError(aggEx, "Error in ListenAsync (AggregateException)");
-                aggEx.Handle(ex =>
-                {
-                    _logger.LogDebug(ex, "Handle exception");
-
-                    return true;
-                });
+                throw;
+            }
+            catch (InvalidOperationException invEx)
+            {
+                _logger.LogError(invEx, "Error in ListenAsync (InvalidOperationException)");
                 throw;
             }
             catch (Exception ex)
