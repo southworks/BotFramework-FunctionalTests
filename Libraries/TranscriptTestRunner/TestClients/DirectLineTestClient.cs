@@ -300,14 +300,17 @@ namespace TranscriptTestRunner.TestClients
             {
                 aggEx.Handle(ex =>
                 {
+                    _logger.LogDebug($"Message: {ex.Message}");
+
                     if (ex is InvalidOperationException)
                     {
-                        _logger.LogDebug($"Message: {ex.Message}");
+                        _logger.LogDebug($"Message 2: {ex.Message}");
                         _logger.LogError("Error in ListenAsync. An error occurred while writing to logger(s)");
                     }
 
                     return true;
                 });
+
                 throw;
             }
             catch (Exception ex)
