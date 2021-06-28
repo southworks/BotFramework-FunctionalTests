@@ -113,7 +113,6 @@
               "value": "~2"
             }
           ],
-          "vnetName": "[concat('ca71ec58-f58e-4ccd-a287-74b1b6f212c9_', parameters('subnetName'))]",
           "webSocketsEnabled": true,
           "scmType": "None",
           "use32BitWorkerProcess": true,
@@ -228,16 +227,15 @@
     },
     {
       "condition": "[not(empty(parameters('virtualNetworkName')))]",
-      "type": "Microsoft.Web/sites/virtualNetworkConnections",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('botName'), '/ca71ec58-f58e-4ccd-a287-74b1b6f212c9_', parameters('subnetName'))]",
-      "location": "West US",
+      "type": "Microsoft.Web/sites/networkConfig",
+      "apiVersion": "2018-02-01",
+      "name": "[concat(parameters('botName'), '/VirtualNetwork')]",
+      "location": "[parameters('botLocation')]",
       "dependsOn": [
           "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
       ],
       "properties": {
-          "vnetResourceId": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
-          "isSwift": true
+          "subnetResourceId": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
       }
     }
   ]
