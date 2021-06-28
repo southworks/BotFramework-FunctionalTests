@@ -301,6 +301,9 @@ namespace TranscriptTestRunner.TestClients
                 aggEx.Handle(ex =>
                 {
                     _logger.LogDebug($"Message: {ex.Message}");
+                    _logger.LogDebug($"InnerException: {ex.InnerException}");
+                    _logger.LogDebug($"Source: {ex.Source}");
+                    _logger.LogDebug($"StackTrace: {ex.StackTrace}");
 
                     if (ex is InvalidOperationException)
                     {
