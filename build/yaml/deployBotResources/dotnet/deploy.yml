@@ -44,12 +44,12 @@ parameters:
     displayName: Azure resources' name suffix
     type: string
 
-  - name: virtualNetwork
-    displayName: Virtual network name
+  - name: sharedResourceGroup
+    displayName: Shared Resource Group
     type: string
 
-  - name: virtualNetworkRG
-    displayName: Virtual Network Resource Group
+  - name: virtualNetwork
+    displayName: Virtual network name
     type: string
 
 stages:
@@ -270,9 +270,9 @@ stages:
               botName: "${{ bot.name }}"
               botPricingTier: "${{ parameters.botPricingTier }}"
               resourceSuffix: "${{ parameters.resourceSuffix }}"
+              sharedResourceGroup: "${{ parameters.sharedResourceGroup }}"
               virtualNetwork: "${{ parameters.virtualNetwork }}"
-              virtualNetworkRG: "${{ parameters.virtualNetworkRG }}"
-              subnetName: "dotnet"
+              virtualNetworkSubnet: "dotnet"
               templateFile: "build/templates/template-bot-resources.json"
 
           # Deploy bot

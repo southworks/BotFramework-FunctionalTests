@@ -24,13 +24,10 @@
       "type": "string",
       "defaultValue": ""
     },
-    "virtualNetworkName": {
+    "virtualNetwork": {
       "type": "string"
     },
-    "virtualNetworkResourceGroup": {
-      "type": "string"
-    },
-    "subnetName": {
+    "virtualNetworkSubnet": {
       "type": "string"
     },
     "appServicePlanName": {
@@ -45,6 +42,9 @@
       "metadata": {
         "description": "The pricing tier of the Bot Service Registration. Acceptable values are F0 and S1."
       }
+    },
+    "sharedResourceGroup": {
+      "type": "string"
     }
   },
   "variables": {
@@ -92,15 +92,15 @@
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[if(empty(parameters('appInsightsName')), '', reference(resourceId(parameters('appServicePlanResourceGroup'),'Microsoft.Insights/components', parameters('appInsightsName')), '2015-05-01', 'Full').properties.InstrumentationKey)]"
+              "value": "[if(empty(parameters('appInsightsName')), '', reference(resourceId(parameters('sharedResourceGroup'),'Microsoft.Insights/components', parameters('appInsightsName')), '2015-05-01', 'Full').properties.InstrumentationKey)]"
             },
             {
               "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-              "value": "[if(empty(parameters('appInsightsName')), '', reference(resourceId(parameters('appServicePlanResourceGroup'),'Microsoft.Insights/components', parameters('appInsightsName')), '2015-05-01', 'Full').properties.ConnectionString)]"
+              "value": "[if(empty(parameters('appInsightsName')), '', reference(resourceId(parameters('sharedResourceGroup'),'Microsoft.Insights/components', parameters('appInsightsName')), '2015-05-01', 'Full').properties.ConnectionString)]"
             },
             {
               "name": "WEBSITE_VNET_ROUTE_ALL",
-              "condition": "[not(empty(parameters('virtualNetworkName')))]",
+              "condition": "[not(empty(parameters('virtualNetwork')))]",
               "value": "1"
             },
             {
@@ -221,7 +221,7 @@
       }
     },
     {
-      "condition": "[not(empty(parameters('virtualNetworkName')))]",
+      "condition": "[not(empty(parameters('virtualNetwork')))]",
       "name": "[concat(parameters('botName'), '/virtualNetwork')]",
       "type": "Microsoft.Web/sites/config",
       "apiVersion": "2018-02-01",
@@ -230,7 +230,7 @@
           "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
       ],
       "properties": {
-          "subnetResourceId": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
+          "subnetResourceId": "[resourceId(parameters('sharedResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetwork'), parameters('virtualNetworkSubnet'))]",
           "swiftSupported": true
       }
     }
