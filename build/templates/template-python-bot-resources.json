@@ -210,7 +210,7 @@
       "condition": "[not(empty(parameters('virtualNetworkName')))]",
       "type": "Microsoft.Web/sites/virtualNetworkConnections",
       "apiVersion": "2018-11-01",
-      "name": "virtualNetwork",
+      "name": "[concat(parameters('botName'), '/virtualNetwork')]",
       "location": "[parameters('botLocation')]",
       "dependsOn": [
           "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
