@@ -234,7 +234,7 @@ stages:
               botName: "${{ bot.name }}"
               botPricingTier: "${{ parameters.botPricingTier }}"
               resourceSuffix: "${{ parameters.resourceSuffix }}"
-              virtualNetwork: ""
+              virtualNetwork: "${{ parameters.virtualNetwork }}"
               virtualNetworkRG: "${{ parameters.virtualNetworkRG }}"
               subnetName: "dotnet"
               templateFile: "build/templates/template-bot-resources.json"
