@@ -236,7 +236,7 @@ stages:
               resourceSuffix: "${{ parameters.resourceSuffix }}"
               virtualNetwork: "${{ parameters.virtualNetwork }}"
               virtualNetworkRG: "${{ parameters.virtualNetworkRG }}"
-              subnetName: "dotnet"
+              subnetName: ""
               templateFile: "build/templates/template-bot-resources.json"
 
           # Deploy bot
