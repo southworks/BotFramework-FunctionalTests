@@ -25,7 +25,8 @@
       "defaultValue": ""
     },
     "virtualNetworkName": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     },
     "virtualNetworkResourceGroup": {
       "type": "string"
