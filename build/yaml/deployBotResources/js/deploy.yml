@@ -45,6 +45,13 @@ parameters:
 
   - name: projectTag
     displayName: Tag for bot's application service
+    
+  - name: virtualNetwork
+    displayName: Virtual network name
+    type: string
+
+  - name: virtualNetworkRG
+    displayName: Virtual Network Resource Group
     type: string
 
 stages:
@@ -189,6 +196,9 @@ stages:
               botPricingTier: "${{ parameters.botPricingTier }}"
               resourceSuffix: "${{ parameters.resourceSuffix }}"
               projectTag: "${{ parameters.projectTag }}"
+              virtualNetwork: "${{ parameters.virtualNetwork }}"
+              virtualNetworkRG: "${{ parameters.virtualNetworkRG }}"
+              subnetName: "javascript"
               templateFile: "build/templates/template-bot-resources.json"
 
           # Deploy bot
