@@ -47,7 +47,6 @@ parameters:
   - name: virtualNetwork
     displayName: Virtual Network name
     type: string
-    default: ''
 
   - name: virtualNetworkRG
     displayName: Virtual Network Resource Group
