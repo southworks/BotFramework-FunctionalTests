@@ -300,31 +300,31 @@ namespace TranscriptTestRunner.TestClients
             {
                 foreach (var exception in aggEx.InnerExceptions)
                 {
-                    _logger.LogError(exception.ToString());
-                    _logger.LogError((exception is InvalidOperationException).ToString());
-                }
-
-                aggEx.Handle((ex) =>
-                {
-                    _logger.LogDebug($"Message: {ex.Message}");
-                    _logger.LogDebug($"Inner: {ex.InnerException.Message}");
-                    _logger.LogDebug($"Stack: {ex.StackTrace}");
-                    _logger.LogDebug($"Type: {ex.GetType().FullName}");
-
-                    if (aggEx.InnerException is InvalidOperationException)
+                    if (exception is InvalidOperationException && exception.Message.Contains("There is no currently active test"))
                     {
-                        _logger.LogDebug("InvalidOperation");
+                        _logger.LogWarning($"Error in ListenAsync: {exception.Message} This issue will be fixed once an stable v3 is available for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages.");
                     }
 
-                    _logger.LogError(ex, ex.Message);
+                    //_logger.LogError(exception.ToString());
+                    //_logger.LogError((exception is InvalidOperationException).ToString());
+                }
 
-                    //if (ex.Message.Contains("There is no currently active test"))
-                    //{
-                    //    _logger.LogWarning($"Error in ListenAsync: {ex.Message} This issue will be fixed once an stable v3 is available for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages.");
-                    //}
+                //aggEx.Handle((ex) =>
+                //{
+                //    _logger.LogDebug($"Message: {ex.Message}");
+                //    _logger.LogDebug($"Inner: {ex.InnerException.Message}");
+                //    _logger.LogDebug($"Stack: {ex.StackTrace}");
+                //    _logger.LogDebug($"Type: {ex.GetType().FullName}");
 
-                    return true;
-                });
+                //    if (aggEx.InnerException is InvalidOperationException)
+                //    {
+                //        _logger.LogDebug("InvalidOperation");
+                //    }
+
+                //    _logger.LogError(ex, ex.Message);
+
+                //    return true;
+                //});
 
                 throw;
             }
