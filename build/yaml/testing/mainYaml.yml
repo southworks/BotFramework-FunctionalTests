@@ -24,7 +24,7 @@ stages:
 
 - stage: SecondStage
   dependsOn: FirstStage
-  condition: ne('$(INTLASTNAME)', '')
+  condition: and(succeeded(), ne('$(INTLASTNAME)', ''))
   jobs:
     - job: DisplayLastName
       steps:
