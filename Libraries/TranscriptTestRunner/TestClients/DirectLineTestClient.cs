@@ -298,8 +298,15 @@ namespace TranscriptTestRunner.TestClients
             }
             catch (AggregateException aggEx)
             {
+                _logger.LogDebug(aggEx.InnerException.Message);
+
                 aggEx.Handle((ex) =>
                 {
+                    if (aggEx.InnerException is InvalidOperationException)
+                    {
+                        _logger.LogDebug("InvalidOperation");
+                    }
+
                     _logger.LogError(ex, ex.Message);
 
                     //if (ex.Message.Contains("There is no currently active test"))
