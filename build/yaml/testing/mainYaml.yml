@@ -24,7 +24,7 @@ stages:
 
 - stage: SecondStage
   dependsOn: FirstStage
-  condition: ne('$(LastName)', '')
+  condition: ne('$(LastName)', '$(LastName)')
   jobs:
     - job: DisplayLastName
       steps:
