@@ -24,10 +24,19 @@ stages:
 
 - stage: SecondStage
   dependsOn: FirstStage
-  condition: ne('$[variables.LastName]', '')
   jobs:
-    - job: DisplayLastName
+    - job: CheckLastName
       steps:
         - powershell: |
-            Write-Host "LastName: '$[variables.LastName]'";
+            if ([System.String]::IsNullOrEmpty('$[variables.LastName]') {
+              Write-Host "Empty LastName"
+            }
+            else {
+              Write-Host "LastName: '$[variables.LastName]'"
+              Write-Host "##vso[task.setvariable variable=apellido]$($[variables.LastName])"
+            }
+          failOnStderr: true
+        - powershell: |
+            Write-Host "LastName: '$(apellido)'";
+          condition: ne('$(apellido)', '')
           failOnStderr: true
