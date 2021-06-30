@@ -298,33 +298,19 @@ namespace TranscriptTestRunner.TestClients
             }
             catch (AggregateException aggEx)
             {
-                foreach (var exception in aggEx.InnerExceptions)
+                aggEx.Handle(ex =>
                 {
-                    if (exception is InvalidOperationException && exception.Message.Contains("There is no currently active test"))
+                    if (ex is InvalidOperationException && ex.Message.Contains("There is no currently active test"))
                     {
-                        _logger.LogWarning($"Error in ListenAsync: {exception.Message} This issue will be fixed once an stable v3 is available for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages.");
+                        _logger.LogWarning($"Warning: {ex.Message} This issue will be fixed once a stable v3 is available for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages.");
+                    }
+                    else
+                    {
+                        _logger.LogError(ex, "Error in ListenAsync");
                     }
 
-                    //_logger.LogError(exception.ToString());
-                    //_logger.LogError((exception is InvalidOperationException).ToString());
-                }
-
-                //aggEx.Handle((ex) =>
-                //{
-                //    _logger.LogDebug($"Message: {ex.Message}");
-                //    _logger.LogDebug($"Inner: {ex.InnerException.Message}");
-                //    _logger.LogDebug($"Stack: {ex.StackTrace}");
-                //    _logger.LogDebug($"Type: {ex.GetType().FullName}");
-
-                //    if (aggEx.InnerException is InvalidOperationException)
-                //    {
-                //        _logger.LogDebug("InvalidOperation");
-                //    }
-
-                //    _logger.LogError(ex, ex.Message);
-
-                //    return true;
-                //});
+                    return true;
+                });
 
                 throw;
             }
