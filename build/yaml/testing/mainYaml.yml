@@ -28,7 +28,7 @@ stages:
     - job: CheckLastName
       steps:
         - powershell: |
-            if ([System.String]::IsNullOrEmpty('$(IntLastName)') {
+            if ([System.String]::IsNullOrEmpty('$(IntLastName)')) {
               Write-Host "Empty LastName"
             }
             else {
