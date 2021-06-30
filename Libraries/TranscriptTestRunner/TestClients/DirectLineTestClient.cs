@@ -302,12 +302,7 @@ namespace TranscriptTestRunner.TestClients
                 {
                     if (ex.Message.Contains("There is no currently active test"))
                     {
-                        _logger.LogDebug($"Message: {ex.Message}");
-                        _logger.LogDebug($"InnerException: {ex.InnerException}");
-                        _logger.LogDebug($"Source: {ex.Source}");
-                        _logger.LogDebug($"StackTrace: {ex.StackTrace}");
-
-                        _logger.LogDebug($"Error in ListenAsync: {ex.Message}. This issue will be fixed once the stable v3 for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages is available.");
+                        _logger.LogDebug($"Error in ListenAsync: {ex.Message}. This issue will be fixed once the stable v3 for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages is available.    ");
                     }
 
                     return true;
