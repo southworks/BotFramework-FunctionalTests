@@ -298,17 +298,16 @@ namespace TranscriptTestRunner.TestClients
             }
             catch (AggregateException aggEx)
             {
-                aggEx.Handle(ex =>
+                aggEx.Handle((ex) =>
                 {
-                    _logger.LogDebug($"Message: {ex.Message}");
-                    _logger.LogDebug($"InnerException: {ex.InnerException}");
-                    _logger.LogDebug($"Source: {ex.Source}");
-                    _logger.LogDebug($"StackTrace: {ex.StackTrace}");
-
-                    if (ex is InvalidOperationException)
+                    if (ex.Message.Contains("There is no currently active test"))
                     {
-                        _logger.LogDebug($"Message 2: {ex.Message}");
-                        _logger.LogError("Error in ListenAsync. An error occurred while writing to logger(s)");
+                        _logger.LogDebug($"Message: {ex.Message}");
+                        _logger.LogDebug($"InnerException: {ex.InnerException}");
+                        _logger.LogDebug($"Source: {ex.Source}");
+                        _logger.LogDebug($"StackTrace: {ex.StackTrace}");
+
+                        _logger.LogDebug($"Error in ListenAsync: {ex.Message}. This issue will be fixed once the stable v3 for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages is available.");
                     }
 
                     return true;
