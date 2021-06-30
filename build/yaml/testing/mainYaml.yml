@@ -22,7 +22,7 @@ stages:
             Write-Host "Name: $(NAME)";
           failOnStderr: true
 
-- ${{ if ne('$(LastName), '' ) }}:
+- ${{ if ne('$(LastName)', '' ) }}:
   - stage: SecondStage
     dependsOn: FirstStage
     jobs:
