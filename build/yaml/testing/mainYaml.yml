@@ -14,14 +14,6 @@ variables:
   IntLastName: $[coalesce(variables['LastName'], '')]
 
 stages:
-- stage: FirstStage
-  jobs:
-    - job: DisplayName
-      steps:
-        - powershell: |
-            Write-Host "Name: $(NAME)";
-          failOnStderr: true
-
 - stage: SecondStage
   dependsOn: FirstStage
   jobs:
