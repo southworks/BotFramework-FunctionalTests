@@ -11,7 +11,7 @@ variables:
   # Name: (optional) Define in Azure
   # LastName: (optional) Define in Azure
 
-  IntLastName: $[coalesce(variables['LastName'], '')]
+  # IntLastName: $[coalesce(variables['LastName'], '')]
 
 stages:
 - stage: FirstStage
@@ -26,7 +26,7 @@ stages:
   dependsOn: FirstStage
   jobs:
     - job: DisplayLastName
-      condition: ne('${{ variables.IntLastName }}', '')
+      condition: ne('${{ variables.LastName }}', null)
       steps:
         - powershell: |
             Write-Host "LastName: $(LASTNAME)";
