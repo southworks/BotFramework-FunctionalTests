@@ -24,9 +24,9 @@ stages:
 
 - stage: SecondStage
   dependsOn: FirstStage
-  condition: and(succeeded(), ne('$(INTLASTNAME)', ''))
   jobs:
     - job: DisplayLastName
+      condition: ne('$(IntLastName)', '')
       steps:
         - powershell: |
             Write-Host "LastName: $(LASTNAME)";
