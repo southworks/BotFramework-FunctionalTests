@@ -24,9 +24,9 @@ stages:
 
 - stage: SecondStage
   dependsOn: FirstStage
+  condition: ne('${{ variables.LastName }}', '')
   jobs:
     - job: DisplayLastName
-      condition: ne('${{ variables.LastName }}', '')
       steps:
         - powershell: |
             Write-Host "LastName: $(LASTNAME)";
