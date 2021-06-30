@@ -295,6 +295,9 @@ namespace TranscriptTestRunner
                             Text = scriptActivity.Text
                         };
 
+                        // Thinking time
+                        await Task.Delay(TimeSpan.FromMilliseconds(500), cancellationToken).ConfigureAwait(false);
+
                         await SendActivityAsync(sendActivity, cancellationToken).ConfigureAwait(false);
                         break;
 
