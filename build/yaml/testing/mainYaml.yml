@@ -1,0 +1,33 @@
+name: $(Build.BuildId)
+trigger: none
+pr: none
+
+pool:
+  vmImage: 'windows-2019'
+
+variables:
+  BuildConfiguration: 'Debug'
+  BuildPlatform: 'AnyCPU'
+  # Name: (optional) Define in Azure
+  # LastName: (optional) Define in Azure
+
+  IntLastName: $[coalesce(variables['LastName'], '')]
+
+stages:
+- stage: FirstStage
+  jobs:
+    - job: DisplayName
+      steps:
+        - powershell: |
+            Write-Host "Name: $(NAME)";
+          failOnStderr: true
+
+- stage: SecondStage
+  dependsOn: FirstStage
+  condition: ne('$(INTLASTNAME)', '')
+  jobs:
+    - job: DisplayLastName
+      steps:
+        - powershell: |
+            Write-Host "LastName: $(LASTNAME)";
+          failOnStderr: true
