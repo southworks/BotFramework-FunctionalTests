@@ -298,10 +298,15 @@ namespace TranscriptTestRunner.TestClients
             }
             catch (AggregateException aggEx)
             {
-                _logger.LogDebug(aggEx.InnerException.Message);
+                _logger.LogDebug($"Agg Inner: {aggEx.InnerException.Message}");
 
                 aggEx.Handle((ex) =>
                 {
+                    _logger.LogDebug($"Message: {ex.Message}");
+                    _logger.LogDebug($"Inner: {ex.InnerException.Message}");
+                    _logger.LogDebug($"Stack: {ex.StackTrace}");
+                    _logger.LogDebug($"Type: {ex.GetType().FullName}");
+
                     if (aggEx.InnerException is InvalidOperationException)
                     {
                         _logger.LogDebug("InvalidOperation");
