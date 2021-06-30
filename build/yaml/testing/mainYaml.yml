@@ -29,5 +29,5 @@ stages:
     - job: DisplayLastName
       steps:
         - powershell: |
-            Write-Host "LastName: $(LASTNAME)";
+            Write-Host "LastName: '$[variables.LastName]'";
           failOnStderr: true
