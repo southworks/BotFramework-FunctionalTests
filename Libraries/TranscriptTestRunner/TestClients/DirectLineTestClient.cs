@@ -298,7 +298,11 @@ namespace TranscriptTestRunner.TestClients
             }
             catch (AggregateException aggEx)
             {
-                _logger.LogDebug($"Agg Inner: {aggEx.InnerException.Message}");
+                foreach (var exception in aggEx.InnerExceptions)
+                {
+                    _logger.LogError(exception.ToString());
+                    _logger.LogError((exception is InvalidOperationException).ToString());
+                }
 
                 aggEx.Handle((ex) =>
                 {
@@ -316,7 +320,7 @@ namespace TranscriptTestRunner.TestClients
 
                     //if (ex.Message.Contains("There is no currently active test"))
                     //{
-                    //    _logger.LogDebug($"Error in ListenAsync: {ex.Message} This issue will be fixed once an stable v3 is available for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages.");
+                    //    _logger.LogWarning($"Error in ListenAsync: {ex.Message} This issue will be fixed once an stable v3 is available for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages.");
                     //}
 
                     return true;
