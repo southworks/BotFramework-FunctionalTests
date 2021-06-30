@@ -19,15 +19,20 @@ stages:
     - job: CheckLastName
       steps:
         - powershell: |
-            if ([System.String]::IsNullOrEmpty('$(IntLastName)')) {
-              Write-Host "Empty LastName"
+            if (-not([System.String]::IsNullOrEmpty('$(IntLastName)'))) {
+              Write-Host "LastName: '$(IntLastName)'"
             }
             else {
-              Write-Host "LastName: '$(IntLastName)'"
+              Write-Host "Empty LastName"
             }
             Write-Host "##vso[task.setvariable variable=apellido]$($(IntLastName))"
           failOnStderr: true
         - powershell: |
-            Write-Host "LastName: '$env:IntLastName'";
-          condition: ne('$env:IntLastName', '')
+            if ($(apellido) -ne '') {
+              Write-Host "LastName: '$env:IntLastName'"
+            }
+            else {
+              Write-Host "apellido vacío"
+            }
+
           failOnStderr: true
