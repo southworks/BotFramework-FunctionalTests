@@ -28,6 +28,6 @@ stages:
             Write-Host "##vso[task.setvariable variable=apellido]$($(IntLastName))"
           failOnStderr: true
         - powershell: |
-            Write-Host "LastName: '$(apellido)'";
-          condition: ne('$(apellido)', '')
+            Write-Host "LastName: '$env:IntLastName'";
+          condition: ne('$env:IntLastName', '')
           failOnStderr: true
