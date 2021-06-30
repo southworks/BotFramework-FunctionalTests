@@ -24,8 +24,8 @@ stages:
             }
             else {
               Write-Host "LastName: '$(IntLastName)'"
-              Write-Host "##vso[task.setvariable variable=apellido]$($(IntLastName))"
             }
+            Write-Host "##vso[task.setvariable variable=apellido]$($(IntLastName))"
           failOnStderr: true
         - powershell: |
             Write-Host "LastName: '$(apellido)'";
