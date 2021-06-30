@@ -24,7 +24,7 @@ stages:
 
 - stage: SecondStage
   dependsOn: FirstStage
-  condition: ne('$[variables.LastName]', '')
+  condition: ne('$(LastName)', '')
   jobs:
     - job: DisplayLastName
       steps:
