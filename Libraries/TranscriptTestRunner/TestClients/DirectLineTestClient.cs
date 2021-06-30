@@ -300,10 +300,12 @@ namespace TranscriptTestRunner.TestClients
             {
                 aggEx.Handle((ex) =>
                 {
-                    if (ex.Message.Contains("There is no currently active test"))
-                    {
-                        _logger.LogDebug($"Error in ListenAsync: {ex.Message}. This issue will be fixed once the stable v3 for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages is available.    ");
-                    }
+                    _logger.LogError(ex, ex.Message);
+
+                    //if (ex.Message.Contains("There is no currently active test"))
+                    //{
+                    //    _logger.LogDebug($"Error in ListenAsync: {ex.Message} This issue will be fixed once an stable v3 is available for 'xunit' and 'Divergic.Logging.Xunit' NuGet packages.");
+                    //}
 
                     return true;
                 });
