@@ -11,7 +11,7 @@ variables:
   # Name: (optional) Define in Azure
   # LastName: (optional) Define in Azure
 
-  # IntLastName: $[coalesce(variables['LastName'], '')]
+  IntLastName: $[coalesce(variables['LastName'], '')]
 
 stages:
 - stage: FirstStage
@@ -28,12 +28,12 @@ stages:
     - job: CheckLastName
       steps:
         - powershell: |
-            if ([System.String]::IsNullOrEmpty('$[variables.LastName]') {
+            if ([System.String]::IsNullOrEmpty('$(IntLastName)') {
               Write-Host "Empty LastName"
             }
             else {
-              Write-Host "LastName: '$[variables.LastName]'"
-              Write-Host "##vso[task.setvariable variable=apellido]$($[variables.LastName])"
+              Write-Host "LastName: '$(IntLastName)'"
+              Write-Host "##vso[task.setvariable variable=apellido]$($(IntLastName))"
             }
           failOnStderr: true
         - powershell: |
