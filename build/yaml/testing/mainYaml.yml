@@ -22,12 +22,12 @@ stages:
             Write-Host "Name: $(NAME)";
           failOnStderr: true
 
-- stage: SecondStage
-  dependsOn: FirstStage
-  condition: ne('$(LastName)', '$(LastName)')
-  jobs:
-    - job: DisplayLastName
-      steps:
-        - powershell: |
-            Write-Host "LastName: $(LASTNAME)";
-          failOnStderr: true
+- ${{ if ne(variables['LastName'], '' ) }}:
+  - stage: SecondStage
+    dependsOn: FirstStage
+    jobs:
+      - job: DisplayLastName
+        steps:
+          - powershell: |
+              Write-Host "LastName: $(LASTNAME)";
+            failOnStderr: true
