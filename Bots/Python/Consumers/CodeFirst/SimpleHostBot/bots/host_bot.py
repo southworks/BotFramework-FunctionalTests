@@ -1,7 +1,9 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
+
 import copy
-from typing import List
+from threading import Semaphore
+from typing import Dict, List
 from botbuilder.core import (
     ActivityHandler,
     ConversationState,
@@ -49,6 +51,8 @@ class HostBot(ActivityHandler):
             ACTIVE_SKILL_PROPERTY_NAME
         )
 
+        self.semaphores: Dict[str, Semaphore] = dict() 
+
     async def on_turn(self, turn_context):
         # Forward all activities except EndOfConversation to the active skill.
         if turn_context.activity.type != ActivityTypes.end_of_conversation:
@@ -66,9 +70,19 @@ class HostBot(ActivityHandler):
                 await self.__send_to_skill(turn_context, delivery_mode, active_skill)
                 return
 
+        conversationId = turn_context.activity.conversation.id
+        semaphore = self.semaphores.get(conversationId)
+        if(not semaphore):
+            self.semaphores[conversationId] = Semaphore(1)
+            semaphore = self.semaphores.get(conversationId)
+        
+        semaphore.acquire()
+
         await super().on_turn(turn_context)
         # Save any state changes that might have occurred during the turn.
         await self._conversation_state.save_changes(turn_context)
+
+        semaphore.release()
 
     async def on_message_activity(self, turn_context: TurnContext):
         if turn_context.activity.text in self._skills_config.SKILLS:

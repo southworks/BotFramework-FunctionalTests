@@ -3,7 +3,8 @@
 
 import json
 import os.path
-from typing import List
+from threading import Semaphore
+from typing import Dict, List
 from botbuilder.core import (
     ActivityHandler,
     ConversationState,
@@ -36,7 +37,17 @@ class RootBot(ActivityHandler):
             ACTIVE_SKILL_PROPERTY_NAME
         )
 
+        self.semaphores: Dict[str, Semaphore] = dict() 
+
     async def on_turn(self, turn_context: TurnContext):
+        conversationId = turn_context.activity.conversation.id
+        semaphore = self.semaphores.get(conversationId)
+        if(not semaphore):
+            self.semaphores[conversationId] = Semaphore(1)
+            semaphore = self.semaphores.get(conversationId)
+        
+        semaphore.acquire()
+
         if turn_context.activity.type != ActivityTypes.conversation_update:
             # Run the Dialog with the Activity.
             await DialogExtensions.run_dialog(
@@ -50,6 +61,8 @@ class RootBot(ActivityHandler):
 
         # Save any state changes that might have occurred during the turn.
         await self._conversation_state.save_changes(turn_context)
+
+        semaphore.release()
 
     async def on_members_added_activity(
         self, members_added: List[ChannelAccount], turn_context: TurnContext
