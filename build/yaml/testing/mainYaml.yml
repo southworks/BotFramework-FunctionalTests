@@ -20,12 +20,15 @@ stages:
         - powershell: |
             $LastName = '$(IntLastName)'
             Write-Host "LastName: '$LastName'"
-            Write-Host "##vso[task.setvariable variable=apellido]$($LastName)"
+            Write-Host "##vso[task.setvariable variable=apellido;isOutput=true]$($LastName)"
+          name: checkValue
           failOnStderr: true
     - job: UseLastName
       dependsOn: CheckLastName
-      condition: and(succeeded(), ne('$(apellido)', ''))
+      variables:
+        Apellido: $[ dependencies.CheckLastName.outputs['checkValue.apellido'] ]
+      condition: and(succeeded(), ne('', '$Apellido'))
       steps:
         - powershell: |
-              Write-Host "LastName: $(apellido)"
+              Write-Host "LastName: $(Apellido)"
           failOnStderr: true
