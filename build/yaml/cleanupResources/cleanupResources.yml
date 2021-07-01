@@ -137,32 +137,6 @@ stages:
                 Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANPYTHONNAME) resource found."
               }
 
-- stage: "Delete_Virtual_Network"
-  displayName: "Delete Virtual Network"
-  dependsOn:
-    - Delete_DotNet_Resource_Group
-    - Delete_JS_Resource_Group
-    - Delete_Python_Resource_Group
-  jobs:
-    - job: "Delete"
-      displayName: "Delete steps"
-      steps:
-        - task: AzureCLI@2
-          displayName: "Delete Virtual Network"
-          inputs:
-            azureSubscription: $(AZURESUBSCRIPTION)
-            scriptType: pscore
-            scriptLocation: inlineScript
-            inlineScript: |
-              Write-Host "Looking for $(INTERNALVIRTUALNETWORKNAME)..."
-              $exists = az network vnet show --name "$(INTERNALVIRTUALNETWORKNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-              if ($exists) {
-                Write-Host "Deleting $(INTERNALVIRTUALNETWORKNAME)..."
-                az network vnet delete --name "$(INTERNALVIRTUALNETWORKNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-              } else {
-                Write-Host "No pre-existing $(INTERNALVIRTUALNETWORKNAME) resource found."
-              }
-
 - stage: "Delete_App_Registrations"
   displayName: "Delete App Registrations"
   dependsOn: []
@@ -228,6 +202,32 @@ stages:
                 }
               } else {
                 Write-Host "No pre-existing $(INTERNALSHAREDRESOURCEGROUPNAME) group found."
+              }
+
+- stage: "Delete_Virtual_Network"
+  displayName: "Delete Virtual Network"
+  dependsOn:
+    - Delete_DotNet_Resource_Group
+    - Delete_JS_Resource_Group
+    - Delete_Python_Resource_Group
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - task: AzureCLI@2
+          displayName: "Delete Virtual Network"
+          inputs:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |
+              Write-Host "Looking for $(INTERNALVIRTUALNETWORKNAME)..."
+              $exists = az network vnet show --name "$(INTERNALVIRTUALNETWORKNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+              if ($exists) {
+                Write-Host "Deleting $(INTERNALVIRTUALNETWORKNAME)..."
+                az network vnet delete --name "$(INTERNALVIRTUALNETWORKNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+              } else {
+                Write-Host "No pre-existing $(INTERNALVIRTUALNETWORKNAME) resource found."
               }
 
 - stage: "Delete_CosmosDB"
