@@ -153,7 +153,10 @@ stages:
 
 - stage: "Delete_Virtual_Network"
   displayName: "Delete Virtual Network"
-  dependsOn: []
+  dependsOn:
+    - Delete_DotNet_Resource_Group
+    - Delete_JS_Resource_Group
+    - Delete_Python_Resource_Group
   jobs:
     - job: "Delete"
       displayName: "Delete steps"
