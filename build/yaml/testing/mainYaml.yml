@@ -26,7 +26,7 @@ stages:
           failOnStderr: true
     - job: UseLastName
       dependsOn: CheckLastName
-      condition: and(succeeded(), ne('', '$[ dependencies.CheckLastName.outputs['checkValue.apellido'] ]'))
+      condition: and(succeeded(), ne('', '$[ dependencies.CheckLastName.outputs[''checkValue.apellido''] ]'))
       steps:
         - powershell: |
               Write-Host "LastName: $[ dependencies.CheckLastName.outputs['checkValue.apellido'] ]"
