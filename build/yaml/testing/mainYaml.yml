@@ -6,35 +6,26 @@ pool:
   vmImage: 'windows-2019'
 
 variables:
-- name: testNull
-  value: ''
-  # BuildConfiguration: 'Debug'
-  # BuildPlatform: 'AnyCPU'
+  BuildConfiguration: 'Debug'
+  BuildPlatform: 'AnyCPU'
   # Name: (optional) Define in Azure
   # LastName: (optional) Define in Azure
-  #IntLastName: $[coalesce(variables['LastName'], '')]
+  IntLastName: $[coalesce(variables['LastName'], '')]
 
 stages:
-- stage: SecondStage
-  condition: ne('${{ variables.testNull }}', '')
+- stage: LastName
   jobs:
     - job: CheckLastName
       steps:
         - powershell: |
-            if (-not([System.String]::IsNullOrEmpty('$(IntLastName)'))) {
-              Write-Host "LastName: '$(IntLastName)'"
-            }
-            else {
-              Write-Host "Empty LastName"
-            }
-            Write-Host "##vso[task.setvariable variable=apellido]$($(IntLastName))"
+            $LastName = '$(IntLastName)'
+            Write-Host "LastName: '$LastName'"
+            Write-Host "##vso[task.setvariable variable=apellido]$($LastName)"
           failOnStderr: true
+    - job: UseLastName
+      dependsOn: CheckLastName
+      condition: and(succeeded(), ne('$(apellido)', ''))
+      steps:
         - powershell: |
-            if ($(apellido) -ne '') {
-              Write-Host "LastName: '$env:IntLastName'"
-            }
-            else {
-              Write-Host "apellido vacío"
-            }
-
+              Write-Host "LastName: $(apellido)"
           failOnStderr: true
