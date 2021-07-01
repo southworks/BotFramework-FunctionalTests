@@ -283,6 +283,7 @@ stages:
     - Delete_JS_Resource_Group
     - Delete_App_Service_Plan_DotNet
     - Delete_App_Service_Plan_JS
+    - Delete_Virtual_Network
     - Delete_App_Insights
     - Delete_CosmosDB
     - Delete_Container_Registry
