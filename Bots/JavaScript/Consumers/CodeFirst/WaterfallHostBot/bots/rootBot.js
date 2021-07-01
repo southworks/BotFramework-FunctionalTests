@@ -3,6 +3,7 @@
 
 const { ActivityHandler, ActivityTypes, CardFactory, MessageFactory } = require('botbuilder');
 const { runDialog } = require('botbuilder-dialogs');
+const { Semaphore } = require('../utils/semaphore')
 const WelcomeCard = require('../cards/welcomeCard.json');
 
 class RootBot extends ActivityHandler {
@@ -23,6 +24,8 @@ class RootBot extends ActivityHandler {
 
     // Create state property to track the active skill
     this.activeSkillProperty = this.conversationState.createProperty(RootBot.ActiveSkillPropertyName);
+
+    this.semaphores = new Map();
 
     this.onTurn(async (turnContext, next) => {
       if (turnContext.activity.type !== ActivityTypes.ConversationUpdate) {
@@ -55,10 +58,19 @@ class RootBot extends ActivityHandler {
    * @param {import('botbuilder').TurnContext} turnContext
    */
   async run (context) {
+    const conversationId = context.activity.conversation.id;
+    if (!this.semaphores.has(conversationId)) {
+      this.semaphores.set(conversationId, new Semaphore(1));
+    }
+    const semaphore = this.semaphores.get(conversationId);
+    await semaphore.acquire()
+
     await super.run(context);
 
     // Save any state changes. The load happened during the execution of the Dialog.
     await this.conversationState.saveChanges(context, false);
+
+    semaphore.release()
   }
 
   /**

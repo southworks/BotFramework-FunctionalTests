@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 const { ActivityHandler, ActivityTypes, DeliveryModes, MessageFactory } = require('botbuilder');
+const { Semaphore } = require('../utils/semaphore')
+
 
 class HostBot extends ActivityHandler {
   constructor (dialog, conversationState, skillsConfig, skillClient) {
@@ -21,6 +23,8 @@ class HostBot extends ActivityHandler {
     // Create state property to track the delivery mode and active skill.
     this.deliveryModeProperty = this.conversationState.createProperty(HostBot.DeliveryModePropertyName);
     this.activeSkillProperty = this.conversationState.createProperty(HostBot.ActiveSkillPropertyName);
+
+    this.semaphores = new Map();
 
     this.onTurn(async (context, next) => {
       // Forward all activities except EndOfConversation to the active skill.
@@ -155,11 +159,20 @@ class HostBot extends ActivityHandler {
   /**
      * Override the ActivityHandler.run() method to save state changes after the bot logic completes.
      */
-  async run (context) {
+  async run(context) {
+    const conversationId = context.activity.conversation.id;
+    if (!this.semaphores.has(conversationId)) {
+      this.semaphores.set(conversationId, new Semaphore(1));
+    }
+    const semaphore = this.semaphores.get(conversationId);
+    await semaphore.acquire()
+
     await super.run(context);
 
     // Save any state changes. The load happened during the execution of the Dialog.
     await this.conversationState.saveChanges(context, false);
+
+    semaphore.release()
   }
 }
 
