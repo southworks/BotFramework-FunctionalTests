@@ -6,15 +6,17 @@ pool:
   vmImage: 'windows-2019'
 
 variables:
-  BuildConfiguration: 'Debug'
-  BuildPlatform: 'AnyCPU'
+- name: testNull
+  value: ''
+  # BuildConfiguration: 'Debug'
+  # BuildPlatform: 'AnyCPU'
   # Name: (optional) Define in Azure
   # LastName: (optional) Define in Azure
-
-  IntLastName: $[coalesce(variables['LastName'], '')]
+  #IntLastName: $[coalesce(variables['LastName'], '')]
 
 stages:
 - stage: SecondStage
+  condition: ne('${{ variables.testNull }}', '')
   jobs:
     - job: CheckLastName
       steps:
