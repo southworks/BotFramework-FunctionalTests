@@ -41,30 +41,6 @@ stages:
             azureSubscription: $(AZURESUBSCRIPTION)
             name: "$(INTERNALBOTRESOURCEGROUPNAME)-DotNet"
 
-- stage: "Delete_JS_Resource_Group"
-  displayName: "Delete JS's Resource Group"
-  dependsOn: []
-  jobs:
-    - job: "Delete"
-      displayName: "Delete steps"
-      steps:
-        - template: ../common/deleteResourceGroup.yml
-          parameters:
-            azureSubscription: $(AZURESUBSCRIPTION)
-            name: "$(INTERNALBOTRESOURCEGROUPNAME)-JS"
-
-- stage: "Delete_Python_Resource_Group"
-  displayName: "Delete Python's Resource Group"
-  dependsOn: []
-  jobs:
-    - job: "Delete"
-      displayName: "Delete steps"
-      steps:
-        - template: ../common/deleteResourceGroup.yml
-          parameters:
-            azureSubscription: $(AZURESUBSCRIPTION)
-            name: "$(INTERNALBOTRESOURCEGROUPNAME)-Python"
-
 - stage: "Delete_App_Service_Plan_DotNet"
   displayName: "Delete App Service Plan (DotNet)"
   dependsOn: 
@@ -89,6 +65,18 @@ stages:
                 Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANDOTNETNAME) resource found."
               }
 
+- stage: "Delete_JS_Resource_Group"
+  displayName: "Delete JS's Resource Group"
+  dependsOn: []
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - template: ../common/deleteResourceGroup.yml
+          parameters:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            name: "$(INTERNALBOTRESOURCEGROUPNAME)-JS"
+
 - stage: "Delete_App_Service_Plan_JS"
   displayName: "Delete App Service Plan (JS)"
   dependsOn: 
@@ -112,6 +100,18 @@ stages:
               } else {
                 Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANJSNAME) resource found."
               }
+
+- stage: "Delete_Python_Resource_Group"
+  displayName: "Delete Python's Resource Group"
+  dependsOn: []
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - template: ../common/deleteResourceGroup.yml
+          parameters:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            name: "$(INTERNALBOTRESOURCEGROUPNAME)-Python"
 
 - stage: "Delete_App_Service_Plan_Python"
   displayName: "Delete App Service Plan (Python)"
