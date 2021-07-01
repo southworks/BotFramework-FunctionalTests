@@ -20,13 +20,19 @@ stages:
         - powershell: |
             $LastName = '$(IntLastName)'
             Write-Host "LastName: '$LastName'"
-            Write-Host "##vso[task.setvariable variable=apellido;isOutput=true]$LastName"
-            Write-Host "Apellido:" $apellido
+            if ($LastName -ne '') {
+              Write-Host "No vacio"
+              Write-Host "##vso[task.setvariable variable=apellido;isOutput=true]$true"
+            }
+            else {
+              Write-Host "vacio"
+              Write-Host "##vso[task.setvariable variable=apellido;isOutput=true]$false"
+            }
           name: checkValue
           failOnStderr: true
     - job: UseLastName
       dependsOn: CheckLastName
-      condition: ne(dependencies.CheckLastName.outputs['checkValue.apellido'], '')
+      condition: eq(dependencies.CheckLastName.outputs['checkValue.apellido'], true)
       steps:
         - powershell: |
               Write-Host "LastName: $(IntLastName)"
