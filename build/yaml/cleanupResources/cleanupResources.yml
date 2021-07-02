@@ -201,80 +201,80 @@ stages:
                 Write-Host "No pre-existing $(INTERNALKEYVAULTNAME) resource found."
               }
 
-# - stage: "Delete_App_Insights"
-#   displayName: "Delete App Insights"
-#   dependsOn: []
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - task: AzureCLI@2
-#           displayName: "Delete App Insights"
-#           inputs:
-#             azureSubscription: $(AZURESUBSCRIPTION)
-#             scriptType: pscore
-#             scriptLocation: inlineScript
-#             inlineScript: |
-#               az config set extension.use_dynamic_install=yes_without_prompt
-#               az feature register --name AIWorkspacePreview --namespace microsoft.insights
-#               Write-Host "Looking for $(INTERNALAPPINSIGHTSNAME)..."
-#               if ((az group exists -n "$(INTERNALSHAREDRESOURCEGROUPNAME)") -eq "true") {
-#                 $exists = az monitor app-insights component show --app "$(INTERNALAPPINSIGHTSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-#                 if ($exists) {
-#                   Write-Host "Deleting $(INTERNALAPPINSIGHTSNAME)..."
-#                   az monitor app-insights component delete --app "$(INTERNALAPPINSIGHTSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-#                 } else {
-#                   Write-Host "No pre-existing $(INTERNALAPPINSIGHTSNAME) resource found."
-#                 }
-#               } else {
-#                 Write-Host "No pre-existing $(INTERNALSHAREDRESOURCEGROUPNAME) group found."
-#               }
+- stage: "Delete_App_Insights"
+  displayName: "Delete App Insights"
+  dependsOn: []
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - task: AzureCLI@2
+          displayName: "Delete App Insights"
+          inputs:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |
+              az config set extension.use_dynamic_install=yes_without_prompt
+              az feature register --name AIWorkspacePreview --namespace microsoft.insights
+              Write-Host "Looking for $(INTERNALAPPINSIGHTSNAME)..."
+              if ((az group exists -n "$(INTERNALSHAREDRESOURCEGROUPNAME)") -eq "true") {
+                $exists = az monitor app-insights component show --app "$(INTERNALAPPINSIGHTSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+                if ($exists) {
+                  Write-Host "Deleting $(INTERNALAPPINSIGHTSNAME)..."
+                  az monitor app-insights component delete --app "$(INTERNALAPPINSIGHTSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+                } else {
+                  Write-Host "No pre-existing $(INTERNALAPPINSIGHTSNAME) resource found."
+                }
+              } else {
+                Write-Host "No pre-existing $(INTERNALSHAREDRESOURCEGROUPNAME) group found."
+              }
 
-# - stage: "Delete_CosmosDB"
-#   displayName: "Delete CosmosDB"
-#   dependsOn: []
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - task: AzureCLI@2
-#           displayName: "Delete CosmosDB"
-#           inputs:
-#             azureSubscription: $(AZURESUBSCRIPTION)
-#             scriptType: pscore
-#             scriptLocation: inlineScript
-#             inlineScript: |
-#               Write-Host "Looking for $(INTERNALCOSMOSDBNAME)..."
-#               $exists = az cosmosdb check-name-exists --name "$(INTERNALCOSMOSDBNAME)"
-#               if ($exists -eq $true) {
-#                 Write-Host "Deleting $(INTERNALCOSMOSDBNAME)..."
-#                 az cosmosdb delete --name "$(INTERNALCOSMOSDBNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)" --yes
-#               } else {
-#                 Write-Host "No pre-existing $(INTERNALCOSMOSDBNAME) resource found."
-#               }
+- stage: "Delete_CosmosDB"
+  displayName: "Delete CosmosDB"
+  dependsOn: []
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - task: AzureCLI@2
+          displayName: "Delete CosmosDB"
+          inputs:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |
+              Write-Host "Looking for $(INTERNALCOSMOSDBNAME)..."
+              $exists = az cosmosdb check-name-exists --name "$(INTERNALCOSMOSDBNAME)"
+              if ($exists -eq $true) {
+                Write-Host "Deleting $(INTERNALCOSMOSDBNAME)..."
+                az cosmosdb delete --name "$(INTERNALCOSMOSDBNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)" --yes
+              } else {
+                Write-Host "No pre-existing $(INTERNALCOSMOSDBNAME) resource found."
+              }
 
-# - stage: "Delete_Container_Registry"
-#   displayName: "Delete Container Registry"
-#   dependsOn: []
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - task: AzureCLI@2
-#           displayName: "Delete Container Registry"
-#           inputs:
-#             azureSubscription: $(AZURESUBSCRIPTION)
-#             scriptType: pscore
-#             scriptLocation: inlineScript
-#             inlineScript: |
-#               Write-Host "Looking for $(INTERNALCONTAINERREGISTRYNAME)..."
-#               $resource = az acr check-name --name "$(INTERNALCONTAINERREGISTRYNAME)" | ConvertFrom-Json
-#               if ($resource.nameAvailable) {
-#                 Write-Host "No pre-existing $(INTERNALCONTAINERREGISTRYNAME) resource found."
-#               } else {
-#                 Write-Host "Deleting $(INTERNALCONTAINERREGISTRYNAME)..."
-#                 az acr delete --name "$(INTERNALCONTAINERREGISTRYNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)" --yes
-#               }
+- stage: "Delete_Container_Registry"
+  displayName: "Delete Container Registry"
+  dependsOn: []
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - task: AzureCLI@2
+          displayName: "Delete Container Registry"
+          inputs:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |
+              Write-Host "Looking for $(INTERNALCONTAINERREGISTRYNAME)..."
+              $resource = az acr check-name --name "$(INTERNALCONTAINERREGISTRYNAME)" | ConvertFrom-Json
+              if ($resource.nameAvailable) {
+                Write-Host "No pre-existing $(INTERNALCONTAINERREGISTRYNAME) resource found."
+              } else {
+                Write-Host "Deleting $(INTERNALCONTAINERREGISTRYNAME)..."
+                az acr delete --name "$(INTERNALCONTAINERREGISTRYNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)" --yes
+              }
 
 - stage: "Delete_Resource_Group_Windows"
   displayName: "Delete Resource Group (Windows)"
@@ -285,9 +285,9 @@ stages:
     # - Delete_App_Service_Plan_JS
     - Delete_Virtual_Network
     - Delete_Key_Vault
-    # - Delete_App_Insights
-    # - Delete_CosmosDB
-    # - Delete_Container_Registry
+    - Delete_App_Insights
+    - Delete_CosmosDB
+    - Delete_Container_Registry
     # - Delete_App_Registrations
   jobs:
     - job: "Delete"
