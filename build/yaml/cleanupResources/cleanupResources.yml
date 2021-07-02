@@ -279,10 +279,10 @@ stages:
 - stage: "Delete_Resource_Group_Windows"
   displayName: "Delete Resource Group (Windows)"
   dependsOn: 
-    # - Delete_DotNet_Resource_Group
-    # - Delete_JS_Resource_Group
-    # - Delete_App_Service_Plan_DotNet
-    # - Delete_App_Service_Plan_JS
+    - Delete_DotNet_Resource_Group
+    - Delete_JS_Resource_Group
+    - Delete_App_Service_Plan_DotNet
+    - Delete_App_Service_Plan_JS
     - Delete_Virtual_Network
     - Delete_App_Registrations
     - Delete_Key_Vault
