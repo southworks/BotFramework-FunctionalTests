@@ -163,43 +163,43 @@ stages:
                 Write-Host "No pre-existing $(INTERNALVIRTUALNETWORKNAME) resource found."
               }
 
-# - stage: "Delete_App_Registrations"
-#   displayName: "Delete App Registrations"
-#   dependsOn: []
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - template: deleteAppRegistrations.yml
-#           parameters:
-#             azureSubscription: "$(AZURESUBSCRIPTION)"
-#             keyVault: "$(INTERNALKEYVAULTNAME)"
-#             resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+- stage: "Delete_App_Registrations"
+  displayName: "Delete App Registrations"
+  dependsOn: []
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - template: deleteAppRegistrations.yml
+          parameters:
+            azureSubscription: "$(AZURESUBSCRIPTION)"
+            keyVault: "$(INTERNALKEYVAULTNAME)"
+            resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
 
-# - stage: "Delete_Key_Vault"
-#   displayName: "Delete Key Vault"
-#   dependsOn: 
-#     - Delete_App_Registrations
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - task: AzureCLI@2
-#           displayName: "Delete Key Vault"
-#           inputs:
-#             azureSubscription: $(AZURESUBSCRIPTION)
-#             scriptType: pscore
-#             scriptLocation: inlineScript
-#             inlineScript: |
-#               Write-Host "Looking for $(INTERNALKEYVAULTNAME)..."
-#               $exists = az keyvault list --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)" --query "[?name == '$(INTERNALKEYVAULTNAME)']" | ConvertFrom-Json
-#               if ($exists) {
-#                 Write-Host "Deleting $(INTERNALKEYVAULTNAME)..."
-#                 az keyvault delete --name "$(INTERNALKEYVAULTNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-#                 az keyvault purge --name "$(INTERNALKEYVAULTNAME)"
-#               } else {
-#                 Write-Host "No pre-existing $(INTERNALKEYVAULTNAME) resource found."
-#               }
+- stage: "Delete_Key_Vault"
+  displayName: "Delete Key Vault"
+  dependsOn: 
+    - Delete_App_Registrations
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - task: AzureCLI@2
+          displayName: "Delete Key Vault"
+          inputs:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |
+              Write-Host "Looking for $(INTERNALKEYVAULTNAME)..."
+              $exists = az keyvault list --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)" --query "[?name == '$(INTERNALKEYVAULTNAME)']" | ConvertFrom-Json
+              if ($exists) {
+                Write-Host "Deleting $(INTERNALKEYVAULTNAME)..."
+                az keyvault delete --name "$(INTERNALKEYVAULTNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+                az keyvault purge --name "$(INTERNALKEYVAULTNAME)"
+              } else {
+                Write-Host "No pre-existing $(INTERNALKEYVAULTNAME) resource found."
+              }
 
 # - stage: "Delete_App_Insights"
 #   displayName: "Delete App Insights"
@@ -279,16 +279,16 @@ stages:
 - stage: "Delete_Resource_Group_Windows"
   displayName: "Delete Resource Group (Windows)"
   dependsOn: 
-    - Delete_DotNet_Resource_Group
-    - Delete_JS_Resource_Group
-    - Delete_App_Service_Plan_DotNet
-    - Delete_App_Service_Plan_JS
+    # - Delete_DotNet_Resource_Group
+    # - Delete_JS_Resource_Group
+    # - Delete_App_Service_Plan_DotNet
+    # - Delete_App_Service_Plan_JS
     - Delete_Virtual_Network
+    - Delete_Key_Vault
     # - Delete_App_Insights
     # - Delete_CosmosDB
     # - Delete_Container_Registry
     # - Delete_App_Registrations
-    # - Delete_Key_Vault
   jobs:
     - job: "Delete"
       displayName: "Delete steps"
