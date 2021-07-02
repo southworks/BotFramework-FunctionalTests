@@ -137,19 +137,6 @@ stages:
                 Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANPYTHONNAME) resource found."
               }
 
-# - stage: "Delete_App_Registrations"
-#   displayName: "Delete App Registrations"
-#   dependsOn: []
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - template: deleteAppRegistrations.yml
-#           parameters:
-#             azureSubscription: "$(AZURESUBSCRIPTION)"
-#             keyVault: "$(INTERNALKEYVAULTNAME)"
-#             resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-
 - stage: "Delete_Virtual_Network"
   displayName: "Delete Virtual Network"
   dependsOn:
@@ -175,6 +162,19 @@ stages:
               } else {
                 Write-Host "No pre-existing $(INTERNALVIRTUALNETWORKNAME) resource found."
               }
+
+# - stage: "Delete_App_Registrations"
+#   displayName: "Delete App Registrations"
+#   dependsOn: []
+#   jobs:
+#     - job: "Delete"
+#       displayName: "Delete steps"
+#       steps:
+#         - template: deleteAppRegistrations.yml
+#           parameters:
+#             azureSubscription: "$(AZURESUBSCRIPTION)"
+#             keyVault: "$(INTERNALKEYVAULTNAME)"
+#             resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
 
 # - stage: "Delete_Key_Vault"
 #   displayName: "Delete Key Vault"
@@ -283,7 +283,7 @@ stages:
     - Delete_JS_Resource_Group
     - Delete_App_Service_Plan_DotNet
     - Delete_App_Service_Plan_JS
-    # - Delete_Virtual_Network
+    - Delete_Virtual_Network
     # - Delete_App_Insights
     # - Delete_CosmosDB
     # - Delete_Container_Registry
