@@ -101,34 +101,18 @@ stages:
                 Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANJSNAME) resource found."
               }
 
-- stage: "Delete_App_Insights"
-  displayName: "Delete App Insights"
+- stage: "Delete_App_Registrations"
+  displayName: "Delete App Registrations"
   dependsOn: []
   jobs:
     - job: "Delete"
       displayName: "Delete steps"
       steps:
-        - task: AzureCLI@2
-          displayName: "Delete App Insights"
-          inputs:
-            azureSubscription: $(AZURESUBSCRIPTION)
-            scriptType: pscore
-            scriptLocation: inlineScript
-            inlineScript: |
-              az config set extension.use_dynamic_install=yes_without_prompt
-              az feature register --name AIWorkspacePreview --namespace microsoft.insights
-              Write-Host "Looking for $(INTERNALAPPINSIGHTSNAME)..."
-              if ((az group exists -n "$(INTERNALSHAREDRESOURCEGROUPNAME)") -eq "true") {
-                $exists = az monitor app-insights component show --app "$(INTERNALAPPINSIGHTSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-                if ($exists) {
-                  Write-Host "Deleting $(INTERNALAPPINSIGHTSNAME)..."
-                  az monitor app-insights component delete --app "$(INTERNALAPPINSIGHTSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-                } else {
-                  Write-Host "No pre-existing $(INTERNALAPPINSIGHTSNAME) resource found."
-                }
-              } else {
-                Write-Host "No pre-existing $(INTERNALSHAREDRESOURCEGROUPNAME) group found."
-              }
+        - template: deleteAppRegistrations.yml
+          parameters:
+            azureSubscription: "$(AZURESUBSCRIPTION)"
+            keyVault: "$(INTERNALKEYVAULTNAME)"
+            resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
 
 - stage: "Delete_App_Service_Plan_Python"
   displayName: "Delete App Service Plan (Python)"
@@ -180,18 +164,34 @@ stages:
                 Write-Host "No pre-existing $(INTERNALVIRTUALNETWORKNAME) resource found."
               }
 
-- stage: "Delete_App_Registrations"
-  displayName: "Delete App Registrations"
+- stage: "Delete_App_Insights"
+  displayName: "Delete App Insights"
   dependsOn: []
   jobs:
     - job: "Delete"
       displayName: "Delete steps"
       steps:
-        - template: deleteAppRegistrations.yml
-          parameters:
-            azureSubscription: "$(AZURESUBSCRIPTION)"
-            keyVault: "$(INTERNALKEYVAULTNAME)"
-            resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+        - task: AzureCLI@2
+          displayName: "Delete App Insights"
+          inputs:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |
+              az config set extension.use_dynamic_install=yes_without_prompt
+              az feature register --name AIWorkspacePreview --namespace microsoft.insights
+              Write-Host "Looking for $(INTERNALAPPINSIGHTSNAME)..."
+              if ((az group exists -n "$(INTERNALSHAREDRESOURCEGROUPNAME)") -eq "true") {
+                $exists = az monitor app-insights component show --app "$(INTERNALAPPINSIGHTSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+                if ($exists) {
+                  Write-Host "Deleting $(INTERNALAPPINSIGHTSNAME)..."
+                  az monitor app-insights component delete --app "$(INTERNALAPPINSIGHTSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+                } else {
+                  Write-Host "No pre-existing $(INTERNALAPPINSIGHTSNAME) resource found."
+                }
+              } else {
+                Write-Host "No pre-existing $(INTERNALSHAREDRESOURCEGROUPNAME) group found."
+              }
 
 - stage: "Delete_Key_Vault"
   displayName: "Delete Key Vault"
