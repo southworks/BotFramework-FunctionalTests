@@ -154,9 +154,9 @@ stages:
 - stage: "Delete_Virtual_Network"
   displayName: "Delete Virtual Network"
   dependsOn:
-    - Delete_DotNet_Resource_Group
-    - Delete_JS_Resource_Group
-    - Delete_Python_Resource_Group
+    - Delete_App_Service_Plan_DotNet
+    - Delete_App_Service_Plan_JS
+    - Delete_App_Service_Plan_Python
   jobs:
     - job: "Delete"
       displayName: "Delete steps"
