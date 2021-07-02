@@ -41,29 +41,29 @@ stages:
             azureSubscription: $(AZURESUBSCRIPTION)
             name: "$(INTERNALBOTRESOURCEGROUPNAME)-DotNet"
 
-# - stage: "Delete_App_Service_Plan_DotNet"
-#   displayName: "Delete App Service Plan (DotNet)"
-#   dependsOn: 
-#     - Delete_DotNet_Resource_Group
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - task: AzureCLI@2
-#           displayName: "Delete App Service Plan (DotNet)"
-#           inputs:
-#             azureSubscription: $(AZURESUBSCRIPTION)
-#             scriptType: pscore
-#             scriptLocation: inlineScript
-#             inlineScript: |
-#               Write-Host "Looking for $(INTERNALAPPSERVICEPLANDOTNETNAME)..."
-#               $exists = az appservice plan show --name "$(INTERNALAPPSERVICEPLANDOTNETNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-#               if ($exists) {
-#                 Write-Host "Deleting $(INTERNALAPPSERVICEPLANDOTNETNAME)..."
-#                 az appservice plan delete --name "$(INTERNALAPPSERVICEPLANDOTNETNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)" --yes
-#               } else {
-#                 Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANDOTNETNAME) resource found."
-#               }
+- stage: "Delete_App_Service_Plan_DotNet"
+  displayName: "Delete App Service Plan (DotNet)"
+  dependsOn: 
+    - Delete_DotNet_Resource_Group
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - task: AzureCLI@2
+          displayName: "Delete App Service Plan (DotNet)"
+          inputs:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |
+              Write-Host "Looking for $(INTERNALAPPSERVICEPLANDOTNETNAME)..."
+              $exists = az appservice plan show --name "$(INTERNALAPPSERVICEPLANDOTNETNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+              if ($exists) {
+                Write-Host "Deleting $(INTERNALAPPSERVICEPLANDOTNETNAME)..."
+                az appservice plan delete --name "$(INTERNALAPPSERVICEPLANDOTNETNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)" --yes
+              } else {
+                Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANDOTNETNAME) resource found."
+              }
 
 - stage: "Delete_JS_Resource_Group"
   displayName: "Delete JS's Resource Group"
@@ -77,29 +77,29 @@ stages:
             azureSubscription: $(AZURESUBSCRIPTION)
             name: "$(INTERNALBOTRESOURCEGROUPNAME)-JS"
 
-# - stage: "Delete_App_Service_Plan_JS"
-#   displayName: "Delete App Service Plan (JS)"
-#   dependsOn: 
-#     - Delete_JS_Resource_Group
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - task: AzureCLI@2
-#           displayName: "Delete App Service Plan (JS)"
-#           inputs:
-#             azureSubscription: $(AZURESUBSCRIPTION)
-#             scriptType: pscore
-#             scriptLocation: inlineScript
-#             inlineScript: |
-#               Write-Host "Looking for $(INTERNALAPPSERVICEPLANJSNAME)..."
-#               $exists = az appservice plan show --name "$(INTERNALAPPSERVICEPLANJSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-#               if ($exists) {
-#                 Write-Host "Deleting $(INTERNALAPPSERVICEPLANJSNAME)..."
-#                 az appservice plan delete --name "$(INTERNALAPPSERVICEPLANJSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)" --yes
-#               } else {
-#                 Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANJSNAME) resource found."
-#               }
+- stage: "Delete_App_Service_Plan_JS"
+  displayName: "Delete App Service Plan (JS)"
+  dependsOn: 
+    - Delete_JS_Resource_Group
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - task: AzureCLI@2
+          displayName: "Delete App Service Plan (JS)"
+          inputs:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |
+              Write-Host "Looking for $(INTERNALAPPSERVICEPLANJSNAME)..."
+              $exists = az appservice plan show --name "$(INTERNALAPPSERVICEPLANJSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+              if ($exists) {
+                Write-Host "Deleting $(INTERNALAPPSERVICEPLANJSNAME)..."
+                az appservice plan delete --name "$(INTERNALAPPSERVICEPLANJSNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)" --yes
+              } else {
+                Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANJSNAME) resource found."
+              }
 
 - stage: "Delete_Python_Resource_Group"
   displayName: "Delete Python's Resource Group"
@@ -112,19 +112,6 @@ stages:
           parameters:
             azureSubscription: $(AZURESUBSCRIPTION)
             name: "$(INTERNALBOTRESOURCEGROUPNAME)-Python"
-
-# - stage: "Delete_App_Registrations"
-#   displayName: "Delete App Registrations"
-#   dependsOn: []
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - template: deleteAppRegistrations.yml
-#           parameters:
-#             azureSubscription: "$(AZURESUBSCRIPTION)"
-#             keyVault: "$(INTERNALKEYVAULTNAME)"
-#             resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
 
 # - stage: "Delete_App_Service_Plan_Python"
 #   displayName: "Delete App Service Plan (Python)"
@@ -149,6 +136,19 @@ stages:
 #               } else {
 #                 Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANPYTHONNAME) resource found."
 #               }
+
+# - stage: "Delete_App_Registrations"
+#   displayName: "Delete App Registrations"
+#   dependsOn: []
+#   jobs:
+#     - job: "Delete"
+#       displayName: "Delete steps"
+#       steps:
+#         - template: deleteAppRegistrations.yml
+#           parameters:
+#             azureSubscription: "$(AZURESUBSCRIPTION)"
+#             keyVault: "$(INTERNALKEYVAULTNAME)"
+#             resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
 
 # - stage: "Delete_Virtual_Network"
 #   displayName: "Delete Virtual Network"
