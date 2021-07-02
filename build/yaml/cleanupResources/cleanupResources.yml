@@ -113,29 +113,29 @@ stages:
             azureSubscription: $(AZURESUBSCRIPTION)
             name: "$(INTERNALBOTRESOURCEGROUPNAME)-Python"
 
-# - stage: "Delete_App_Service_Plan_Python"
-#   displayName: "Delete App Service Plan (Python)"
-#   dependsOn:
-#     - Delete_Python_Resource_Group
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - task: AzureCLI@2
-#           displayName: "Delete App Service Plan (Python)"
-#           inputs:
-#             azureSubscription: $(AZURESUBSCRIPTION)
-#             scriptType: pscore
-#             scriptLocation: inlineScript
-#             inlineScript: |
-#               Write-Host "Looking for $(INTERNALAPPSERVICEPLANPYTHONNAME)..."
-#               $exists = az appservice plan show --name "$(INTERNALAPPSERVICEPLANPYTHONNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)-linux"
-#               if ($exists) {
-#                 Write-Host "Deleting $(INTERNALAPPSERVICEPLANPYTHONNAME)..."
-#                 az appservice plan delete --name "$(INTERNALAPPSERVICEPLANPYTHONNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)-linux" --yes
-#               } else {
-#                 Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANPYTHONNAME) resource found."
-#               }
+- stage: "Delete_App_Service_Plan_Python"
+  displayName: "Delete App Service Plan (Python)"
+  dependsOn:
+    - Delete_Python_Resource_Group
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - task: AzureCLI@2
+          displayName: "Delete App Service Plan (Python)"
+          inputs:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |
+              Write-Host "Looking for $(INTERNALAPPSERVICEPLANPYTHONNAME)..."
+              $exists = az appservice plan show --name "$(INTERNALAPPSERVICEPLANPYTHONNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)-linux"
+              if ($exists) {
+                Write-Host "Deleting $(INTERNALAPPSERVICEPLANPYTHONNAME)..."
+                az appservice plan delete --name "$(INTERNALAPPSERVICEPLANPYTHONNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)-linux" --yes
+              } else {
+                Write-Host "No pre-existing $(INTERNALAPPSERVICEPLANPYTHONNAME) resource found."
+              }
 
 # - stage: "Delete_App_Registrations"
 #   displayName: "Delete App Registrations"
