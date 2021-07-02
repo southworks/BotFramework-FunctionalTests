@@ -150,31 +150,31 @@ stages:
 #             keyVault: "$(INTERNALKEYVAULTNAME)"
 #             resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
 
-# - stage: "Delete_Virtual_Network"
-#   displayName: "Delete Virtual Network"
-#   dependsOn:
-#     - Delete_App_Service_Plan_DotNet
-#     - Delete_App_Service_Plan_JS
-#     - Delete_App_Service_Plan_Python
-#   jobs:
-#     - job: "Delete"
-#       displayName: "Delete steps"
-#       steps:
-#         - task: AzureCLI@2
-#           displayName: "Delete Virtual Network"
-#           inputs:
-#             azureSubscription: $(AZURESUBSCRIPTION)
-#             scriptType: pscore
-#             scriptLocation: inlineScript
-#             inlineScript: |
-#               Write-Host "Looking for $(INTERNALVIRTUALNETWORKNAME)..."
-#               $exists = az network vnet show --name "$(INTERNALVIRTUALNETWORKNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-#               if ($exists) {
-#                 Write-Host "Deleting $(INTERNALVIRTUALNETWORKNAME)..."
-#                 az network vnet delete --name "$(INTERNALVIRTUALNETWORKNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-#               } else {
-#                 Write-Host "No pre-existing $(INTERNALVIRTUALNETWORKNAME) resource found."
-#               }
+- stage: "Delete_Virtual_Network"
+  displayName: "Delete Virtual Network"
+  dependsOn:
+    - Delete_App_Service_Plan_DotNet
+    - Delete_App_Service_Plan_JS
+    - Delete_App_Service_Plan_Python
+  jobs:
+    - job: "Delete"
+      displayName: "Delete steps"
+      steps:
+        - task: AzureCLI@2
+          displayName: "Delete Virtual Network"
+          inputs:
+            azureSubscription: $(AZURESUBSCRIPTION)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |
+              Write-Host "Looking for $(INTERNALVIRTUALNETWORKNAME)..."
+              $exists = az network vnet show --name "$(INTERNALVIRTUALNETWORKNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+              if ($exists) {
+                Write-Host "Deleting $(INTERNALVIRTUALNETWORKNAME)..."
+                az network vnet delete --name "$(INTERNALVIRTUALNETWORKNAME)" --resource-group "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+              } else {
+                Write-Host "No pre-existing $(INTERNALVIRTUALNETWORKNAME) resource found."
+              }
 
 # - stage: "Delete_Key_Vault"
 #   displayName: "Delete Key Vault"
