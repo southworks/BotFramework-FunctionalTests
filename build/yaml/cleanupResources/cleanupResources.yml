@@ -280,7 +280,7 @@ stages:
   displayName: "Delete Resource Group (Windows)"
   dependsOn:
     - Delete_Virtual_Network
-    # - Delete_App_Registrations
+    - Delete_App_Registrations
     - Delete_Key_Vault
     - Delete_App_Insights
     - Delete_CosmosDB
