@@ -18,7 +18,7 @@ variables:
 
   ## Internal variables
   InternalAppInsightsName: "bffnappinsights$($env:RESOURCESUFFIX)"
-  IInternalAppServicePlanDotNetName: $(APPSERVICEPLANDOTNETNAME)$($env:RESOURCESUFFIX)
+  InternalAppServicePlanDotNetName: $(APPSERVICEPLANDOTNETNAME)$($env:RESOURCESUFFIX)
   InternalAppServicePlanJSName: $(APPSERVICEPLANJSNAME)$($env:RESOURCESUFFIX)
   InternalAppServicePlanPythonName: $(APPSERVICEPLANPYTHONNAME)$($env:RESOURCESUFFIX)
   InternalCosmosDBName: "bffnbotstatedb$($env:RESOURCESUFFIX)"
