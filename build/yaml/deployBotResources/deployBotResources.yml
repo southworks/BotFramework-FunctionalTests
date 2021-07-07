@@ -191,7 +191,7 @@ variables:
   InternalAppServicePlanDotNetName: $(APPSERVICEPLANDOTNETNAME)$(INTERNALRESOURCESUFFIX)
   InternalAppServicePlanJSName: $(APPSERVICEPLANJSNAME)$(INTERNALRESOURCESUFFIX)
   InternalAppServicePlanPythonName: $(APPSERVICEPLANPYTHONNAME)$(INTERNALRESOURCESUFFIX)
-  InternalContainerRegistryName: $[coalesce(variables['CONTAINERREGISTRYNAME'], 'bffncontainerregistry$(INTERNALRESOURCESUFFIX)')]
+  InternalContainerRegistryName: $[coalesce(variables['CONTAINERREGISTRYNAME'], 'bffncontainerregistryceci$(INTERNALRESOURCESUFFIX)')]
   InternalKeyVaultName: 'bffnbotkeyvault$(INTERNALRESOURCESUFFIX)'
   InternalResourceGroupName: $[coalesce(variables['RESOURCEGROUP'], 'bffnbots')]
   InternalResourceSuffix: $[coalesce(variables['RESOURCESUFFIX'], '')]

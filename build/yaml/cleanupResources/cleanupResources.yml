@@ -22,7 +22,7 @@ variables:
   InternalAppServicePlanJSName: $(APPSERVICEPLANJSNAME)$($env:RESOURCESUFFIX)
   InternalAppServicePlanPythonName: $(APPSERVICEPLANPYTHONNAME)$($env:RESOURCESUFFIX)
   InternalCosmosDBName: "bffnbotstatedb$($env:RESOURCESUFFIX)"
-  InternalContainerRegistryName: "bffncontainerregistry$($env:RESOURCESUFFIX)"
+  InternalContainerRegistryName: "bffncontainerregistryceci$($env:RESOURCESUFFIX)"
   InternalKeyVaultName: "bffnbotkeyvault$($env:RESOURCESUFFIX)"
   InternalBotResourceGroupName: $[coalesce(variables['DEPLOYRESOURCEGROUP'], 'bffnbots')]
   InternalSharedResourceGroupName: $[coalesce(variables['SHAREDRESOURCEGROUP'], 'bffnshared')]
