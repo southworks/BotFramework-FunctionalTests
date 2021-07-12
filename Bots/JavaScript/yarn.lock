@@ -794,7 +794,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"botbuilder-dialogs@npm:~4.13.3":
+"botbuilder-dialogs@npm:~4.13.6":
   version: 4.13.6
   resolution: "botbuilder-dialogs@npm:4.13.6"
   dependencies:
@@ -855,7 +855,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"botbuilder@npm:~4.13.3":
+"botbuilder@npm:~4.13.6":
   version: 4.13.6
   resolution: "botbuilder@npm:4.13.6"
   dependencies:
@@ -4996,8 +4996,8 @@ fsevents@~2.3.2:
   version: 0.0.0-use.local
   resolution: "simple-root-bot@workspace:Consumers/CodeFirst/SimpleHostBot"
   dependencies:
-    botbuilder: ~4.13.3
-    botbuilder-dialogs: ~4.13.3
+    botbuilder: ~4.13.6
+    botbuilder-dialogs: ~4.13.6
     dotenv: ~8.2.0
     nodemon: ~2.0.4
     restify: ~8.5.1
@@ -5758,8 +5758,8 @@ fsevents@~2.3.2:
   version: 0.0.0-use.local
   resolution: "waterfall-host-bot@workspace:Consumers/CodeFirst/WaterfallHostBot"
   dependencies:
-    botbuilder: ~4.13.3
-    botbuilder-dialogs: ~4.13.3
+    botbuilder: ~4.13.6
+    botbuilder-dialogs: ~4.13.6
     dotenv: ~8.2.0
     nodemon: ~2.0.4
     restify: ~8.5.1
@@ -5770,8 +5770,8 @@ fsevents@~2.3.2:
   version: 0.0.0-use.local
   resolution: "waterfall-skill-bot@workspace:Skills/CodeFirst/WaterfallSkillBot"
   dependencies:
-    botbuilder: ~4.13.3
-    botbuilder-dialogs: ~4.13.3
+    botbuilder: ~4.13.6
+    botbuilder-dialogs: ~4.13.6
     dotenv: ^8.2.0
     node-fetch: ^2.6.1
     nodemon: ~2.0.4
