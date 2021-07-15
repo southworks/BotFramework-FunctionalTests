@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
@@ -33,14 +34,22 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
             services.AddControllers()
                 .AddNewtonsoftJson();
 
-            var authenticationConfiguration = new AuthenticationConfiguration();
+            // var authenticationConfiguration = new AuthenticationConfiguration();
 
-            services.AddSingleton(authenticationConfiguration);
+            services.AddSingleton(new AuthenticationConfiguration());
 
-            // Register credential provider.
-            services.AddSingleton<ICredentialProvider, ConfigurationCredentialProvider>();
+            services.AddSingleton<SkillsConfiguration>();
 
             var configCredentialProvider = new ConfigurationCredentialProvider(Configuration);
+
+            // Register credential provider.
+            services.AddSingleton<ICredentialProvider>(configCredentialProvider);
+
+            services.AddSingleton(sp => new AuthenticationConfiguration
+            {
+                ClaimsValidator = new AllowedCallersClaimsValidator(
+                (from skill in sp.GetService<SkillsConfiguration>().Skills.Values select skill.AppId).ToList())
+            });
 
             services.AddSingleton(sp => BotFrameworkAuthenticationFactory.Create(
                     new ConfigurationChannelProvider(Configuration).ChannelService ?? string.Empty,
@@ -57,12 +66,9 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
                         configCredentialProvider.Password,
                         null,
                         null),
-                    authenticationConfiguration,
+                    sp.GetService<AuthenticationConfiguration>(),
                     null,
                     null));
-
-            // Register the skills configuration class.
-            services.AddSingleton<SkillsConfiguration>();
 
             // Register the Bot Framework Adapter with error handling enabled.
             // Note: some classes expect a BotAdapter and some expect a BotFrameworkHttpAdapter, so
