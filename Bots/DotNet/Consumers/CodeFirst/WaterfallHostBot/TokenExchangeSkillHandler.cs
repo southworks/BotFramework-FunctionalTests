@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core.Skills;
 using Microsoft.Bot.Builder.Skills;
+using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
@@ -33,7 +34,8 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
         private readonly string _botId;
         private readonly SkillConversationIdFactoryBase _conversationIdFactory;
         private readonly ILogger _logger;
-        private readonly IExtendedUserTokenProvider _tokenExchangeProvider;
+        
+        // private readonly IExtendedUserTokenProvider _tokenExchangeProvider;
         private readonly IConfiguration _configuration;
 
         public TokenExchangeSkillHandler(
@@ -50,11 +52,12 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
             : base(adapter, bot, conversationIdFactory, credentialProvider, authConfig, channelProvider, logger)
         {
             _adapter = adapter;
-            _tokenExchangeProvider = adapter as IExtendedUserTokenProvider;
-            if (_tokenExchangeProvider == null)
-            {
-                throw new ArgumentException($"{nameof(adapter)} does not support token exchange");
-            }
+            
+            //_tokenExchangeProvider = adapter as IExtendedUserTokenProvider;
+            //if (_tokenExchangeProvider == null)
+            //{
+            //    throw new ArgumentException($"{nameof(adapter)} does not support token exchange");
+            //}
 
             _configuration = configuration;
             _skillsConfig = skillsConfig;
@@ -117,17 +120,17 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
 
                             if (string.IsNullOrEmpty(connectionName))
                             {
-                                throw new ArgumentNullException("The connection name cannot be null.");
+                                throw new ArgumentException("The connection name cannot be null.");
                             }
 
                             // AAD token exchange
                             try
                             {
-                                var result = await _tokenExchangeProvider.ExchangeTokenAsync(
+                                var result = await ExchangeTokenAsync(
                                     context,
                                     connectionName,
                                     activity.Recipient.Id,
-                                    new TokenExchangeRequest() { Uri = oauthCard.TokenExchangeResource.Uri }).ConfigureAwait(false);
+                                    new TokenExchangeRequest { Uri = oauthCard.TokenExchangeResource.Uri }).ConfigureAwait(false);
 
                                 if (!string.IsNullOrEmpty(result?.Token))
                                 {
@@ -173,6 +176,74 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot
 
             // Check response status: true if success, false if failure
             return response.Status >= 200 && response.Status <= 299;
+        }
+
+        /// <summary>
+        /// Performs a token exchange operation such as for single sign-on.
+        /// </summary>
+        /// <param name="turnContext">Context for the current turn of conversation with the user.</param>
+        /// <param name="connectionName">Name of the auth connection to use.</param>
+        /// <param name="userId">The user id associated with the token..</param>
+        /// <param name="exchangeRequest">The exchange request details, either a token to exchange or a uri to exchange.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects
+        /// or threads to receive notice of cancellation.</param>
+        /// <returns>If the task completes, the exchanged token is returned.</returns>
+        private Task<TokenResponse> ExchangeTokenAsync(ITurnContext turnContext, string connectionName, string userId, TokenExchangeRequest exchangeRequest, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return ExchangeTokenAsync(turnContext, null, connectionName, userId, exchangeRequest, cancellationToken);
+        }
+
+        /// <summary>
+        /// Performs a token exchange operation such as for single sign-on.
+        /// </summary>
+        /// <param name="turnContext">Context for the current turn of conversation with the user.</param>
+        /// <param name="oAuthAppCredentials">AppCredentials for OAuth.</param>
+        /// <param name="connectionName">Name of the auth connection to use.</param>
+        /// <param name="userId">The user id associated with the token..</param>
+        /// <param name="exchangeRequest">The exchange request details, either a token to exchange or a uri to exchange.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects
+        /// or threads to receive notice of cancellation.</param>
+        /// <returns>If the task completes, the exchanged token is returned.</returns>
+        private async Task<TokenResponse> ExchangeTokenAsync(ITurnContext turnContext, AppCredentials oAuthAppCredentials, string connectionName, string userId, TokenExchangeRequest exchangeRequest, CancellationToken cancellationToken = default)
+        {
+            BotAssert.ContextNotNull(turnContext);
+
+            if (string.IsNullOrWhiteSpace(connectionName))
+            {
+                throw new ArgumentException($"{nameof(connectionName)} is null or empty", nameof(connectionName));
+            }
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentException($"{nameof(userId)} is null or empty", nameof(userId));
+            }
+
+            if (exchangeRequest == null)
+            {
+                throw new ArgumentException($"{nameof(exchangeRequest)} is null or empty", nameof(exchangeRequest));
+            }
+
+            if (string.IsNullOrWhiteSpace(exchangeRequest.Token) && string.IsNullOrWhiteSpace(exchangeRequest.Uri))
+            {
+                throw new ArgumentException("Either a Token or Uri property is required on the TokenExchangeRequest", nameof(exchangeRequest));
+            }
+
+            var client = new OAuthClient(oAuthAppCredentials);
+
+            //var client = await CreateOAuthApiClientAsync(turnContext, oAuthAppCredentials).ConfigureAwait(false);
+            var result = await client.ExchangeAsyncAsync(userId, connectionName, turnContext.Activity.ChannelId, exchangeRequest, cancellationToken).ConfigureAwait(false);
+
+            if (result is ErrorResponse errorResponse)
+            {
+                throw new InvalidOperationException($"Unable to exchange token: ({errorResponse?.Error?.Code}) {errorResponse?.Error?.Message}");
+            }
+
+            if (result is TokenResponse tokenResponse)
+            {
+                return tokenResponse;
+            }
+
+            throw new InvalidOperationException($"ExchangeAsyncAsync returned improper result: {result.GetType()}");
         }
     }
 }
