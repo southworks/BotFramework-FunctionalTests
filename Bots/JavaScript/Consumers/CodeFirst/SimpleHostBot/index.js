@@ -8,8 +8,6 @@ require('dotenv').config();
 
 // Import required packages
 const http = require('http');
-const https = require('https');
-const path = require('path');
 const restify = require('restify');
 
 // Import required bot services.
@@ -46,12 +44,12 @@ const { SetupDialog } = require('./dialogs/setupDialog');
 // Load skills configuration
 const skillsConfig = new SkillsConfiguration();
 
-const allowedCallers = Object.values(skillsConfig.skills).map(skill => skill.appId)
+const allowedCallers = Object.values(skillsConfig.skills).map(skill => skill.appId);
 
 const authConfig = new AuthenticationConfiguration(
   [],
-  new allowedCallersClaimsValidator(allowedCallers)
-)
+  allowedCallersClaimsValidator(allowedCallers)
+);
 
 const botFrameworkAuthentication = BotFrameworkAuthenticationFactory.create(
   '',
@@ -72,7 +70,7 @@ const botFrameworkAuthentication = BotFrameworkAuthenticationFactory.create(
   {
     agentSettings: {
       http: new http.Agent({
-        keepAlive: true,
+        keepAlive: true
       })
     }
   }
