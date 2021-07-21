@@ -16,15 +16,11 @@ class TokenExchangeSkillHandler extends SkillHandler {
     super(adapter, bot, conversationIdFactory, credentialProvider, authConfig, channelProvider);
     this.adapter = adapter;
     this.tokenExchangeProvider = adapter;
-
-    if (!this.tokenExchangeProvider) {
-      throw new Error(`${adapter} does not support token exchange`);
-    }
-
     this.skillsConfig = skillsConfig;
     this.skillClient = skillClient;
     this.conversationIdFactory = conversationIdFactory;
     this.logger = logger;
+    this.authConfig = authConfig;
     this.botId = process.env.MicrosoftAppId;
   }
 
@@ -74,10 +70,11 @@ class TokenExchangeSkillHandler extends SkillHandler {
 
           // AAD token exchange
           try {
-            const result = await this.tokenExchangeProvider.exchangeToken(
-              context,
-              connectionName,
+            const tokenClient = this.authConfig.createUserTokenClient(claimsIdentity)
+            const result = await tokenClient.exchangeToken(
               activity.recipient.id,
+              connectionName,
+              activity.channel.id,
               { uri: oauthCard.tokenExchangeResource.uri }
             );
 

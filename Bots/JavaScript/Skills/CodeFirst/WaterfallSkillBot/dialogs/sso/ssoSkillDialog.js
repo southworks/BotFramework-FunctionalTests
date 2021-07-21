@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 const { MessageFactory, InputHints } = require('botbuilder');
-const { ComponentDialog, ChoicePrompt, ChoiceFactory, DialogTurnStatus, WaterfallDialog } = require('botbuilder-dialogs');
+const { ComponentDialog, ChoicePrompt, ChoiceFactory, DialogTurnStatus, WaterfallDialog, OAuthPrompt } = require('botbuilder-dialogs');
 const { SsoSkillSignInDialog } = require('./ssoSkillSignInDialog');
 
 const ACTION_PROMPT = 'ActionStepPrompt';
@@ -49,7 +49,9 @@ class SsoSkillDialog extends ComponentDialog {
    */
   async getPromptChoices (stepContext) {
     const choices = [];
-    const token = await stepContext.context.adapter.getUserToken(stepContext.context, this.connectionName);
+    const oauthPrompt = new OAuthPrompt("test", { connectionName: this.connectionName })
+    const token = await oauthPrompt.getUserToken(stepContext.context);
+    //const token = await stepContext.context.adapter.getUserToken(stepContext.context, this.connectionName);
 
     if (!token) {
       choices.push('Login');
