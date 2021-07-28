@@ -1,0 +1,5 @@
+{
+  "$kind": "Microsoft.MultiLanguageRecognizer",
+  "id": "ORCHESTRATOR_WaterfallHostBotComposer",
+  "recognizers": {}
+}
