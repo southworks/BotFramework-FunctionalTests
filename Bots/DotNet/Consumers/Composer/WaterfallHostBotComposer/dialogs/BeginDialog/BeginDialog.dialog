@@ -306,7 +306,22 @@
                 "id": "mYIYdG"
               },
               "activityProcessed": true,
-              "dialog": "SsoDialog"
+              "dialog": "SsoDialog",
+              "options": "={selectedSkill:dialog.selectedSkill}"
+            },
+            {
+              "$kind": "Microsoft.SendActivity",
+              "$designer": {
+                "id": "hxrWDN"
+              },
+              "activity": "${SendActivity_hxrWDN()}"
+            },
+            {
+              "$kind": "Microsoft.RepeatDialog",
+              "$designer": {
+                "id": "tojAr8"
+              },
+              "activityProcessed": true
             }
           ]
         },

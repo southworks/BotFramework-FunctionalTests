@@ -39,7 +39,9 @@
               "defaultValueResponse": "",
               "choiceOptions": {
                 "includeNumbers": true,
-                "inlineOrMore": ", or "
+                "inlineOrMore": ", or ",
+                "inlineOr": " or ",
+                "inlineSeparator": ", "
               },
               "choices": [
                 "Login",
@@ -66,7 +68,8 @@
               "defaultValueResponse": "",
               "choiceOptions": {
                 "includeNumbers": true,
-                "inlineOrMore": ", or "
+                "inlineOrMore": ", or ",
+                "inlineOr": " or "
               },
               "choices": [
                 "Logout",
@@ -94,7 +97,9 @@
                     "id": "JfCLm2"
                   },
                   "activityProcessed": true,
-                  "dialog": "SsoSignInDialog"
+                  "dialog": "SsoSignInDialog",
+                  "options": "={selectedSkill:dialog.selectedSkill}",
+                  "resultProperty": "dialog.selectedAction"
                 }
               ]
             },
@@ -108,6 +113,13 @@
                   },
                   "userId": "=user.id",
                   "connectionName": "=settings.SsoConnectionName"
+                },
+                {
+                  "$kind": "Microsoft.DeleteProperty",
+                  "$designer": {
+                    "id": "m1AfRS"
+                  },
+                  "property": "user.token"
                 },
                 {
                   "$kind": "Microsoft.SendActivity",
@@ -149,18 +161,50 @@
               ]
             },
             {
-              "value": "Call skill (with sso)"
+              "value": "Call Skill (with SSO)",
+              "actions": [
+                {
+                  "$kind": "Microsoft.BeginSkill",
+                  "$designer": {
+                    "id": "igBBnQ"
+                  },
+                  "activityProcessed": true,
+                  "botId": "=settings.MicrosoftAppId",
+                  "skillHostEndpoint": "=settings.skillHostEndpoint",
+                  "connectionName": "=settings.connectionName",
+                  "allowInterruptions": false,
+                  "skillEndpoint": "${settings.skill[dialog.selectedSkill].endpointUrl}",
+                  "skillAppId": "${settings.skill[dialog.selectedSkill].msAppId}",
+                  "activity": "${BeginSkill_Activity_igBBnQ()}"
+                }
+              ]
             },
             {
-              "value": "Call skill (without sso)"
+              "value": "Call Skill (without SSO)",
+              "actions": [
+                {
+                  "$kind": "Microsoft.BeginSkill",
+                  "$designer": {
+                    "id": "LwActw"
+                  },
+                  "activityProcessed": true,
+                  "botId": "=settings.MicrosoftAppId",
+                  "skillHostEndpoint": "=settings.skillHostEndpoint",
+                  "connectionName": "=settings.connectionName",
+                  "allowInterruptions": false,
+                  "skillEndpoint": "${settings.skill[dialog.selectedSkill].endpointUrl}",
+                  "skillAppId": "${settings.skill[dialog.selectedSkill].msAppId}",
+                  "activity": "${BeginSkill_Activity_LwActw()}"
+                }
+              ]
             },
             {
               "value": "Back",
               "actions": [
                 {
-                  "$kind": "Microsoft.EndTurn",
+                  "$kind": "Microsoft.EndDialog",
                   "$designer": {
-                    "id": "jTNwgV"
+                    "id": "YjBa5g"
                   }
                 }
               ]
@@ -181,7 +225,8 @@
           "$designer": {
             "id": "IXOq1P"
           },
-          "activityProcessed": true
+          "activityProcessed": true,
+          "options": "={selectedSkill:dialog.selectedSkill}"
         }
       ]
     }

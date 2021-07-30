@@ -42,3 +42,14 @@
 
 # ChoiceInput_Prompt_IhCNP7_text()
 - What SSO action do you want to perform?
+# BeginSkill_Activity_igBBnQ()
+[Activity
+    Type = event
+    Token = ${user.token}
+    Name = Sso
+]
+# BeginSkill_Activity_LwActw()
+[Activity
+    Type = event
+    Name = Sso
+]

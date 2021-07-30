@@ -70,66 +70,79 @@
 
 # SendActivity_zuvud3_text()
 - Done with '${dialog.selectedSkill}'.
-# BeginSkill_Activity_JTQiNu()
-[Activity
-    Type = event
-    Name = ${dialog.skillActivity}
-]
-
-# BeginSkill_Activity_JTQiNu_text()
-- =dialog.skillActivity
 # BeginSkill_Activity_onxlr1()
 [Activity
-    Type = event
-    Name = ${dialog.skillActivity}
+    Text = Begin the Echo Skill
+    DeliveryMode = ${dialog.deliveryMode}
 ]
 # BeginSkill_Activity_7dUPiO()
 [Activity
     Type = event
     Name = ${dialog.skillActivity}
+    DeliveryMode = ${dialog.deliveryMode}
 ]
 # BeginSkill_Activity_3Re00E()
 [Activity
-    Type = event
-    Name = ${dialog.skillActivity}
+    Text = Begin the Echo Skill
+    DeliveryMode = ${dialog.deliveryMode}
 ]
 # BeginSkill_Activity_HGIdXR()
 [Activity
-    Type = event
-    Name = ${dialog.skillActivity}
+    Text = Begin the Echo Skill
+    DeliveryMode = ${dialog.deliveryMode}
 ]
 # BeginSkill_Activity_uVoFid()
 [Activity
-    Type = event
-    Name = ${dialog.skillActivity}
+    Text = Begin the Echo Skill
+    DeliveryMode = ${dialog.deliveryMode}
 ]
 # BeginSkill_Activity_uDdZsE()
 [Activity
-    Type = event
-    Name = ${dialog.skillActivity}
+    Text = Begin the Echo Skill
+    DeliveryMode = ${dialog.deliveryMode}
 ]
 # BeginSkill_Activity_Mo7LPU()
 [Activity
     Type = event
     Name = ${dialog.skillActivity}
+    DeliveryMode = ${dialog.deliveryMode}
 ]
 # BeginSkill_Activity_wANrC6()
 [Activity
     Type = event
     Name = ${dialog.skillActivity}
+    DeliveryMode = ${dialog.deliveryMode}
 ]
 # BeginSkill_Activity_CWZ93Z()
 [Activity
     Type = event
     Name = ${dialog.skillActivity}
+    DeliveryMode = ${dialog.deliveryMode}
 ]
 # BeginSkill_Activity_lXz5s4()
 [Activity
     Type = event
     Name = ${dialog.skillActivity}
+    DeliveryMode = ${dialog.deliveryMode}
 ]
 # BeginSkill_Activity_yEraYF()
 [Activity
     Type = event
     Name = ${dialog.skillActivity}
+    DeliveryMode = ${dialog.deliveryMode}
 ]
+# BeginSkill_Activity_JTQiNu()
+[Activity
+    Text = ${BeginSkill_Activity_JTQiNu_text()}
+    DeliveryMode = ${dialog.deliveryMode}
+]
+
+# BeginSkill_Activity_JTQiNu_text()
+- Begin the Echo Skill
+# SendActivity_hxrWDN()
+[Activity
+    Text = ${SendActivity_hxrWDN_text()}
+]
+
+# SendActivity_hxrWDN_text()
+- Done with '${dialog.selectedSkill}'.

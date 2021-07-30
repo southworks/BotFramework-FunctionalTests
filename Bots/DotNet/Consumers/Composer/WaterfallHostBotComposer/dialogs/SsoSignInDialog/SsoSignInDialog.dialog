@@ -59,7 +59,8 @@
           "$kind": "Microsoft.EndDialog",
           "$designer": {
             "id": "GrCorU"
-          }
+          },
+          "value": "dialog.selectedSkill"
         }
       ]
     }
