@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/BotFramework-Composer/main/Composer/packages/server/schemas/botproject.schema",
+  "name": "WaterfallHostBotComposer",
+  "skills": {
+    "echoSkillBotDotNet": {
+      "manifest": "skills/echoskillbotdotnet-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "echoSkillBotDotNet21": {
+      "manifest": "skills/echoskillbotdotnet21-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "echoSkillBotDotNetV3": {
+      "manifest": "skills/echoskillbotdotnetv3-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "echoSkillBotJs": {
+      "manifest": "skills/echoskillbotjs-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "echoSkillBotJsv3": {
+      "manifest": "skills/echoskillbotjsv3-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "echoSkillBotPython": {
+      "manifest": "skills/echoskillbotpython-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "teamsSkillBotDotNet": {
+      "manifest": "skills/teamsskillbotdotnet-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "teamsSkillBotJs": {
+      "manifest": "skills/teamsskillbotjs-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "teamsSkillBotPython": {
+      "manifest": "skills/teamsskillbotpython-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "waterfallSkillBotDotNet": {
+      "manifest": "skills/waterfallskillbotdotnet-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "waterfallSkillBotJs": {
+      "manifest": "skills/waterfallskillbotjs-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    },
+    "waterfallSkillBotPython": {
+      "manifest": "skills/waterfallskillbotpython-manifest.json",
+      "remote": true,
+      "endpointName": "default"
+    }
+  }
+}
