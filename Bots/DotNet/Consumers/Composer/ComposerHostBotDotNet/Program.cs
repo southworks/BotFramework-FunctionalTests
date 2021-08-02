@@ -4,7 +4,7 @@ using Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace WaterfallHostBotComposer
+namespace ComposerHostBotDotNet
 {
     public class Program
     {

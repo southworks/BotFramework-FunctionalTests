@@ -1,7 +1,7 @@
 {
   "$kind": "Microsoft.AdaptiveDialog",
   "$designer": {
-    "name": "WaterfallHostBotComposer",
+    "name": "ComposerHostBotDotNet",
     "description": "",
     "id": "A79tBe"
   },
@@ -68,7 +68,7 @@
       ]
     }
   ],
-  "generator": "WaterfallHostBotComposer.lg",
-  "id": "WaterfallHostBotComposer",
-  "recognizer": "WaterfallHostBotComposer.lu.qna"
+  "generator": "ComposerHostBotDotNet.lg",
+  "id": "ComposerHostBotDotNet",
+  "recognizer": "ComposerHostBotDotNet.lu.qna"
 }
