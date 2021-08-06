@@ -3,64 +3,52 @@
   "name": "WaterfallHostBotComposer",
   "skills": {
     "echoSkillBotDotNet": {
-      "manifest": "skills/echoskillbotdotnet-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "echoSkillBotDotNet21": {
-      "manifest": "skills/echoskillbotdotnet21-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "echoSkillBotDotNetV3": {
-      "manifest": "skills/echoskillbotdotnetv3-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "echoSkillBotJs": {
-      "manifest": "skills/echoskillbotjs-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "echoSkillBotJsv3": {
-      "manifest": "skills/echoskillbotjsv3-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "echoSkillBotPython": {
-      "manifest": "skills/echoskillbotpython-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "teamsSkillBotDotNet": {
-      "manifest": "skills/teamsskillbotdotnet-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "teamsSkillBotJs": {
-      "manifest": "skills/teamsskillbotjs-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "teamsSkillBotPython": {
-      "manifest": "skills/teamsskillbotpython-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "waterfallSkillBotDotNet": {
-      "manifest": "skills/waterfallskillbotdotnet-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "waterfallSkillBotJs": {
-      "manifest": "skills/waterfallskillbotjs-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     },
     "waterfallSkillBotPython": {
-      "manifest": "skills/waterfallskillbotpython-manifest.json",
-      "remote": true,
-      "endpointName": "default"
+      "manifest": "",
+      "remote": true
     }
   }
 }
