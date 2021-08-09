@@ -27,9 +27,7 @@
           "alwaysPrompt": false,
           "allowInterruptions": false,
           "prompt": "${ChoiceInput_Prompt_d6uYrW()}",
-          "unrecognizedPrompt": "",
-          "invalidPrompt": "",
-          "defaultValueResponse": "",
+          "unrecognizedPrompt": "${ChoiceInput_UnrecognizedPrompt_d6uYrW()}",
           "choiceOptions": {
             "includeNumbers": true,
             "inlineOrMore": ", or ",
@@ -41,7 +39,13 @@
             "normal",
             "expectReplies"
           ],
-          "property": "dialog.deliveryMode"
+          "property": "dialog.deliveryMode",
+          "recognizerOptions": {
+            "recognizeOrdinals": true,
+            "recognizeNumbers": true
+          },
+          "validations": [],
+          "defaultValue": "normal"
         },
         {
           "$kind": "Microsoft.ChoiceInput",
@@ -54,9 +58,8 @@
           "maxTurnCount": 3,
           "alwaysPrompt": false,
           "allowInterruptions": false,
-          "unrecognizedPrompt": "",
+          "unrecognizedPrompt": "${ChoiceInput_UnrecognizedPrompt_bGBaUQ()}",
           "invalidPrompt": "",
-          "defaultValueResponse": "",
           "prompt": "${ChoiceInput_Prompt_bGBaUQ()}",
           "choiceOptions": {
             "includeNumbers": true,
@@ -69,7 +72,10 @@
             "Waterfall",
             "Teams"
           ],
-          "property": "dialog.skillGroup"
+          "property": "dialog.skillGroup",
+          "recognizerOptions": {
+            "recognizeOrdinals": true
+          }
         },
         {
           "$kind": "Microsoft.SwitchCondition",
@@ -90,10 +96,8 @@
                   "maxTurnCount": 3,
                   "alwaysPrompt": false,
                   "allowInterruptions": false,
-                  "unrecognizedPrompt": "",
+                  "unrecognizedPrompt": "${ChoiceInput_UnrecognizedPrompt_bz0HFw()}",
                   "invalidPrompt": "",
-                  "defaultValueResponse": "",
-                  "prompt": "${ChoiceInput_Prompt_bz0HFw()}",
                   "choiceOptions": {
                     "includeNumbers": true,
                     "inlineOrMore": ", or ",
@@ -110,8 +114,10 @@
                   ],
                   "property": "dialog.selectedSkill",
                   "recognizerOptions": {
-                    "recognizeOrdinals": true
-                  }
+                    "recognizeOrdinals": true,
+                    "recognizeNumbers": true
+                  },
+                  "prompt": "${ChoiceInput_Prompt_bz0HFw()}"
                 },
                 {
                   "$kind": "Microsoft.IfCondition",
@@ -145,17 +151,15 @@
                 {
                   "$kind": "Microsoft.ChoiceInput",
                   "$designer": {
-                    "id": "r1dzSq"
+                    "id": "bz0HFw"
                   },
                   "defaultLocale": "en-us",
                   "disabled": false,
                   "maxTurnCount": 3,
                   "alwaysPrompt": false,
                   "allowInterruptions": false,
-                  "unrecognizedPrompt": "",
+                  "unrecognizedPrompt": "${ChoiceInput_UnrecognizedPrompt_bz0HFw()}",
                   "invalidPrompt": "",
-                  "defaultValueResponse": "",
-                  "prompt": "${ChoiceInput_Prompt_r1dzSq()}",
                   "choiceOptions": {
                     "includeNumbers": true,
                     "inlineOrMore": ", or ",
@@ -167,7 +171,12 @@
                     "WaterfallSkillBotJS",
                     "WaterfallSkillBotPython"
                   ],
-                  "property": "dialog.selectedSkill"
+                  "property": "dialog.selectedSkill",
+                  "recognizerOptions": {
+                    "recognizeOrdinals": true,
+                    "recognizeNumbers": true
+                  },
+                  "prompt": "${ChoiceInput_Prompt_bz0HFw()}"
                 },
                 {
                   "$kind": "Microsoft.SetProperty",
@@ -226,7 +235,7 @@
                   "alwaysPrompt": false,
                   "allowInterruptions": false,
                   "prompt": "${ChoiceInput_Prompt_s6M1vB()}",
-                  "unrecognizedPrompt": "",
+                  "unrecognizedPrompt": "${ChoiceInput_UnrecognizedPrompt_s6M1vB()}",
                   "invalidPrompt": "",
                   "choiceOptions": {
                     "includeNumbers": true,
@@ -241,7 +250,8 @@
                   ],
                   "property": "dialog.selectedSkill",
                   "recognizerOptions": {
-                    "recognizeOrdinals": true
+                    "recognizeOrdinals": true,
+                    "recognizeNumbers": true
                   }
                 },
                 {
@@ -324,6 +334,14 @@
               "activityProcessed": true
             }
           ]
+        },
+        {
+          "$kind": "Microsoft.SetProperty",
+          "$designer": {
+            "id": "AiUc4h"
+          },
+          "property": "user.activeSkillProperty",
+          "value": "dialog.selectedSkill"
         },
         {
           "$kind": "Microsoft.SwitchCondition",
@@ -577,6 +595,64 @@
           "activityProcessed": true
         }
       ]
+    },
+    {
+      "$kind": "Microsoft.OnMessageActivity",
+      "$designer": {
+        "id": "yC1EwY",
+        "name": "Message received (Message received activity)"
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.SwitchCondition",
+          "$designer": {
+            "id": "MEYmPs"
+          },
+          "condition": "turn.activity.text",
+          "cases": [
+            {
+              "value": "abort",
+              "actions": [
+                {
+                  "$kind": "Microsoft.SendActivity",
+                  "$designer": {
+                    "id": "eOevvg"
+                  },
+                  "activity": "${SendActivity_eOevvg()}"
+                },
+                {
+                  "$kind": "Microsoft.DeleteProperty",
+                  "$designer": {
+                    "id": "QNqnCh"
+                  },
+                  "property": "user.activeSkillProperty"
+                },
+                {
+                  "$kind": "Microsoft.RepeatDialog",
+                  "$designer": {
+                    "id": "73BYhF"
+                  },
+                  "activityProcessed": true
+                }
+              ]
+            },
+            {
+              "value": "tangent",
+              "actions": [
+                {
+                  "$kind": "Microsoft.BeginDialog",
+                  "$designer": {
+                    "id": "HXNmfM"
+                  },
+                  "activityProcessed": true,
+                  "dialog": "TangentDialog"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "condition": "=user.activeSkillProperty != null && turn.activity.type == \"message\" && (turn.activity.text == \"abort\" || turn.activity.text == \"tangent\")"
     }
   ],
   "generator": "BeginDialog.lg",

@@ -14,13 +14,6 @@
 
 # ChoiceInput_Prompt_bGBaUQ_text()
 - What group of skills would you like to use?
-# ChoiceInput_Prompt_bz0HFw()
-[Activity
-    Text = ${ChoiceInput_Prompt_bz0HFw_text()}
-]
-
-# ChoiceInput_Prompt_bz0HFw_text()
-- What skill would you like to call?
 # ChoiceInput_Prompt_r1dzSq()
 [Activity
     Text = ${ChoiceInput_Prompt_r1dzSq_text()}
@@ -146,3 +139,46 @@
 
 # SendActivity_hxrWDN_text()
 - Done with '${dialog.selectedSkill}'.
+# ChoiceInput_UnrecognizedPrompt_d6uYrW()
+[Activity
+    Text = ${ChoiceInput_UnrecognizedPrompt_d6uYrW_text()}
+]
+
+# ChoiceInput_UnrecognizedPrompt_d6uYrW_text()
+- That was not a valid choice, please select a valid delivery mode.
+# ChoiceInput_UnrecognizedPrompt_bGBaUQ()
+[Activity
+    Text = ${ChoiceInput_UnrecognizedPrompt_bGBaUQ_text()}
+]
+
+# ChoiceInput_UnrecognizedPrompt_bGBaUQ_text()
+- That was not a valid choice, please select a valid skill group.
+# ChoiceInput_Prompt_bz0HFw()
+[Activity
+    Text = ${ChoiceInput_Prompt_bz0HFw_text()}
+]
+
+# ChoiceInput_Prompt_bz0HFw_text()
+- What skill would you like to call?
+# ChoiceInput_UnrecognizedPrompt_bz0HFw()
+[Activity
+    Text = ${ChoiceInput_UnrecognizedPrompt_bz0HFw_text()}
+]
+
+# ChoiceInput_UnrecognizedPrompt_bz0HFw_text()
+- That was not a valid choice, please select a valid skill.
+- That was not a valid choice, please select a valid skill.
+# ChoiceInput_UnrecognizedPrompt_s6M1vB()
+[Activity
+    Text = ${ChoiceInput_UnrecognizedPrompt_s6M1vB_text()}
+]
+
+# ChoiceInput_UnrecognizedPrompt_s6M1vB_text()
+- That was not a valid choice, please select a valid skill.
+# SendActivity_eOevvg()
+[Activity
+    Text = ${SendActivity_eOevvg_text()}
+]
+
+# SendActivity_eOevvg_text()
+- Canceled!

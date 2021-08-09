@@ -53,3 +53,17 @@
     Type = event
     Name = Sso
 ]
+# ChoiceInput_UnrecognizedPrompt_GGvInh()
+[Activity
+    Text = ${ChoiceInput_UnrecognizedPrompt_GGvInh_text()}
+]
+
+# ChoiceInput_UnrecognizedPrompt_GGvInh_text()
+- That was not a valid choice, please select a valid choice.
+# ChoiceInput_UnrecognizedPrompt_IhCNP7()
+[Activity
+    Text = ${ChoiceInput_UnrecognizedPrompt_IhCNP7_text()}
+]
+
+# ChoiceInput_UnrecognizedPrompt_IhCNP7_text()
+- That was not a valid choice, please select a valid choice.
