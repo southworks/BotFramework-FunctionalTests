@@ -66,57 +66,6 @@
           "activity": "${SendActivity_DidNotUnderstand()}"
         }
       ]
-    },
-    {
-      "$kind": "Microsoft.OnActivity",
-      "$designer": {
-        "id": "Gh7dIY",
-        "name": "Activities (Activity received)"
-      },
-      "actions": [
-        {
-          "$kind": "Microsoft.SendActivity",
-          "$designer": {
-            "id": "YiDgtz"
-          },
-          "activity": "${SendActivity_YiDgtz()}"
-        },
-        {
-          "$kind": "Microsoft.IfCondition",
-          "$designer": {
-            "id": "yqMqOB"
-          },
-          "condition": "=user.activeSkillProperty != null && turn.activity.type == \"message\" && turn.activity.text != \"\" && turn.activity.text == \"abort\"",
-          "actions": [
-            {
-              "$kind": "Microsoft.SendActivity",
-              "$designer": {
-                "id": "lVrsNr"
-              },
-              "activity": "${SendActivity_lVrsNr()}"
-            },
-            {
-              "$kind": "Microsoft.CancelAllDialogs",
-              "$designer": {
-                "id": "Nfrsvj"
-              },
-              "activityProcessed": true,
-              "eventName": "onContinueDialogAsync"
-            },
-            {
-              "$kind": "Microsoft.ReplaceDialog",
-              "$designer": {
-                "id": "Iis0NF"
-              },
-              "activityProcessed": true,
-              "dialog": "BeginDialog"
-            }
-          ]
-        }
-      ],
-      "type": "MessageReceived",
-      "priority": 0,
-      "condition": "=turn.activity.text != \"\""
     }
   ],
   "generator": "ComposerHostBotDotNet.lg",

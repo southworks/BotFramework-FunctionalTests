@@ -44,17 +44,3 @@
     }
   ]
 }```
-# SendActivity_lVrsNr()
-[Activity
-    Text = ${SendActivity_lVrsNr_text()}
-]
-
-# SendActivity_lVrsNr_text()
-- Abort!!!!
-# SendActivity_YiDgtz()
-[Activity
-    Text = ${SendActivity_YiDgtz_text()}
-]
-
-# SendActivity_YiDgtz_text()
-- activity received!

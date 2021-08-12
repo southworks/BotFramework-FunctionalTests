@@ -74,7 +74,8 @@
           ],
           "property": "dialog.skillGroup",
           "recognizerOptions": {
-            "recognizeOrdinals": true
+            "recognizeOrdinals": true,
+            "recognizeNumbers": true
           }
         },
         {
@@ -275,7 +276,6 @@
                   "prompt": "${ChoiceInput_Prompt_IU6NEf()}",
                   "unrecognizedPrompt": "",
                   "invalidPrompt": "",
-                  "defaultValueResponse": "",
                   "choiceOptions": {
                     "includeNumbers": true,
                     "inlineOrMore": ", or ",
@@ -296,7 +296,10 @@
                     "Delete",
                     "Update"
                   ],
-                  "property": "dialog.skillActivity"
+                  "property": "dialog.skillActivity",
+                  "recognizerOptions": {
+                    "recognizeOrdinals": true
+                  }
                 }
               ]
             }

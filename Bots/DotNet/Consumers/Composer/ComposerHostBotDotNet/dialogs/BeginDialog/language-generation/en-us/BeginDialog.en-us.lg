@@ -167,7 +167,6 @@
 
 # ChoiceInput_UnrecognizedPrompt_bz0HFw_text()
 - That was not a valid choice, please select a valid skill.
-- That was not a valid choice, please select a valid skill.
 # ChoiceInput_UnrecognizedPrompt_s6M1vB()
 [Activity
     Text = ${ChoiceInput_UnrecognizedPrompt_s6M1vB_text()}
