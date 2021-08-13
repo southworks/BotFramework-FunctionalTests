@@ -430,6 +430,12 @@ steps:
             configType    = $types.Composer
           }
           @{
+            key           = "ComposerHostBotDotNet"
+            botName       = "bffncomposerhostbotdotnet"
+            resourceGroup = $groups.DotNet
+            configType    = $types.Composer
+          }
+          @{
             key           = "WaterfallHostBotDotNet"
             botName       = "bffnwaterfallhostbotdotnet"
             resourceGroup = $groups.DotNet
@@ -549,6 +555,7 @@ steps:
           @{ 
             name      = "SingleTurn"; 
             consumers = @(
+              "ComposerHostBotDotNet",
               "SimpleHostBotComposerDotNet",
               "SimpleHostBotDotNet",
               "SimpleHostBotDotNet21",
