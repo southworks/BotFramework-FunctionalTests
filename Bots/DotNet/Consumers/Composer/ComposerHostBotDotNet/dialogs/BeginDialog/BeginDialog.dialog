@@ -17,35 +17,84 @@
       },
       "actions": [
         {
-          "$kind": "Microsoft.ChoiceInput",
+          "$kind": "Microsoft.IfCondition",
           "$designer": {
-            "id": "d6uYrW"
+            "id": "tOIrGL"
           },
-          "defaultLocale": "en-us",
-          "disabled": false,
-          "maxTurnCount": 3,
-          "alwaysPrompt": false,
-          "allowInterruptions": false,
-          "prompt": "${ChoiceInput_Prompt_d6uYrW()}",
-          "unrecognizedPrompt": "${ChoiceInput_UnrecognizedPrompt_d6uYrW()}",
-          "choiceOptions": {
-            "includeNumbers": true,
-            "inlineOrMore": ", or ",
-            "inlineOr": " or ",
-            "inlineSeparator": ", "
-          },
-          "style": "suggestedAction",
-          "choices": [
-            "normal",
-            "expectReplies"
+          "actions": [
+            {
+              "$kind": "Microsoft.ChoiceInput",
+              "$designer": {
+                "id": "UYSxl6"
+              },
+              "defaultLocale": "en-us",
+              "disabled": false,
+              "maxTurnCount": 3,
+              "alwaysPrompt": false,
+              "allowInterruptions": false,
+              "prompt": "${ChoiceInput_Prompt_UYSxl6()}",
+              "unrecognizedPrompt": "${ChoiceInput_UnrecognizedPrompt_UYSxl6()}",
+              "choiceOptions": {
+                "includeNumbers": true,
+                "inlineOrMore": ", or ",
+                "inlineOr": " or ",
+                "inlineSeparator": ", "
+              },
+              "style": "suggestedAction",
+              "choices": [
+                "normal",
+                "expectReplies"
+              ],
+              "property": "dialog.deliveryMode",
+              "recognizerOptions": {
+                "recognizeOrdinals": true,
+                "recognizeNumbers": true
+              },
+              "validations": [],
+              "defaultValue": "normal"
+            }
           ],
-          "property": "dialog.deliveryMode",
-          "recognizerOptions": {
-            "recognizeOrdinals": true,
-            "recognizeNumbers": true
-          },
-          "validations": [],
-          "defaultValue": "normal"
+          "elseActions": [
+            {
+              "$kind": "Microsoft.ChoiceInput",
+              "$designer": {
+                "id": "vv4fal"
+              },
+              "defaultLocale": "en-us",
+              "disabled": false,
+              "maxTurnCount": 3,
+              "alwaysPrompt": false,
+              "allowInterruptions": false,
+              "prompt": "${ChoiceInput_Prompt_vv4fal()}",
+              "unrecognizedPrompt": "${ChoiceInput_UnrecognizedPrompt_vv4fal()}",
+              "choiceOptions": {
+                "includeNumbers": true,
+                "inlineOrMore": ", or ",
+                "inlineOr": " or ",
+                "inlineSeparator": ", "
+              },
+              "style": "suggestedAction",
+              "choices": [
+                "normal",
+                "expectReplies"
+              ],
+              "property": "dialog.deliveryMode",
+              "recognizerOptions": {
+                "recognizeOrdinals": true,
+                "recognizeNumbers": true
+              },
+              "validations": [],
+              "defaultValue": "normal"
+            },
+            {
+              "$kind": "Microsoft.DeleteProperty",
+              "$designer": {
+                "id": "hniAZE"
+              },
+              "property": "dialog.initialMessage"
+            }
+          ],
+          "condition": "=empty(dialog.initialMessage)"
         },
         {
           "$kind": "Microsoft.ChoiceInput",
@@ -584,18 +633,14 @@
           ]
         },
         {
-          "$kind": "Microsoft.SendActivity",
-          "$designer": {
-            "id": "zuvud3"
-          },
-          "activity": "${SendActivity_zuvud3()}"
-        },
-        {
           "$kind": "Microsoft.RepeatDialog",
           "$designer": {
             "id": "Y327G2"
           },
-          "activityProcessed": true
+          "activityProcessed": true,
+          "options": {
+            "initialMessage": "Done with \"${dialog.selectedSkill}\". \n\n What delivery mode would you like to use?"
+          }
         }
       ]
     },
@@ -617,13 +662,6 @@
               "value": "abort",
               "actions": [
                 {
-                  "$kind": "Microsoft.SendActivity",
-                  "$designer": {
-                    "id": "eOevvg"
-                  },
-                  "activity": "${SendActivity_eOevvg()}"
-                },
-                {
                   "$kind": "Microsoft.DeleteProperty",
                   "$designer": {
                     "id": "QNqnCh"
@@ -631,11 +669,22 @@
                   "property": "user.activeSkillProperty"
                 },
                 {
+                  "$kind": "Microsoft.SetProperty",
+                  "$designer": {
+                    "id": "Q57OQX"
+                  },
+                  "property": "user.welcomeMessage",
+                  "value": true
+                },
+                {
                   "$kind": "Microsoft.RepeatDialog",
                   "$designer": {
                     "id": "73BYhF"
                   },
-                  "activityProcessed": true
+                  "activityProcessed": true,
+                  "options": {
+                    "initialMessage": "Canceled! \n\n What delivery mode would you like to use?"
+                  }
                 }
               ]
             },

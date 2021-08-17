@@ -10,6 +10,9 @@
 # SendActivity_859266()
 [Activity
     Attachments = ${json(SendActivity_859266_attachment_6dK9Hy())}
+    AttachmentLayout = list
+    InputHint = acceptingInput
+    Speak = Welcome to the waterfall host bot
 ]
 
 # SendActivity_859266_attachment_6dK9Hy()
