@@ -555,7 +555,6 @@ steps:
           @{ 
             name      = "SingleTurn"; 
             consumers = @(
-              "ComposerHostBotDotNet",
               "SimpleHostBotComposerDotNet",
               "SimpleHostBotDotNet",
               "SimpleHostBotDotNet21",
@@ -575,6 +574,7 @@ steps:
           @{ 
             name      = "Waterfall"; 
             consumers = @(
+              "ComposerHostBotDotNet",
               "WaterfallHostBotDotNet",
               "WaterfallHostBotJS",
               "WaterfallHostBotPython"

@@ -1,15 +1,10 @@
 [import](common.lg)
 
-# ChoiceInput_Prompt_d6uYrW()
-[Activity
-    Text = ${ChoiceInput_Prompt_d6uYrW_text()}
-]
-
-# ChoiceInput_Prompt_d6uYrW_text()
-- What delivery mode would you like to use?
 # ChoiceInput_Prompt_bGBaUQ()
 [Activity
     Text = ${ChoiceInput_Prompt_bGBaUQ_text()}
+    Speak = ${ChoiceInput_Prompt_bGBaUQ_text()}
+    InputHint = expectingInput
 ]
 
 # ChoiceInput_Prompt_bGBaUQ_text()
@@ -24,6 +19,8 @@
 # ChoiceInput_Prompt_s6M1vB()
 [Activity
     Text = ${ChoiceInput_Prompt_s6M1vB_text()}
+    Speak = ${ChoiceInput_Prompt_bz0HFw_text()}
+    InputHint = expectingInput
 ]
 
 # ChoiceInput_Prompt_s6M1vB_text()
@@ -45,6 +42,8 @@
 # ChoiceInput_Prompt_6CZhXf()
 [Activity
     Text = ${ChoiceInput_Prompt_6CZhXf_text()}
+    Speak = ${ChoiceInput_Prompt_6CZhXf_text()}
+    InputHint = expectingInput
 ]
 
 # ChoiceInput_Prompt_6CZhXf_text()
@@ -52,17 +51,12 @@
 # ChoiceInput_Prompt_IU6NEf()
 [Activity
     Text = ${ChoiceInput_Prompt_IU6NEf_text()}
+    Speak = ${ChoiceInput_Prompt_6CZhXf_text()}
+    InputHint = expectingInput
 ]
 
 # ChoiceInput_Prompt_IU6NEf_text()
 - Select an action to send to **${dialog.selectedSkill}**.
-# SendActivity_zuvud3()
-[Activity
-    Text = ${SendActivity_zuvud3_text()}
-]
-
-# SendActivity_zuvud3_text()
-- Done with '${dialog.selectedSkill}'.
 # BeginSkill_Activity_onxlr1()
 [Activity
     Text = Begin the Echo Skill
@@ -132,20 +126,6 @@
 
 # BeginSkill_Activity_JTQiNu_text()
 - Begin the Echo Skill
-# SendActivity_hxrWDN()
-[Activity
-    Text = ${SendActivity_hxrWDN_text()}
-]
-
-# SendActivity_hxrWDN_text()
-- Done with '${dialog.selectedSkill}'.
-# ChoiceInput_UnrecognizedPrompt_d6uYrW()
-[Activity
-    Text = ${ChoiceInput_UnrecognizedPrompt_d6uYrW_text()}
-]
-
-# ChoiceInput_UnrecognizedPrompt_d6uYrW_text()
-- That was not a valid choice, please select a valid delivery mode.
 # ChoiceInput_UnrecognizedPrompt_bGBaUQ()
 [Activity
     Text = ${ChoiceInput_UnrecognizedPrompt_bGBaUQ_text()}
@@ -156,6 +136,8 @@
 # ChoiceInput_Prompt_bz0HFw()
 [Activity
     Text = ${ChoiceInput_Prompt_bz0HFw_text()}
+    Speak = ${ChoiceInput_Prompt_bz0HFw_text()}
+    InputHint = expectingInput
 ]
 
 # ChoiceInput_Prompt_bz0HFw_text()
@@ -174,10 +156,42 @@
 
 # ChoiceInput_UnrecognizedPrompt_s6M1vB_text()
 - That was not a valid choice, please select a valid skill.
-# SendActivity_eOevvg()
+# ChoiceInput_Prompt_UYSxl6_text()
+- What delivery mode would you like to use?
+# ChoiceInput_Prompt_UYSxl6()
 [Activity
-    Text = ${SendActivity_eOevvg_text()}
+    Text = ${ChoiceInput_Prompt_UYSxl6_text()}
+    Speak = ${ChoiceInput_Prompt_UYSxl6_text()}
+    InputHint = expectingInput
 ]
 
-# SendActivity_eOevvg_text()
-- Canceled!
+# ChoiceInput_UnrecognizedPrompt_UYSxl6_text()
+- That was not a valid choice, please select a valid delivery mode.
+# ChoiceInput_UnrecognizedPrompt_UYSxl6()
+[Activity
+    Text = ${ChoiceInput_UnrecognizedPrompt_UYSxl6_text()}
+]
+
+# ChoiceInput_Prompt_vv4fal()
+[Activity
+    Text = ${dialog.initialMessage}
+    InputHint = expectingInput
+]
+
+# ChoiceInput_UnrecognizedPrompt_vv4fal_text()
+- That was not a valid choice, please select a valid delivery mode.
+# ChoiceInput_UnrecognizedPrompt_vv4fal()
+[Activity
+    Text = ${ChoiceInput_UnrecognizedPrompt_vv4fal_text()}
+]
+
+# trim()
+- ```
+```
+# SendActivity_hxrWDN()
+[Activity
+    Text = ${SendActivity_hxrWDN_text()}
+]
+
+# SendActivity_hxrWDN_text()
+- Done with '${dialog.selectedSkill}'.
