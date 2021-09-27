@@ -51,8 +51,8 @@
       "remote": true
     },
     "composerSkillBotDotNet": {
-      "workspace": "",
-      "remote": false
+      "manifest": "",
+      "remote": true
     }
   }
 }
