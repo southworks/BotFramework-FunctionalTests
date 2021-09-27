@@ -126,6 +126,21 @@
 
 # BeginSkill_Activity_JTQiNu_text()
 - Begin the Echo Skill
+
+# BeginSkill_Activity_H67YQK()
+[Activity
+    Type = event
+    Name = ${dialog.skillActivity}
+    DeliveryMode = ${dialog.deliveryMode}
+]
+
+# BeginSkill_Activity_H67YQK_text()
+- ```[Activity
+    Type = event
+    Name = ${dialog.skillActivity}
+    DeliveryMode = ${dialog.deliveryMode}
+]```
+
 # ChoiceInput_UnrecognizedPrompt_bGBaUQ()
 [Activity
     Text = ${ChoiceInput_UnrecognizedPrompt_bGBaUQ_text()}

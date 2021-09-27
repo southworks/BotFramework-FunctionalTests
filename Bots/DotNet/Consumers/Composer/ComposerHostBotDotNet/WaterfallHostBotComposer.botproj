@@ -49,6 +49,10 @@
     "waterfallSkillBotPython": {
       "manifest": "",
       "remote": true
+    },
+    "composerSkillBotDotNet": {
+      "workspace": "",
+      "remote": false
     }
   }
 }

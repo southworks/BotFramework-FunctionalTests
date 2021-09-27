@@ -219,7 +219,8 @@
                   "choices": [
                     "WaterfallSkillBotDotNet",
                     "WaterfallSkillBotJS",
-                    "WaterfallSkillBotPython"
+                    "WaterfallSkillBotPython",
+                    "ComposerSkillBotDotNet"
                   ],
                   "property": "dialog.selectedSkill",
                   "recognizerOptions": {
@@ -627,6 +628,25 @@
                   "skillEndpoint": "=settings.skill['waterfallSkillBotPython'].endpointUrl",
                   "skillAppId": "=settings.skill['waterfallSkillBotPython'].msAppId",
                   "activity": "${BeginSkill_Activity_yEraYF()}"
+                }
+              ]
+            },
+            {
+              "value": "ComposerSkillBotDotNet",
+              "actions": [
+                {
+                  "$kind": "Microsoft.BeginSkill",
+                  "$designer": {
+                    "id": "H67YQK"
+                  },
+                  "activityProcessed": true,
+                  "botId": "=settings.MicrosoftAppId",
+                  "skillHostEndpoint": "=settings.skillHostEndpoint",
+                  "connectionName": "=settings.connectionName",
+                  "allowInterruptions": true,
+                  "skillEndpoint": "=settings.skill['composerSkillBotDotNet'].endpointUrl",
+                  "skillAppId": "=settings.skill['composerSkillBotDotNet'].msAppId",
+                  "activity": "${BeginSkill_Activity_H67YQK()}"
                 }
               ]
             }
