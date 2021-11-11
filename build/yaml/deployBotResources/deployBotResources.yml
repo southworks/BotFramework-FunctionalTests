@@ -131,6 +131,7 @@ variables:
   # BotPricingTier: (optional) Pricing Tier for the bots, default F0.
   # ResourceGroup: (optional) Name of the Resource Group where the bots will be deployed.
   # ResourceSuffix: (optional) Suffix to add to the resources' name to avoid collitions.
+  # SharedResourceGroup: (optional) Name of the Shared Resource Group.
 
   ## Bots Configuration (Define these variables in Azure)
   # BffnEchoSkillBotComposerDotNetAppId: (optional) App Id for BffnEchoSkillBotComposerDotNet bot.
@@ -181,6 +182,7 @@ variables:
   InternalKeyVaultName: 'bffnbotkeyvault$(INTERNALRESOURCESUFFIX)'
   InternalResourceGroupName: $[coalesce(variables['RESOURCEGROUP'], 'bffnbots')]
   InternalResourceSuffix: $[coalesce(variables['RESOURCESUFFIX'], '')]
+  InternalSharedResourceGroupName: $[coalesce(variables['SHAREDRESOURCEGROUP'], 'BFFN-Shared')]
 
 
 stages:
@@ -206,7 +208,7 @@ stages:
     parameters:
       appInsight: "$(INTERNALAPPINSIGHTSNAME)"
       appServicePlan: "$(INTERNALAPPSERVICEPLANDOTNETNAME)"
-      appServicePlanRG: "$(INTERNALAPPSERVICEPLANWINDOWSRESOURCEGROUP)"
+      appServicePlanRG: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
       azureSubscription: "$(AZURESUBSCRIPTION)"
       botPricingTier: $env:BOTPRICINGTIER
       connectionName: $env:CONNECTIONNAME
@@ -316,7 +318,7 @@ stages:
     parameters:
       appInsight: "$(INTERNALAPPINSIGHTSNAME)"
       appServicePlan: "$(INTERNALAPPSERVICEPLANDOTNETNAME)"
-      appServicePlanRG: "$(INTERNALAPPSERVICEPLANWINDOWSRESOURCEGROUP)"
+      appServicePlanRG: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
       azureSubscription: "$(AZURESUBSCRIPTION)"
       botPricingTier: $env:BOTPRICINGTIER
       keyVault: "$(INTERNALKEYVAULTNAME)"
@@ -354,7 +356,7 @@ stages:
     parameters:
       appInsight: "$(INTERNALAPPINSIGHTSNAME)"
       appServicePlan: "$(INTERNALAPPSERVICEPLANJSNAME)"
-      appServicePlanRG: "$(INTERNALAPPSERVICEPLANWINDOWSRESOURCEGROUP)"
+      appServicePlanRG: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
       azureSubscription: "$(AZURESUBSCRIPTION)"
       botPricingTier: $env:BOTPRICINGTIER
       connectionName: $env:CONNECTIONNAME
@@ -422,7 +424,7 @@ stages:
   - template: python/deploy.yml
     parameters:
       appServicePlan: "$(INTERNALAPPSERVICEPLANPYTHONNAME)"
-      appServicePlanRG: "$(INTERNALAPPSERVICEPLANLINUXRESOURCEGROUP)"
+      appServicePlanRG: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
       azureSubscription: "$(AZURESUBSCRIPTION)"
       botPricingTier: $env:BOTPRICINGTIER
       connectionName: $env:CONNECTIONNAME
