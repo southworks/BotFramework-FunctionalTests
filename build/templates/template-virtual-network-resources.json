@@ -26,14 +26,14 @@
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "10.1.0.0/16"
+                        "10.2.0.0/16"
                     ]
                 },
                 "subnets": [
                     {
                         "name": "javascript",
                         "properties": {
-                            "addressPrefix": "10.1.0.0/24",
+                            "addressPrefix": "10.2.0.0/24",
                             "serviceEndpoints": [
                                 {
                                     "service": "Microsoft.Web",
@@ -57,7 +57,7 @@
                     {
                         "name": "dotnet",
                         "properties": {
-                            "addressPrefix": "10.1.1.0/24",
+                            "addressPrefix": "10.2.1.0/24",
                             "serviceEndpoints": [
                                 {
                                     "service": "Microsoft.Web",
@@ -81,7 +81,7 @@
                     {
                         "name": "python",
                         "properties": {
-                            "addressPrefix": "10.1.2.0/24",
+                            "addressPrefix": "10.2.2.0/24",
                             "serviceEndpoints": [
                                 {
                                     "service": "Microsoft.Web",
@@ -115,7 +115,7 @@
                 "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
             ],
             "properties": {
-                "addressPrefix": "10.1.0.0/24",
+                "addressPrefix": "10.2.0.0/24",
                 "serviceEndpoints": [
                     {
                         "service": "Microsoft.Web",
@@ -144,7 +144,7 @@
                 "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
             ],
             "properties": {
-                "addressPrefix": "10.1.1.0/24",
+                "addressPrefix": "10.2.1.0/24",
                 "serviceEndpoints": [
                     {
                         "service": "Microsoft.Web",
@@ -173,7 +173,7 @@
                 "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
             ],
             "properties": {
-                "addressPrefix": "10.1.2.0/24",
+                "addressPrefix": "10.2.2.0/24",
                 "serviceEndpoints": [
                     {
                         "service": "Microsoft.Web",
