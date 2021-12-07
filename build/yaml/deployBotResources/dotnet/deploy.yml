@@ -127,14 +127,14 @@ stages:
           # Start of DotNet Install & Build
           - ${{ if in(bot.type, 'Host', 'Skill') }}:
             # Install dependencies
-            - template: installDependencies.yml
-              parameters:
-                project: "${{ bot.project }}"
-                registry: "$(DEPENDENCIESSOURCE)"
-                version: "$(DEPENDENCIESVERSIONNUMBER)"
-                packages:
-                  Microsoft.Bot.Builder.Dialogs
-                  Microsoft.Bot.Builder.Integration.AspNet.Core
+            # - template: installDependencies.yml
+            #   parameters:
+            #     project: "${{ bot.project }}"
+            #     registry: "$(DEPENDENCIESSOURCE)"
+            #     version: "$(DEPENDENCIESVERSIONNUMBER)"
+            #     packages:
+            #       Microsoft.Bot.Builder.Dialogs
+            #       Microsoft.Bot.Builder.Integration.AspNet.Core
 
             # Build Bot
             - task: DotNetCoreCLI@2
@@ -145,6 +145,9 @@ stages:
                 projects: "${{ bot.project.directory }}/${{ bot.project.name }}"
                 arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}"
                 modifyOutputPath: false
+              env:
+                BotBuilderVersion: $(DEPENDENCIESVERSIONNUMBER)
+                BotBuilderRegistry: $(DEPENDENCIESSOURCE)
 
             # Get BotBuilder package version
             - task: PowerShell@2
