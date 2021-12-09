@@ -285,19 +285,19 @@ stages:
         #     registry: ${{ parameters.dependenciesRegistryDotNetSkills }}
         #     version: ${{ parameters.dependenciesVersionDotNetSkills }}
 
-        # # DotNet V3 bots
-        # - name: "bffnechoskillbotdotnetv3"
-        #   dependsOn: "Prepare_DotNetGroup"
-        #   type: "SkillV3"
-        #   displayName: "DotNet Echo Skill Bot v3"
-        #   appId: $(BFFNECHOSKILLBOTDOTNETV3APPID)
-        #   appSecret: $(BFFNECHOSKILLBOTDOTNETV3APPSECRET)
-        #   project:
-        #     directory: 'Bots/DotNet/Skills/CodeFirst/EchoSkillBot-v3'
-        #     name: "EchoSkillBot-v3.csproj"
-        #   dependency:
-        #     registry: ${{ parameters.dependenciesRegistryDotNetSkillsV3 }}
-        #     version: ${{ parameters.dependenciesVersionDotNetSkillsV3 }}
+        # DotNet V3 bots
+        - name: "bffnechoskillbotdotnetv3"
+          # dependsOn: "Prepare_DotNetGroup"
+          type: "SkillV3"
+          displayName: "DotNet Echo Skill Bot v3"
+          appId: $(BFFNECHOSKILLBOTDOTNETV3APPID)
+          appSecret: $(BFFNECHOSKILLBOTDOTNETV3APPSECRET)
+          project:
+            directory: 'Bots/DotNet/Skills/CodeFirst/EchoSkillBot-v3'
+            name: "EchoSkillBot-v3.csproj"
+          dependency:
+            registry: ${{ parameters.dependenciesRegistryDotNetSkillsV3 }}
+            version: ${{ parameters.dependenciesVersionDotNetSkillsV3 }}
 
         # - name: "bffnwaterfallhostbotdotnet"
         #   dependsOn: "Deploy_bffnsimplehostbotdotnet"
