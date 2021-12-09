@@ -136,10 +136,19 @@ stages:
             #       Microsoft.Bot.Builder.Dialogs
             #       Microsoft.Bot.Builder.Integration.AspNet.Core
 
-            - task: NuGetCommand@2
-              displayName: "NuGet restore"
+            # - task: NuGetCommand@2
+            #   displayName: "NuGet restore"
+            #   inputs:
+            #     restoreSolution: "${{ bot.project.directory }}/${{ bot.project.name }}"
+
+            - task: DotNetCoreCLI@2
+              displayName: DotNetCoreCLI NuGet restore
               inputs:
-                restoreSolution: "${{ bot.project.directory }}/${{ bot.project.name }}"
+                command: 'restore'
+                projects: "${{ bot.project.directory }}/${{ bot.project.name }}"
+              env:
+                BotBuilderVersion: "$(DEPENDENCIESVERSIONNUMBER)"
+                BotBuilderRegistry: "$(DEPENDENCIESSOURCE)"
 
             # Build Bot
             - task: DotNetCoreCLI@2
