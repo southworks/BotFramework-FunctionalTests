@@ -109,14 +109,6 @@ stages:
           #         $content.BotFrameworkSkills = @()
           #         $content | ConvertTo-Json | Set-Content $file
 
-          # Run NuGet restore SkillV3
-          - ${{ if eq(bot.type, 'SkillV3') }}:
-            - task: NuGetCommand@2
-              displayName: "NuGet restore"
-              inputs:
-                restoreSolution: "${{ bot.project.directory }}/${{ bot.project.name }}"
-                restoreDirectory: "$(SOLUTIONDIR)packages"
-
           # Evaluate dependencies source and version
           - template: evaluateDependenciesVariables.yml
             parameters:
@@ -180,6 +172,13 @@ stages:
 
           # Start DotNet v3 Install & Build
           - ${{ if eq(bot.type, 'SkillV3') }}:
+            # Run NuGet restore SkillV3
+            - task: NuGetCommand@2
+              displayName: "NuGet restore"
+              inputs:
+                restoreSolution: "${{ bot.project.directory }}/${{ bot.project.name }}"
+                restoreDirectory: "$(SOLUTIONDIR)packages"
+
             # Install dependencies
             - template: installDependenciesV3.yml
               parameters:

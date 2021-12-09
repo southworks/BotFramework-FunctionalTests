@@ -327,20 +327,20 @@ stages:
         #     registry: ${{ parameters.dependenciesRegistryDotNetSkills }}
         #     version: ${{ parameters.dependenciesVersionDotNetSkills }}
 
-        # # DotNet Composer bots
-        # - name: "bffnsimplehostbotcomposerdotnet"
-        #   dependsOn: "Deploy_bffnechoskillbotdotnet"
-        #   type: "ComposerHost"
-        #   displayName: "DotNet Simple Composer Host Bot"
-        #   appId: $(BFFNSIMPLEHOSTBOTCOMPOSERDOTNETAPPID)
-        #   appSecret: $(BFFNSIMPLEHOSTBOTCOMPOSERDOTNETAPPSECRET)
-        #   project: 
-        #     directory: 'Bots/DotNet/Consumers/Composer/SimpleHostBotComposer'
-        #     name: "SimpleHostBotComposer.csproj"
-        #     netCoreVersion: "3.1.x"
-        #   dependency:
-        #     registry: ${{ parameters.dependenciesRegistryDotNetHosts }}
-        #     version: ${{ parameters.dependenciesVersionDotNetHosts }}
+        # DotNet Composer bots
+        - name: "bffnsimplehostbotcomposerdotnet"
+          # dependsOn: "Deploy_bffnechoskillbotdotnet"
+          type: "Host"
+          displayName: "DotNet Simple Composer Host Bot"
+          appId: $(BFFNSIMPLEHOSTBOTCOMPOSERDOTNETAPPID)
+          appSecret: $(BFFNSIMPLEHOSTBOTCOMPOSERDOTNETAPPSECRET)
+          project: 
+            directory: 'Bots/DotNet/Consumers/Composer/SimpleHostBotComposer'
+            name: "SimpleHostBotComposer.csproj"
+            netCoreVersion: "3.1.x"
+          dependency:
+            registry: ${{ parameters.dependenciesRegistryDotNetHosts }}
+            version: ${{ parameters.dependenciesVersionDotNetHosts }}
 
         # - name: "bffnechoskillbotcomposerdotnet"
         #   dependsOn: "Deploy_bffnechoskillbotdotnet21"
