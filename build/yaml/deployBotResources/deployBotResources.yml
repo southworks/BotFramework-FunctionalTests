@@ -330,7 +330,7 @@ stages:
         # DotNet Composer bots
         - name: "bffnsimplehostbotcomposerdotnet"
           # dependsOn: "Deploy_bffnechoskillbotdotnet"
-          type: "Host"
+          type: "ComposerHost"
           displayName: "DotNet Simple Composer Host Bot"
           appId: $(BFFNSIMPLEHOSTBOTCOMPOSERDOTNETAPPID)
           appSecret: $(BFFNSIMPLEHOSTBOTCOMPOSERDOTNETAPPSECRET)
