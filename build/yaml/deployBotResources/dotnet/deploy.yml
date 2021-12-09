@@ -110,12 +110,12 @@ stages:
           #         $content | ConvertTo-Json | Set-Content $file
 
           # Run NuGet restore SkillV3
-          # - ${{ if eq(bot.type, 'SkillV3') }}:
-          #   - task: NuGetCommand@2
-          #     displayName: "NuGet restore"
-          #     inputs:
-          #       restoreSolution: "${{ bot.project.directory }}/${{ bot.project.name }}"
-          #       restoreDirectory: "$(SOLUTIONDIR)packages"
+          - ${{ if eq(bot.type, 'SkillV3') }}:
+            - task: NuGetCommand@2
+              displayName: "NuGet restore"
+              inputs:
+                restoreSolution: "${{ bot.project.directory }}/${{ bot.project.name }}"
+                restoreDirectory: "$(SOLUTIONDIR)packages"
 
           # Evaluate dependencies source and version
           - template: evaluateDependenciesVariables.yml
