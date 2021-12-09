@@ -141,14 +141,14 @@ stages:
             #   inputs:
             #     restoreSolution: "${{ bot.project.directory }}/${{ bot.project.name }}"
 
-            - task: DotNetCoreCLI@2
-              displayName: DotNetCoreCLI NuGet restore
-              inputs:
-                command: 'restore'
-                projects: "${{ bot.project.directory }}/${{ bot.project.name }}"
-              env:
-                BotBuilderVersion: "$(DEPENDENCIESVERSIONNUMBER)"
-                BotBuilderRegistry: "$(DEPENDENCIESSOURCE)"
+            # - task: DotNetCoreCLI@2
+            #   displayName: DotNetCoreCLI NuGet restore
+            #   inputs:
+            #     command: 'restore'
+            #     projects: "${{ bot.project.directory }}/${{ bot.project.name }}"
+            #   env:
+            #     BotBuilderVersion: "$(DEPENDENCIESVERSIONNUMBER)"
+            #     BotBuilderRegistry: "$(DEPENDENCIESSOURCE)"
 
             # Build Bot
             - task: DotNetCoreCLI@2
@@ -157,7 +157,7 @@ stages:
                 command: publish
                 publishWebProjects: false
                 projects: "${{ bot.project.directory }}/${{ bot.project.name }}"
-                arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }} --no-restore"
+                arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}"
                 modifyOutputPath: false
               env:
                 BotBuilderVersion: "$(DEPENDENCIESVERSIONNUMBER)"
@@ -211,17 +211,17 @@ stages:
           #         $version = $result[0].Name.Replace("Microsoft.Bot.Builder.", "")
           #         Write-Host "##vso[task.setvariable variable=BotBuilderVersionNumber]$($version)"
 
-          #   # Zip bot
-          #   - task: ArchiveFiles@2
-          #     displayName: 'Zip bot'
-          #     inputs:
-          #       rootFolderOrFile: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ bot.project.directory }}'
-          #       includeRootFolder: false
-          #       archiveType: 'zip'
-          #       archiveFile: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}/${{ bot.name }}.zip'
-          #       replaceExistingArchive: true
-          #       verbose: true
-          # # End of DotNet v3 Install & Build
+            # Zip bot
+            # - task: ArchiveFiles@2
+            #   displayName: 'Zip bot'
+            #   inputs:
+            #     rootFolderOrFile: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ bot.project.directory }}'
+            #     includeRootFolder: false
+            #     archiveType: 'zip'
+            #     archiveFile: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}/${{ bot.name }}.zip'
+            #     replaceExistingArchive: true
+            #     verbose: true
+          # End of DotNet v3 Install & Build
 
           # # Start of DotNet Composer Install & Build
           # - ${{ if in(bot.type, 'ComposerHost', 'ComposerSkill') }}:
@@ -268,12 +268,12 @@ stages:
           #       botName: "${{ bot.displayName }}"
           #     version: "$(BOTBUILDERVERSIONNUMBER)"
 
-          # # Upload zip to artifacts in case we want to debug it
-          # - task: PublishBuildArtifacts@1
-          #   displayName: 'Publish zip package'
-          #   inputs:
-          #     pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}/${{ bot.name }}.zip"
-          #     artifactName: dotnet-$(BUILD.BUILDID)
+          # Upload zip to artifacts in case we want to debug it
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish zip package'
+            inputs:
+              pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}/${{ bot.name }}.zip"
+              artifactName: dotnet-$(BUILD.BUILDID)
 
           # # Create App Service and Bot Channel Registration
           # - template: ../common/createAppService.yml
