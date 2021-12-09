@@ -1,7 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <BotBuilderVersion>4.14.1</BotBuilderVersion>
-    <RestoreAdditionalProjectSources>$(BotBuilderRegistry)</RestoreAdditionalProjectSources>
-  </PropertyGroup>
-</Project>
-
