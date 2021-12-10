@@ -58,16 +58,17 @@ steps:
               $tags = "-PreRelease"
             }
 
+            # NOTE: The extra space for the -Pattern flag is intentional. E.g.: -Pattern "^Microsoft.Bot.Builder ".
             if ("${{ parameters.botType }}" -in "Host", "Skill") {
-              $PackageList = nuget list "Microsoft.Bot.Builder" -Source "$source" "$tags" | Select-String -Pattern "^Microsoft.Bot.Builder"
+              $PackageList = nuget list "Microsoft.Bot.Builder" -Source "$source" "$tags" | Select-String -Pattern "^Microsoft.Bot.Builder "
               $versionNumber = ($PackageList -split " ")[-1]
 
             } elseif ("${{ parameters.botType }}" -in "ComposerHost", "ComposerSkill") {
-              $PackageList = nuget list "Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime" -Source "$source" "$tags" | Select-String -Pattern "^Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime"
+              $PackageList = nuget list "Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime" -Source "$source" "$tags" | Select-String -Pattern "^Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime "
               $versionNumber = ($PackageList -split " ")[-1]
 
             } elseif ("${{ parameters.botType }}" -eq "SkillV3") {
-              $PackageList = nuget list "Microsoft.Bot.Builder.History" -Source "$source" "$tags" | Select-String -Pattern "^Microsoft.Bot.Builder.History"
+              $PackageList = nuget list "Microsoft.Bot.Builder.History" -Source "$source" "$tags" | Select-String -Pattern "^Microsoft.Bot.Builder.History "
               $versionNumber = ($PackageList -split " ")[-1]
             }
           }
