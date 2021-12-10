@@ -116,9 +116,8 @@ stages:
               registry: "${{ bot.dependency.registry }}"
               version: "${{ bot.dependency.version }}"
 
-          # Start of DotNet Install & Build
-          - ${{ if in(bot.type, 'Host', 'Skill') }}:
-            # Build Bot
+          # Build Bot
+          - ${{ if in(bot.type, 'Host', 'Skill', 'ComposerHost', 'ComposerSkill') }}:
             - task: DotNetCoreCLI@2
               displayName: "Build"
               inputs:
@@ -130,7 +129,6 @@ stages:
               env:
                 BotBuilderVersion: "$(DEPENDENCIESVERSIONNUMBER)"
                 BotBuilderRegistry: "$(DEPENDENCIESSOURCE)"
-          # End of DotNet Install & Build
 
           # Start DotNet v3 Install & Build
           - ${{ if eq(bot.type, 'SkillV3') }}:

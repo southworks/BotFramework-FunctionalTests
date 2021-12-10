@@ -53,13 +53,20 @@ steps:
               [Console]::ResetColor()
               exit 1 # Force exit
             }
+
             if("${{ parameters.version }}" -notin "STABLE") {
               $tags = "-PreRelease"
             }
+
             if ("${{ parameters.botType }}" -in "Host", "Skill") {
-              $PackageList = nuget list "Microsoft.Bot.Builder" -Source "$source" "$tags" | Select-String -Pattern "^Microsoft.Bot.Builder "
+              $PackageList = nuget list "Microsoft.Bot.Builder" -Source "$source" "$tags" | Select-String -Pattern "^Microsoft.Bot.Builder"
               $versionNumber = ($PackageList -split " ")[-1]
-            } elseif ("${{ parameters.botType }}" -in "SkillV3") {
+
+            } elseif ("${{ parameters.botType }}" -in "ComposerHost", "ComposerSkill") {
+              $PackageList = nuget list "Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime" -Source "$source" "$tags" | Select-String -Pattern "^Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime"
+              $versionNumber = ($PackageList -split " ")[-1]
+
+            } elseif ("${{ parameters.botType }}" -eq "SkillV3") {
               $PackageList = nuget list "Microsoft.Bot.Builder.History" -Source "$source" "$tags" | Select-String -Pattern "^Microsoft.Bot.Builder.History"
               $versionNumber = ($PackageList -split " ")[-1]
             }
