@@ -17,6 +17,7 @@ steps:
     inputs:
       targetType: inline
       failOnStderr: true
+      pwsh: true
       script: |
         $botType = "${{ parameters.botType }}";
         $version = "${{ parameters.version }}";
