@@ -142,21 +142,21 @@ steps:
 
         if (-not $result.version) {
           $message = @"
-        Unable to find the version in the selected registry source.
-          Version          : $version ($label)
-          Registry         : $registry
-          Source           : $($result.source)
-          Search Query     : $($filters.query)
+        Unable to find the Version in the selected Registry:
+          Version       : $version ($label)
+          Registry      : $registry
+          Source        : $($result.source)
+          Search Query  : $($filters.query)
         "@;
           ExitWithError $message
         }
 
         @"
-        Version found for the selected registry source.
-          Version          : $($result.version) ($label)
-          Registry         : $registry
-          Source           : $($result.source)
-          Search Query     : $($filters.query)
+        Version & Registry to install the packages:
+          Version       : $($result.version) ($label)
+          Registry      : $registry
+          Source        : $($result.source)
+          Search Query  : $($filters.query)
         "@
 
         # Set environment variables
