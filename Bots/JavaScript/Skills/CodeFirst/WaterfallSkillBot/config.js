@@ -40,7 +40,7 @@ class DefaultConfig {
     //   [#1029](https://github.com/restify/node-restify/issues/1029)
     //   [#1274](https://github.com/restify/node-restify/issues/1274)
     const { WEBSITE_HOSTNAME } = process.env;
-    const url = WEBSITE_HOSTNAME ? `https://${WEBSITE_HOSTNAME}` : SkillHostEndpoint;
+    const url = WEBSITE_HOSTNAME ? `https://${WEBSITE_HOSTNAME}` : `http://localhost:${this.Port}`;
     this.ServerUrl = new URL(url).origin;
   }
 }
