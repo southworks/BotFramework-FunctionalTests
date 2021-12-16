@@ -39,8 +39,8 @@ class DefaultConfig {
     // Restify:
     //   [#1029](https://github.com/restify/node-restify/issues/1029)
     //   [#1274](https://github.com/restify/node-restify/issues/1274)
-    const { WEBSITE_HOSTNAME }  = process.env;
-    const url = !!WEBSITE_HOSTNAME ? `https://${WEBSITE_HOSTNAME}` : SkillHostEndpoint;
+    const { WEBSITE_HOSTNAME } = process.env;
+    const url = WEBSITE_HOSTNAME ? `https://${WEBSITE_HOSTNAME}` : SkillHostEndpoint;
     this.ServerUrl = new URL(url).origin;
   }
 }
