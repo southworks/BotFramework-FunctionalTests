@@ -129,7 +129,7 @@ stages:
                 $packagejsonPath = "./package.json";
 
                 # Remove yarn.lock file to prevent outdated dependencies references from being misinterpreted by Security Audit.
-                Remove-Item -path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/yarn.lock"
+                # Remove-Item -path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/yarn.lock"
 
                 $packagejson = Get-Content $packagejsonPath | ConvertFrom-Json
                 $dependencies = @{}
@@ -155,7 +155,9 @@ stages:
               targetType: inline
               workingDirectory: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ bot.project.directory }}'
               failOnStderr: true
-              script: yarn npm audit --recursive --all --severity low
+              script: |
+                yarn install
+                yarn npm audit --recursive --all --severity low
 
           - task: AzureCLI@2
             displayName: "Build and Push Container"
