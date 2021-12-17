@@ -148,6 +148,15 @@ stages:
                 Write-Host "`nUsing the registry source: $registry";
                 New-Item -Path . -Name ".npmrc" -ItemType "file" -Value "registry=$registry";
 
+          # Security Audit
+          - task: PowerShell@2
+            displayName: 'Security Audit'
+            inputs:
+              targetType: inline
+              workingDirectory: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ bot.project.directory }}'
+              failOnStderr: true
+              script: yarn npm audit --recursive --all --severity low
+
           - task: AzureCLI@2
             displayName: "Build and Push Container"
             inputs:
