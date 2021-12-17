@@ -153,12 +153,12 @@ stages:
             displayName: 'Security Audit'
             inputs:
               targetType: inline
-              workingDirectory: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ bot.project.directory }}'
+              workingDirectory: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/'
               failOnStderr: true
               script: |
-                Remove-Item -path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/yarn.lock"
-                Test-Path -Path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/yarn.lock" -PathType Leaf
-                yarn install
+                # Remove-Item -path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/yarn.lock"
+                # Test-Path -Path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/yarn.lock" -PathType Leaf
+                # yarn install
                 yarn npm audit --recursive --all --severity low
 
           - task: AzureCLI@2
