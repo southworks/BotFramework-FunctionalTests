@@ -1,0 +1,160 @@
+{
+  "$kind": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "id": "6sa6se",
+    "name": "MenuDialog",
+    "comment": ""
+  },
+  "autoEndDialog": true,
+  "defaultResultProperty": "dialog.result",
+  "triggers": [
+    {
+      "$kind": "Microsoft.OnBeginDialog",
+      "$designer": {
+        "name": "BeginDialog",
+        "description": "",
+        "id": "EQbqMv"
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.ChoiceInput",
+          "$designer": {
+            "id": "qQl7Jv"
+          },
+          "defaultLocale": "en-us",
+          "disabled": false,
+          "maxTurnCount": 3,
+          "alwaysPrompt": false,
+          "allowInterruptions": true,
+          "prompt": "${ChoiceInput_Prompt_qQl7Jv()}",
+          "unrecognizedPrompt": "",
+          "invalidPrompt": "",
+          "choiceOptions": {
+            "includeNumbers": true
+          },
+          "property": "dialog.order",
+          "choices": [
+            "Pizza",
+            "Pasta",
+            "Chicken"
+          ],
+          "recognizerOptions": {
+            "recognizeOrdinals": true
+          }
+        },
+        {
+          "$kind": "Microsoft.SwitchCondition",
+          "$designer": {
+            "id": "xgmYps"
+          },
+          "condition": "dialog.order",
+          "cases": [
+            {
+              "value": "Pizza",
+              "actions": [
+                {
+                  "$kind": "Microsoft.ChoiceInput",
+                  "$designer": {
+                    "id": "ioc02p"
+                  },
+                  "defaultLocale": "en-us",
+                  "disabled": false,
+                  "maxTurnCount": 3,
+                  "alwaysPrompt": false,
+                  "allowInterruptions": true,
+                  "prompt": "${ChoiceInput_Prompt_ioc02p()}",
+                  "unrecognizedPrompt": "",
+                  "invalidPrompt": "",
+                  "choiceOptions": {
+                    "includeNumbers": true
+                  },
+                  "property": "dialog.kind",
+                  "choices": [
+                    "Muzzarella",
+                    "Napolitana",
+                    "Margarita"
+                  ],
+                  "recognizerOptions": {
+                    "recognizeOrdinals": true
+                  }
+                },
+                {
+                  "$kind": "Microsoft.ConfirmInput",
+                  "$designer": {
+                    "id": "tBEhgL"
+                  },
+                  "defaultLocale": "en-us",
+                  "disabled": false,
+                  "maxTurnCount": 3,
+                  "alwaysPrompt": false,
+                  "allowInterruptions": true,
+                  "prompt": "${ConfirmInput_Prompt_tBEhgL()}",
+                  "unrecognizedPrompt": "",
+                  "choiceOptions": {
+                    "includeNumbers": true,
+                    "inlineOrMore": ", or "
+                  },
+                  "confirmChoices": [
+                    "Yes",
+                    "No"
+                  ],
+                  "property": "dialog.confirm"
+                },
+                {
+                  "$kind": "Microsoft.IfCondition",
+                  "$designer": {
+                    "id": "nZPrGH"
+                  },
+                  "condition": "=dialog.confirm",
+                  "actions": [
+                    {
+                      "$kind": "Microsoft.SendActivity",
+                      "$designer": {
+                        "id": "HYDavQ"
+                      },
+                      "activity": "${SendActivity_HYDavQ()}"
+                    }
+                  ],
+                  "elseActions": [
+                    {
+                      "$kind": "Microsoft.SendActivity",
+                      "$designer": {
+                        "id": "cSoSqk"
+                      },
+                      "activity": "${SendActivity_cSoSqk()}"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "value": "Pasta"
+            },
+            {
+              "value": "Chicken"
+            }
+          ],
+          "default": [
+            {
+              "$kind": "Microsoft.SendActivity",
+              "$designer": {
+                "id": "FpGtzu"
+              },
+              "activity": "${SendActivity_FpGtzu()}"
+            }
+          ]
+        },
+        {
+          "$kind": "Microsoft.RepeatDialog",
+          "$designer": {
+            "id": "JugnpT"
+          },
+          "activityProcessed": true
+        }
+      ]
+    }
+  ],
+  "generator": "MenuDialog.lg",
+  "recognizer": "MenuDialog.lu.qna",
+  "id": "MenuDialog"
+}

@@ -1,0 +1,9 @@
+[import](common.lg)
+
+# SendActivity_zA0gEZ()
+[Activity
+    Text = ${SendActivity_zA0gEZ_text()}
+]
+
+# SendActivity_zA0gEZ_text()
+- This is the reprompt dialog...

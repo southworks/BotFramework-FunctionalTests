@@ -1,0 +1,23 @@
+[import](common.lg)
+
+# ConfirmInput_Prompt_G1GMlo()
+[Activity
+    Text = ${ConfirmInput_Prompt_G1GMlo_text()}
+]
+
+# ConfirmInput_Prompt_G1GMlo_text()
+- Are you sure you want to cancel?
+# SendActivity_1qIIlL()
+[Activity
+    Text = ${SendActivity_1qIIlL_text()}
+]
+
+# SendActivity_1qIIlL_text()
+- Cancelling order...
+# SendActivity_XaizEf()
+[Activity
+    Text = ${SendActivity_XaizEf_text()}
+]
+
+# SendActivity_XaizEf_text()
+- Ok, let's continue...

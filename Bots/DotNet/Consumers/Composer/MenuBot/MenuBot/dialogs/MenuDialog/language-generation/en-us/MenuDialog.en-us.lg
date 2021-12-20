@@ -1,0 +1,44 @@
+[import](common.lg)
+
+# ChoiceInput_Prompt_qQl7Jv()
+[Activity
+    Text = ${ChoiceInput_Prompt_qQl7Jv_text()}
+]
+
+# ChoiceInput_Prompt_qQl7Jv_text()
+- What would you like to order today?
+# SendActivity_FpGtzu()
+[Activity
+    Text = ${SendActivity_FpGtzu_text()}
+]
+
+# SendActivity_FpGtzu_text()
+- Sorry, we don't have ${dialog.order} today.
+# ChoiceInput_Prompt_ioc02p()
+[Activity
+    Text = ${ChoiceInput_Prompt_ioc02p_text()}
+]
+
+# ChoiceInput_Prompt_ioc02p_text()
+- What kind of Pizza would you like?
+# ConfirmInput_Prompt_tBEhgL()
+[Activity
+    Text = ${ConfirmInput_Prompt_tBEhgL_text()}
+]
+
+# ConfirmInput_Prompt_tBEhgL_text()
+- I'll send you a Pizza ${dialog.kind}. Is this correct?
+# SendActivity_HYDavQ()
+[Activity
+    Text = ${SendActivity_HYDavQ_text()}
+]
+
+# SendActivity_HYDavQ_text()
+- Order confirmed!
+# SendActivity_cSoSqk()
+[Activity
+    Text = ${SendActivity_cSoSqk_text()}
+]
+
+# SendActivity_cSoSqk_text()
+- Order cancelled!
