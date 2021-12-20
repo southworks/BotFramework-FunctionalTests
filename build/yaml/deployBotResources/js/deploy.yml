@@ -160,7 +160,8 @@ stages:
                 # Test-Path -Path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/yarn.lock" -PathType Leaf
                 # yarn install
                 # Test removing chrono-node manually
-                # yarn npm audit --recursive --all --severity low
+                # Remove-Item -path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/.yarn/cache/chrono-node-npm-1.4.8"
+                yarn npm audit --recursive --all --severity high
 
           - task: AzureCLI@2
             displayName: "Build and Push Container"
