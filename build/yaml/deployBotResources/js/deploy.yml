@@ -158,8 +158,9 @@ stages:
               script: |
                 # Remove-Item -path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/yarn.lock"
                 # Test-Path -Path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/yarn.lock" -PathType Leaf
-                yarn install
-                yarn npm audit --recursive --all --severity low
+                # yarn install
+                # Test removing chrono-node manually
+                # yarn npm audit --recursive --all --severity low
 
           - task: AzureCLI@2
             displayName: "Build and Push Container"
@@ -196,7 +197,7 @@ stages:
           - task: ArchiveFiles@2
             displayName: "Zip bot"
             inputs:
-              rootFolderOrFile: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ bot.project.directory }}/app"
+              rootFolderOrFile: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)"
               includeRootFolder: false
               archiveType: "zip"
               archiveFile: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ bot.name }}.zip"
