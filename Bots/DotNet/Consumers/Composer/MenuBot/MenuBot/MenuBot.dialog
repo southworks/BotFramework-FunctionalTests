@@ -99,24 +99,6 @@
           "dialog": "CancelDialog"
         }
       ]
-    },
-    {
-      "$kind": "Microsoft.OnRepromptDialog",
-      "$designer": {
-        "id": "cIpfxs",
-        "name": "Reprompt"
-      },
-      "intent": "Reprompt",
-      "actions": [
-        {
-          "$kind": "Microsoft.BeginDialog",
-          "$designer": {
-            "id": "IRperD"
-          },
-          "activityProcessed": true,
-          "dialog": "RepromptDialog"
-        }
-      ]
     }
   ],
   "generator": "MenuBot.lg",

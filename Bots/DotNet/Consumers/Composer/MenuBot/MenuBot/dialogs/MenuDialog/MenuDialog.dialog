@@ -28,9 +28,10 @@
           "allowInterruptions": true,
           "prompt": "${ChoiceInput_Prompt_qQl7Jv()}",
           "unrecognizedPrompt": "",
-          "invalidPrompt": "",
           "choiceOptions": {
-            "includeNumbers": true
+            "includeNumbers": true,
+            "inlineOrMore": ", or ",
+            "inlineOr": " or "
           },
           "property": "dialog.order",
           "choices": [
@@ -39,8 +40,10 @@
             "Chicken"
           ],
           "recognizerOptions": {
-            "recognizeOrdinals": true
-          }
+            "recognizeOrdinals": true,
+            "recognizeNumbers": true
+          },
+          "validations": []
         },
         {
           "$kind": "Microsoft.SwitchCondition",
@@ -66,7 +69,8 @@
                   "unrecognizedPrompt": "",
                   "invalidPrompt": "",
                   "choiceOptions": {
-                    "includeNumbers": true
+                    "includeNumbers": true,
+                    "inlineOrMore": ", or "
                   },
                   "property": "dialog.kind",
                   "choices": [
@@ -75,7 +79,8 @@
                     "Margarita"
                   ],
                   "recognizerOptions": {
-                    "recognizeOrdinals": true
+                    "recognizeOrdinals": true,
+                    "recognizeNumbers": true
                   }
                 },
                 {
@@ -152,9 +157,28 @@
           "activityProcessed": true
         }
       ]
+    },
+    {
+      "$kind": "Microsoft.OnRepromptDialog",
+      "$designer": {
+        "id": "DPHjlL",
+        "name": "Re-prompt for input (Reprompt dialog event)"
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "eyqu5J"
+          },
+          "activity": "${SendActivity_eyqu5J()}"
+        }
+      ]
     }
   ],
   "generator": "MenuDialog.lg",
-  "recognizer": "MenuDialog.lu.qna",
+  "recognizer": {
+    "$kind": "Microsoft.RegexRecognizer",
+    "intents": []
+  },
   "id": "MenuDialog"
 }

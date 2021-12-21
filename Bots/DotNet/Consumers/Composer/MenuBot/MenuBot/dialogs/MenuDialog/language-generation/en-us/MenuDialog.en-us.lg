@@ -42,3 +42,10 @@
 
 # SendActivity_cSoSqk_text()
 - Order cancelled!
+# SendActivity_eyqu5J()
+[Activity
+    Text = ${SendActivity_eyqu5J_text()}
+]
+
+# SendActivity_eyqu5J_text()
+- Reprompting....

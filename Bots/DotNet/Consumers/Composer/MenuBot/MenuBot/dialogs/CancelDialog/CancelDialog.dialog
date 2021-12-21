@@ -68,6 +68,9 @@
     }
   ],
   "generator": "CancelDialog.lg",
-  "recognizer": "CancelDialog.lu.qna",
+  "recognizer": {
+    "$kind": "Microsoft.RegexRecognizer",
+    "intents": []
+  },
   "id": "CancelDialog"
 }
