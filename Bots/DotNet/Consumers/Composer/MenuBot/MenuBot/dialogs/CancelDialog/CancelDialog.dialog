@@ -63,6 +63,21 @@
               "activity": "${SendActivity_XaizEf()}"
             }
           ]
+        },
+        {
+          "$kind": "Microsoft.EndDialog",
+          "$designer": {
+            "id": "7fvxs3"
+          }
+        },
+        {
+          "$kind": "Microsoft.EmitEvent",
+          "$designer": {
+            "id": "9Rz8AZ"
+          },
+          "eventName": "repromptDialog",
+          "bubbleEvent": true,
+          "handledProperty": "="
         }
       ]
     }

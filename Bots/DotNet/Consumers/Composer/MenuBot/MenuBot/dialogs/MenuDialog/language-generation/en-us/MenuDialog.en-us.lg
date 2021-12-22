@@ -49,3 +49,10 @@
 
 # SendActivity_eyqu5J_text()
 - Reprompting....
+# SendActivity_5BSdx8()
+[Activity
+    Text = ${SendActivity_5BSdx8_text()}
+]
+
+# SendActivity_5BSdx8_text()
+- This is a helping message.

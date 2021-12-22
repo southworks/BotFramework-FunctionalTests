@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
-    <UserSecretsId>01d2a759-d9c4-4d66-a56d-9b88ac0b34b2</UserSecretsId>
+    <UserSecretsId>cda7d3a8-1644-4bf4-b445-5da316d3f9d5</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="**/*.blu;**/*.dialog;**/*.lg;**/*.lu;**/*.model;**/*.onnx;**/*.qna;**/*.txt" Exclude="$(BaseOutputPath)/**;$(BaseIntermediateOutputPath)/**;wwwroot/**">
@@ -12,11 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="C:\Repositories\BotBuilder-dotnet\libraries\Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime\Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime.csproj" />
-    <ProjectReference Include="C:\Repositories\BotBuilder-dotnet\libraries\Microsoft.Bot.Builder.AI.LUIS\Microsoft.Bot.Builder.AI.LUIS.csproj" />
-    <ProjectReference Include="C:\Repositories\BotBuilder-dotnet\libraries\Microsoft.Bot.Builder.AI.QnA\Microsoft.Bot.Builder.AI.QnA.csproj" />
+    <PackageReference Include="Microsoft.Bot.Builder.AI.Luis" Version="4.15.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.AI.QnA" Version="4.15.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime" Version="4.15.0" />
   </ItemGroup>
 </Project>

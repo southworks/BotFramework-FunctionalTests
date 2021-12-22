@@ -31,7 +31,8 @@
           "choiceOptions": {
             "includeNumbers": true,
             "inlineOrMore": ", or ",
-            "inlineOr": " or "
+            "inlineOr": " or ",
+            "inlineSeparator": ", "
           },
           "property": "dialog.order",
           "choices": [
@@ -133,7 +134,8 @@
               ]
             },
             {
-              "value": "Pasta"
+              "value": "Pasta",
+              "actions": []
             },
             {
               "value": "Chicken"
@@ -173,12 +175,42 @@
           "activity": "${SendActivity_eyqu5J()}"
         }
       ]
+    },
+    {
+      "$kind": "Microsoft.OnIntent",
+      "$designer": {
+        "id": "oGSk4C",
+        "name": "help"
+      },
+      "intent": "help",
+      "actions": [
+        {
+          "$kind": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "5BSdx8"
+          },
+          "activity": "${SendActivity_5BSdx8()}"
+        },
+        {
+          "$kind": "Microsoft.EmitEvent",
+          "$designer": {
+            "id": "acW2hD"
+          },
+          "handledProperty": "turn.eventHandled",
+          "eventName": "repromptDialog"
+        }
+      ]
     }
   ],
   "generator": "MenuDialog.lg",
   "recognizer": {
     "$kind": "Microsoft.RegexRecognizer",
-    "intents": []
+    "intents": [
+      {
+        "intent": "help",
+        "pattern": "help"
+      }
+    ]
   },
   "id": "MenuDialog"
 }
