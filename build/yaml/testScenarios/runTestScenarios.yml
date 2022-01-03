@@ -7,6 +7,15 @@ name: $(BUILD.BUILDID)
 trigger: none
 pr: none
 
+resources:
+  pipelines:
+    pipeline: 02 - Deploy Bot Resources
+    source: 02 - Deploy Bot Resources
+    trigger:
+      branches:
+        include:
+        - main
+        - southworks/releases/*
 variables:
   BuildConfiguration: "Debug"
 
