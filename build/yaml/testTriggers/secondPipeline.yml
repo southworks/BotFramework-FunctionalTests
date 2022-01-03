@@ -2,14 +2,10 @@
 # Executes the test scenarios.
 #
 
-# "name" here defines the build number format. Build number is accessed via $(Build.BuildNumber)
-name: $(BUILD.BUILDID)
-pr: none
-
 resources:
   pipelines:
     pipeline: FirstPipeline-resource
-    source: FFirst-Pipeline
+    source: First-Pipeline
     trigger: true
 
 variables:
