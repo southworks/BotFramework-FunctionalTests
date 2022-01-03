@@ -9,13 +9,13 @@ pr: none
 
 resources:
   pipelines:
-    pipeline: First Pipeline
+    pipeline: First-Pipeline
     source: First Pipeline
     trigger:
       branches:
         include:
         - southworks/main
-        - southworks/releases/*
+
 variables:
   BuildConfiguration: "Debug"
 
