@@ -10,10 +10,7 @@ resources:
   pipelines:
     pipeline: First-Pipeline
     source: First Pipeline
-    trigger:
-      branches:
-        include:
-        - southworks/main
+    trigger: true
 
 variables:
   BuildConfiguration: "Debug"
