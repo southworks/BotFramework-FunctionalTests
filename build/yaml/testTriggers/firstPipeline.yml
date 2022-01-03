@@ -8,8 +8,9 @@ pr: none
 
 resources:
   pipelines:
-  - pipeline: First-Pipeline
-    source: First Pipeline
+  - pipeline: FirstPipeline-resource
+    source: First-Pipeline
+    trigger: true
 
 variables:
   BuildConfiguration: "Debug"

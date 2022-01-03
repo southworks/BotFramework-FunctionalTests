@@ -8,8 +8,8 @@ pr: none
 
 resources:
   pipelines:
-    pipeline: First-Pipeline
-    source: First Pipeline
+    pipeline: FirstPipeline-resource
+    source: FFirst-Pipeline
     trigger: true
 
 variables:
