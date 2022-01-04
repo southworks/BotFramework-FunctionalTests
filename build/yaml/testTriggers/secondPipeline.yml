@@ -9,7 +9,11 @@ resources:
   pipelines:
   - pipeline: FirstPipeline
     source: First-Pipeline
-    trigger: true
+    trigger:
+      branches:
+        include:
+        - southworks/main
+        - southworks/releases/*
 
 variables:
   BuildConfiguration: "Debug"
