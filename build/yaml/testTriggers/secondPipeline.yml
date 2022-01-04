@@ -9,8 +9,8 @@ pr: none
 
 resources:
   pipelines:
-  - pipeline: DeployBotsOk
-    source: Deploy-Bots-Ok
+  - pipeline: 02ADeployBots
+    source: 02A-Deploy-Bots
     trigger:
       branches:
         include:
