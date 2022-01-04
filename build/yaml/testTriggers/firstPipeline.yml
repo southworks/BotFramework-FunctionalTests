@@ -3,7 +3,9 @@
 #
 
 # "name" here defines the build number format. Build number is accessed via $(Build.BuildNumber)
-name: $(BUILD.BUILDID)
+name: "$(BUILD.BUILDID)"
+trigger: none
+pr: none
 
 variables:
   BuildConfiguration: "Debug"
