@@ -10,7 +10,7 @@ pr: none
 resources:
   pipelines:
   - pipeline: DeployBotResources
-    source: '2.A - Deploy Bot Resources'
+    source: '2A Deploy Bot Resources'
     trigger:
       branches:
         include:
