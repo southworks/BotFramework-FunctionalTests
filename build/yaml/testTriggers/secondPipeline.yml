@@ -9,8 +9,8 @@ pr: none
 
 resources:
   pipelines:
-  - pipeline: 2ADeployBotResources
-    source: 2A-Deploy-Bot-Resources
+  - pipeline: DeployBots
+    source: Deploy-Bots
     trigger:
       branches:
         include:
