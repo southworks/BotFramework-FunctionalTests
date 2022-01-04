@@ -9,7 +9,7 @@ pr: none
 
 resources:
   pipelines:
-  - pipeline: 2.ADeployBotResources
+  - pipeline: 2ADeployBotResources
     source: "2.A - Deploy Bot Resources"
     trigger:
       branches:
