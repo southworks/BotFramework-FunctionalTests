@@ -9,8 +9,8 @@ pr: none
 
 resources:
   pipelines:
-  - pipeline: FirstPipeline
-    source: First-Pipeline
+  - pipeline: 2.ADeployBotResources
+    source: 2.A - Deploy Bot Resources
     trigger:
       branches:
         include:
