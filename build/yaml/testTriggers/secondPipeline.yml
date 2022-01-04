@@ -9,8 +9,8 @@ pr: none
 
 resources:
   pipelines:
-  - pipeline: '02ADeployBots'
-    source: '02A-Deploy-Bots'
+  - pipeline: '02ADeploySkillBots'
+    source: '02.A. Deploy Skill Bots'
     trigger:
       branches:
         include:
