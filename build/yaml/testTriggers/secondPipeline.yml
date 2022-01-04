@@ -9,7 +9,7 @@ pr: none
 
 resources:
   pipelines:
-  - pipeline: DeployBots
+  - pipeline: FirstPipeline
     source: Deploy-Bots
     trigger:
       branches:
