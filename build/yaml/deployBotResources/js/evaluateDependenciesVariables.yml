@@ -22,31 +22,23 @@ steps:
         $sourceJSMyGet = "https://botbuilder.myget.org/F/botbuilder-v4-js-daily/npm/"
         $sourceJSv3MyGet = "https://botbuilder.myget.org/F/botbuilder-v3-js-daily/npm/"
         $sourceJSNpm = "https://registry.npmjs.com/"
-        $versionNumber = "${{ parameters.version }}"
-        $registry = "${{ parameters.registry }}"
-        $botType =  "${{ parameters.botType }}"
-        switch -regex ($registry) {
+        switch -regex ("${{ parameters.registry }}") {
           "^($null|MyGet)$" {
-            switch ($botType) {
+            switch ("${{ parameters.botType }}") {
               "SkillV3" { $source = $sourceJSv3MyGet }
               default { $source = $sourceJSMyGet }
             }
           }
-          "Npm" { 
-            $source = $sourceJSNpm 
-            if ([string]::IsNullOrEmpty($versionNumber)){
-              $versionNumber = "STABLE"
-            }
-          }
-          default { $source = $registry }
+          "Npm" { $source = $sourceJSNpm }
+          default { $source = "${{ parameters.registry }}" }
         }
         Write-Host "Source: $source"
         npm config set registry $source
 
         # Get Version Number
-        switch -regex ("$versionNumber") {
+        switch -regex ("${{ parameters.version }}") {
           "^($null||LATEST)$" {
-            if ($botType -in "SkillV3") {
+            if ("${{ parameters.botType }}" -in "SkillV3") {
               if ($source -eq $sourceJSv3MyGet) {
                 $versionNumber = npm show botbuilder@latest version | Out-String
               } else {
@@ -57,17 +49,18 @@ steps:
             }
           }
           STABLE {
-            if ($botType -in "Host", "Skill") {
+            if ("${{ parameters.botType }}" -in "Host", "Skill") {
               $PackageList = npm show botbuilder@* version | Out-String;
             }
-            elseif ($botType -in "SkillV3") {
+            elseif ("${{ parameters.botType }}" -in "SkillV3") {
               $PackageList = npm show botbuilder@3.* version | Out-String;
             }
             $versionNumber = ($PackageList.Split(" ")[-1]).Trim().TrimStart("'").TrimEnd("'");
           }
+          default { $versionNumber = "${{ parameters.version }}" }
         }
         Write-Host "Version Number: $versionNumber"
- 
+        
         # Set environment variables
         Write-Host "##vso[task.setvariable variable=DependenciesSource]$source"
         Write-Host "##vso[task.setvariable variable=DependenciesVersionNumber]$versionNumber"
