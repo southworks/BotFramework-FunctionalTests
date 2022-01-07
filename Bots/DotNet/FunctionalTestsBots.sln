@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposerSkillBotDotNet", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetUserTokenDialog", "Skills\Composer\ComposerSkillBotDotNet\GetTokenDialog\GetUserTokenDialog.csproj", "{6E341B86-B101-41B1-9E5C-6C626C35A9A6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposerHostBotDotNet", "Consumers\Composer\ComposerHostBotDotNet\ComposerHostBotDotNet.csproj", "{E3FCDDD4-553D-44BA-8B2F-82BA778261BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
