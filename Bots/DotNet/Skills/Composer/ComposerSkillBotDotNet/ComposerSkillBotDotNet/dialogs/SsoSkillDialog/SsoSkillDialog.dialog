@@ -183,7 +183,7 @@
               "$designer": {
                 "id": "YXtopj"
               },
-              "errorValue": "Unrecognized action: ${dialog.selectedAction}"
+              "errorValue": "\"Unrecognized action: ${dialog.selectedAction}\""
             }
           ]
         },
