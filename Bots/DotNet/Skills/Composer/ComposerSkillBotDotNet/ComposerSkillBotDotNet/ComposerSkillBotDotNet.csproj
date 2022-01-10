@@ -30,7 +30,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GetTokenDialog\GetUserTokenDialog.csproj" />
-  </ItemGroup>
 </Project>
