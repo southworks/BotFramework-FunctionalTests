@@ -18,6 +18,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\images\architecture-resize.png">
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DownloadFileDialog\DownloadFileDialog.csproj" />
+  </ItemGroup>
+  <ItemGroup>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
