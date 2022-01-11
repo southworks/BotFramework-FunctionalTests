@@ -3,6 +3,7 @@ parameters:
   displayName: Bot's App Registration Ids
   type: object
   default:
+    ComposerSkillBotDotNet: ""
     EchoSkillBotComposerDotNet: ""
     EchoSkillBotDotNet: ""
     EchoSkillBotDotNetV3: ""
@@ -372,11 +373,11 @@ steps:
               # Format output
               $output += $settings.toSet | ForEach-Object { 
                 $setting = $_;
-                        
+
                 if ($setting.name.ToLower().EndsWith("appid")) {
                   $setting.value = $setting.value.Substring(0, 3) + "***"
                 }
-                      
+
                 return [PSCustomObject]@{ 
                   Name  = $setting.name
                   Value = $setting.value
@@ -488,6 +489,14 @@ steps:
             group         = "Waterfall"
           }
           @{
+            key           = "ComposerSkillBotDotNet"
+            keyComposer   = "composerSkillBotDotNet" 
+            botName       = "bffncomposerskillbotdotnet"
+            appId         = "${{ parameters.appIds.ComposerSkillBotDotNet }}"
+            resourceGroup = $groups.DotNet
+            group         = "Waterfall"
+          }
+          @{
             key           = "EchoSkillBotJS"
             keyComposer   = "echoSkillBotJs" 
             botName       = "bffnechoskillbotjs"
@@ -558,7 +567,8 @@ steps:
             skills    = @(
               "WaterfallSkillBotDotNet",
               "WaterfallSkillBotJS",
-              "WaterfallSkillBotPython"
+              "WaterfallSkillBotPython",
+              "ComposerSkillBotDotNet"
             );
           }
         )
