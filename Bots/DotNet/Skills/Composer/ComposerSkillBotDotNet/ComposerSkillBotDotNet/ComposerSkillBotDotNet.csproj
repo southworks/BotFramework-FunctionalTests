@@ -19,18 +19,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\images\architecture-resize.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DownloadFileDialog\DownloadFileDialog.csproj" />
   </ItemGroup>
   <ItemGroup>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="media\architecture-resize.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="media\teams-logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
