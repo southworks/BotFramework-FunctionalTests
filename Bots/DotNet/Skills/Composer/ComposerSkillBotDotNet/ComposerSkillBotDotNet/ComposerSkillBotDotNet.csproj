@@ -11,6 +11,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Bot.Builder.Community.Components.TokenExchangeSkillHandler" Version="4.13.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
     <PackageReference Include="Microsoft.Bot.Builder.AI.Luis" Version="4.14.1" />
     <PackageReference Include="Microsoft.Bot.Builder.AI.QnA" Version="4.14.1" />
@@ -20,6 +21,9 @@
     <Content Update="wwwroot\images\architecture-resize.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DownloadFileDialog\DownloadFileDialog.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="media\teams-logo.png">

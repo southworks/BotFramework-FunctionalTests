@@ -88,6 +88,7 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot.Dialogs.Sso
         private async Task<DialogTurnResult> HandleActionStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var action = ((FoundChoice)stepContext.Result).Value.ToLowerInvariant();
+            var userTokenClient = stepContext.Context.TurnState.Get<UserTokenClient>();
 
             switch (action)
             {
@@ -95,14 +96,12 @@ namespace Microsoft.BotFrameworkFunctionalTests.WaterfallHostBot.Dialogs.Sso
                     return await stepContext.BeginDialogAsync(nameof(SsoSignInDialog), null, cancellationToken);
 
                 case "logout":
-                    var userTokenClient = stepContext.Context.TurnState.Get<UserTokenClient>();
                     await userTokenClient.SignOutUserAsync(stepContext.Context.Activity.From.Id, _connectionName, stepContext.Context.Activity.ChannelId, cancellationToken);
                     await stepContext.Context.SendActivityAsync("You have been signed out.", cancellationToken: cancellationToken);
                     return await stepContext.NextAsync(cancellationToken: cancellationToken);
 
                 case "show token":
-                    var userTokenClient2 = stepContext.Context.TurnState.Get<UserTokenClient>();
-                    var token = await userTokenClient2.GetUserTokenAsync(stepContext.Context.Activity.From.Id, _connectionName, stepContext.Context.Activity.ChannelId, null, cancellationToken).ConfigureAwait(false);
+                    var token = await userTokenClient.GetUserTokenAsync(stepContext.Context.Activity.From.Id, _connectionName, stepContext.Context.Activity.ChannelId, null, cancellationToken).ConfigureAwait(false);
                     if (token == null)
                     {
                         await stepContext.Context.SendActivityAsync("User has no cached token.", cancellationToken: cancellationToken);
