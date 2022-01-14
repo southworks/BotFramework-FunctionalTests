@@ -324,7 +324,7 @@ steps:
 
             $conditions = @(
               "BotFrameworkSkills*"
-              "skill_*"
+              "skill_(.*)"
             )
           
             $output += AddTimeStamp -text "$($consumer.key): Looking for existing Azure AppSettings ...";
