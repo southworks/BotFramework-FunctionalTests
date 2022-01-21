@@ -20,7 +20,7 @@ namespace SkillFunctionalTests.Skills.FileUpload
     [Trait("TestCategory", "FileUpload")]
     public class FileUploadTests : ScriptTestBase
     {
-        private readonly string _testScriptsFolder = Directory.GetCurrentDirectory() + @"/FileUpload/TestScripts";
+        private readonly string _testScriptsFolder = Directory.GetCurrentDirectory() + @"/Skills/FileUpload/TestScripts";
 
         public FileUploadTests(ITestOutputHelper output)
             : base(output)
