@@ -94,13 +94,13 @@ namespace SkillFunctionalTests.Skills.FileUpload
             await runner.RunTestAsync(Path.Combine(_testScriptsFolder, testCase.Script), testParams);
 
             // Create a new file to upload.
-            await using var stream = File.Create(Directory.GetCurrentDirectory() + $"/FileUpload/{fileName}");
+            await using var stream = File.Create(Directory.GetCurrentDirectory() + $"/Skills/FileUpload/{fileName}");
             await using var writer = new StreamWriter(stream);
             await writer.WriteLineAsync($"GUID:{testGuid}");
             writer.Close();
 
             // Upload file.
-            await using var file = File.OpenRead(Directory.GetCurrentDirectory() + $"/FileUpload/{fileName}");
+            await using var file = File.OpenRead(Directory.GetCurrentDirectory() + $"/Skills/FileUpload/{fileName}");
             await runner.UploadAsync(file);
 
             // Execute the rest of the conversation.
