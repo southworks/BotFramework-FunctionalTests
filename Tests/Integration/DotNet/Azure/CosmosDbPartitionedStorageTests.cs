@@ -3,15 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Adapters;
-using Microsoft.Bot.Builder.Azure;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Newtonsoft.Json.Linq;
@@ -22,73 +16,43 @@ namespace IntegrationTests.Azure
     //[Collection("CosmosDb")]
     [Trait("TestCategory", "Storage")]
     [Trait("TestCategory", "Storage - CosmosDB Partitioned")]
-    public class CosmosDbPartitionedStorageTests : StorageBaseTests, IAsyncLifetime, IClassFixture<CosmosDbPartitionStorageFixture>
+    public class CosmosDbPartitionedStorageTests : StorageBaseTests, IClassFixture<CosmosDbPartitionedStorageFixture>
     {
-        // Endpoint and Authkey for the CosmosDB Emulator running locally
-        private const string CosmosServiceEndpoint = "https://localhost:8081";
-        private const string CosmosAuthKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
-        private const string DatabaseId = "CosmosDbPartitionStorageTests";
-        private const string CosmosCollectionName = "bot-storage";
-        private const string PartitionedCollectionId = "PartitionedStorage";
-        private IStorage _storage;
-        private readonly StoreItem _itemToTest = new StoreItem() { MessageList = new string[] { "hi", "how are u" }, City = "Contoso" };
+        private readonly CosmosDbPartitionedStorageFixture _cosmosDbFixture;
 
-        private CosmosDbFixture _cosmosDbFixture;
-
-        public CosmosDbPartitionedStorageTests(CosmosDbPartitionStorageFixture cosmosDbFixture)
+        public CosmosDbPartitionedStorageTests(CosmosDbPartitionedStorageFixture cosmosDbFixture)
         {
             _cosmosDbFixture = cosmosDbFixture;
-
-            _storage = new CosmosDbPartitionedStorage(
-                new CosmosDbPartitionedStorageOptions
-                {
-                    AuthKey = CosmosAuthKey,
-                    ContainerId = CosmosCollectionName,
-                    CosmosDbEndpoint = CosmosServiceEndpoint,
-                    DatabaseId = DatabaseId,
-                });
-        }
-
-        public Task InitializeAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task DisposeAsync()
-        {
-            _storage = null;
-
-            return Task.CompletedTask;
         }
 
         [Fact]
         public Task CreateStoreItem()
         {
-            return CreateStoreItemTest(_storage);
+            return CreateStoreItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
         public Task UpdateStoreItem()
         {
-            return UpdateStoreItemTest(_storage);
+            return UpdateStoreItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
         public Task ReadUnknownStoreItem()
         {
-            return ReadUnknownStoreItemTest(_storage);
+            return ReadUnknownStoreItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
         public Task DeleteStoreItem()
         {
-            return DeleteStoreItemTest(_storage);
+            return DeleteStoreItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
         public Task CreateStoreItemWithSpecialCharacters()
         {
-            return CreateStoreItemWithSpecialCharactersTest(_storage);
+            return CreateStoreItemWithSpecialCharactersTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
@@ -109,7 +73,7 @@ namespace IntegrationTests.Azure
                     { "nestingLimit", CreateNestedData(depth) },
                 };
 
-                await _storage.WriteAsync(dict);
+                await _cosmosDbFixture.Storage.WriteAsync(dict);
             }
 
             // Should not throw
@@ -145,7 +109,7 @@ namespace IntegrationTests.Azure
 
                 var dialog = CreateNestedDialog(dialogDepth);
 
-                var convoState = new ConversationState(_storage);
+                var convoState = new ConversationState(_cosmosDbFixture.Storage);
 
                 var adapter = new TestAdapter(TestAdapter.CreateConversation("nestingTest"))
                     .Use(new AutoSaveStateMiddleware(convoState));
@@ -182,111 +146,6 @@ namespace IntegrationTests.Azure
                 // then this assertion won't be reached, which is okay
                 Assert.Contains("dialogs", ex.Message);
             }
-        }
-
-        [Fact]
-        public async Task DeleteStoreItemFromPartitionedCollection()
-        {
-            // The WriteAsync method receive an object as a parameter then encapsulate it in an object named "document"
-            // The partitionKeyPath must have the "document" value to properly route the values as partitionKey
-            // <see also cref="WriteAsync(IDictionary{string, object}, CancellationToken)"/>
-            const string partitionKeyPath = "document/city";
-
-            await CreateCosmosDbWithPartitionedCollection(partitionKeyPath);
-
-            IStorage storage = new CosmosDbStorage(CreateCosmosDbStorageOptions(PartitionedCollectionId, _itemToTest.City));
-            var items = new Dictionary<string, object>
-            {
-                { "deletePartitionedItem", _itemToTest }
-            };
-
-            await storage.WriteAsync(items);
-
-            // Delete store item
-            await storage.DeleteAsync(items.Keys.ToArray());
-            var deletedStoreItems = await storage.ReadAsync(items.Keys.ToArray());
-
-            Assert.Empty(deletedStoreItems);
-        }
-
-        [Fact]
-        public async Task UpdateStoreItemFromPartitionedCollection()
-        {
-            // The WriteAsync method receive a object as a parameter then encapsulate it in a object named "document"
-            // The partitionKeyPath must have the "document" value to properly route the values as partitionKey
-            // <see also cref="WriteAsync(IDictionary{string, object}, CancellationToken)"/>
-            const string partitionKeyPath = "document/city";
-
-            await CreateCosmosDbWithPartitionedCollection(partitionKeyPath);
-
-            // Connect to the cosmosDb created before with "Contoso" as partitionKey
-            IStorage storage = new CosmosDbStorage(CreateCosmosDbStorageOptions(PartitionedCollectionId, _itemToTest.City));
-            var items = new Dictionary<string, object>
-            {
-                { "updatePartitionedItem", _itemToTest }
-            };
-
-            await storage.WriteAsync(items);
-
-            var createdStoreItems = await storage.ReadAsync(items.Keys.ToArray());
-            var createdStoreItem = createdStoreItems.First().Value as StoreItem;
-
-            // Update store item
-            createdStoreItem.MessageList = new string[] { "new message" };
-
-            await storage.WriteAsync(createdStoreItems);
-
-            var updatedStoreItems = await storage.ReadAsync(items.Keys.ToArray());
-
-            var updatedStoreItem = updatedStoreItems.First().Value as StoreItem;
-
-            Assert.NotEqual(createdStoreItem.ETag, updatedStoreItem.ETag);
-            Assert.Equal(createdStoreItem.MessageList, updatedStoreItem.MessageList);
-        }
-
-        [Fact]
-        public async Task CreateStoreItemFromPartitionedCollection()
-        {
-            // The WriteAsync method receive a object as a parameter then encapsulate it in a object named "document"
-            // The partitionKeyPath must have the "document" value to properly route the values as partitionKey
-            // <see also cref="WriteAsync(IDictionary{string, object}, CancellationToken)"/>
-            const string partitionKeyPath = "document/city";
-
-            await CreateCosmosDbWithPartitionedCollection(partitionKeyPath);
-
-            // Connect to the cosmosDb created before with "Contoso" as partitionKey
-            IStorage storage = new CosmosDbStorage(CreateCosmosDbStorageOptions(PartitionedCollectionId, _itemToTest.City));
-            var items = new Dictionary<string, object>
-            {
-                { "createPartitionedItem", _itemToTest }
-            };
-
-            await storage.WriteAsync(items);
-            var storeItems = await storage.ReadAsync<StoreItem>(items.Keys.ToArray());
-
-            Assert.Equal(_itemToTest.City, storeItems.First().Value.City);
-        }
-
-        private async Task CreateCosmosDbWithPartitionedCollection(string partitionKey)
-        {
-            using var client = new DocumentClient(new Uri(_cosmosDbFixture.ServiceEndpoint), _cosmosDbFixture.AuthKey);
-            Microsoft.Azure.Documents.Database database = await client.CreateDatabaseIfNotExistsAsync(new Microsoft.Azure.Documents.Database { Id = DatabaseId });
-            var partitionKeyDefinition = new PartitionKeyDefinition { Paths = new Collection<string> { $"/{partitionKey}" } };
-            var collectionDefinition = new DocumentCollection { Id = PartitionedCollectionId, PartitionKey = partitionKeyDefinition };
-
-            await client.CreateDocumentCollectionIfNotExistsAsync(database.SelfLink, collectionDefinition);
-        }
-
-        private CosmosDbStorageOptions CreateCosmosDbStorageOptions(string collectionId, string partitionKey = "")
-        {
-            return new CosmosDbStorageOptions()
-            {
-                PartitionKey = partitionKey,
-                AuthKey = _cosmosDbFixture.AuthKey,
-                CollectionId = collectionId,
-                CosmosDBEndpoint = new Uri(_cosmosDbFixture.ServiceEndpoint),
-                DatabaseId = DatabaseId,
-            };
         }
     }
 }
