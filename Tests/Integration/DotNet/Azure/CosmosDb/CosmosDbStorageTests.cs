@@ -9,9 +9,9 @@ using Xunit;
 
 namespace IntegrationTests.Azure.CosmosDb
 {
+    [Trait("TestCategory", "Deprecated")]
     [Trait("TestCategory", "Storage")]
     [Trait("TestCategory", "CosmosDb")]
-    [Trait("TestCategory", "Deprecated")]
     public class CosmosDbStorageTests : CosmosDbBaseTests, IClassFixture<CosmosDbStorageFixture>
     {
         private readonly CosmosDbStorageFixture _cosmosDbFixture;

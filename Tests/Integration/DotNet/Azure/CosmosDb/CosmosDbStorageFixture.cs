@@ -49,11 +49,11 @@ namespace IntegrationTests.Azure.CosmosDb
             });
         }
 
-        public async Task CreateStoragePartitionedContainer(string partitionKeyPaths)
+        public async Task CreateStoragePartitionedContainer(string partitionKeyPath)
         {
             using var client = new DocumentClient(new Uri(ServiceEndpoint), AuthKey);
             Database database = await client.CreateDatabaseIfNotExistsAsync(new Database { Id = DatabaseId });
-            var partitionKeyDefinition = new PartitionKeyDefinition { Paths = new Collection<string> { $"/{partitionKeyPaths}" } };
+            var partitionKeyDefinition = new PartitionKeyDefinition { Paths = new Collection<string> { $"/{partitionKeyPath}" } };
             var collectionDefinition = new DocumentCollection { Id = PartitionedContainerId, PartitionKey = partitionKeyDefinition };
 
             await client.CreateDocumentCollectionIfNotExistsAsync(database.SelfLink, collectionDefinition);
