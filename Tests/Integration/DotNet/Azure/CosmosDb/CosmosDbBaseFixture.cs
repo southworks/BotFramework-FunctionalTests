@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Diagnostics;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -12,9 +10,9 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
-namespace IntegrationTests.Azure
+namespace IntegrationTests.Azure.CosmosDb
 {
-    public abstract class CosmosDbFixture : IAsyncLifetime
+    public abstract class CosmosDbBaseFixture : IAsyncLifetime
     {
         public string AuthKey { get; private set; }
 
@@ -54,8 +52,6 @@ namespace IntegrationTests.Azure
         public async Task DisposeAsync()
         {
             await DeleteDatabase(DatabaseId);
-
-            //await Task.FromResult(true);
         }
 
         protected Task<DatabaseResponse> DeleteDatabase(string name)
@@ -79,10 +75,10 @@ namespace IntegrationTests.Azure
                 await client.OpenAsync();
                 return true;
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 var message = $"CosmosDB: Unable to connect to the '{ServiceEndpoint}' endpoint.";
-                throw new HttpRequestException(message, ex);
+                throw new Exception(message, ex);
             }
         }
     }

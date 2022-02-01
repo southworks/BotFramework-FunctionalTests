@@ -11,11 +11,11 @@ using Microsoft.Bot.Schema;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace IntegrationTests.Azure
+namespace IntegrationTests.Azure.CosmosDb
 {
     [Trait("TestCategory", "Storage")]
-    [Trait("TestCategory", "CosmosDBPartitioned")]
-    public class CosmosDbPartitionedStorageTests : StorageBaseTests, IClassFixture<CosmosDbPartitionedStorageFixture>
+    [Trait("TestCategory", "CosmosDb Partitioned")]
+    public class CosmosDbPartitionedStorageTests : CosmosDbBaseTests, IClassFixture<CosmosDbPartitionedStorageFixture>
     {
         private readonly CosmosDbPartitionedStorageFixture _cosmosDbFixture;
 
@@ -25,37 +25,37 @@ namespace IntegrationTests.Azure
         }
 
         [Fact]
-        public Task CreateStoreItem()
+        public Task CreateItem()
         {
-            return CreateStoreItemTest(_cosmosDbFixture.Storage);
+            return CreateItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
-        public Task UpdateStoreItem()
+        public Task UpdateItem()
         {
-            return UpdateStoreItemTest(_cosmosDbFixture.Storage);
+            return UpdateItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
-        public Task ReadUnknownStoreItem()
+        public Task ReadUnknownItem()
         {
-            return ReadUnknownStoreItemTest(_cosmosDbFixture.Storage);
+            return ReadUnknownItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
-        public Task DeleteStoreItem()
+        public Task DeleteItem()
         {
-            return DeleteStoreItemTest(_cosmosDbFixture.Storage);
+            return DeleteItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
-        public Task CreateStoreItemWithSpecialCharacters()
+        public Task CreateItemWithSpecialCharacters()
         {
-            return CreateStoreItemWithSpecialCharactersTest(_cosmosDbFixture.Storage);
+            return CreateItemWithSpecialCharactersTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
-        public async Task CreateStoreItemWithNestingLimit()
+        public async Task CreateItemWithNestingLimit()
         {
             async Task TestNestAsync(int depth)
             {
@@ -92,7 +92,7 @@ namespace IntegrationTests.Azure
         }
 
         [Fact]
-        public async Task CreateStoreitemWithDialogsNestingLimit()
+        public async Task CreateItemWithDialogsNestingLimit()
         {
             async Task TestDialogNestAsync(int dialogDepth)
             {

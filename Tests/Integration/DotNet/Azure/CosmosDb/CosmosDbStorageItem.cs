@@ -4,9 +4,9 @@
 using Microsoft.Bot.Builder;
 using Newtonsoft.Json;
 
-namespace IntegrationTests.Azure
+namespace IntegrationTests.Azure.CosmosDb
 {
-    public class StoreItem : IStoreItem
+    public class CosmosDbStorageItem : IStoreItem
     {
         [JsonProperty(PropertyName = "messageList")]
         public string[] MessageList { get; set; }

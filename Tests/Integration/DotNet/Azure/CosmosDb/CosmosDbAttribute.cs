@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-namespace IntegrationTests.Azure
+using System;
+
+namespace IntegrationTests.Azure.CosmosDb
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class CosmosDbAttribute : Attribute
