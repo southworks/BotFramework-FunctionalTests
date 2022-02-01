@@ -2,28 +2,33 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace IntegrationTests.Azure
 {
-    public class CosmosDbFixture : IAsyncLifetime
+    public abstract class CosmosDbFixture : IAsyncLifetime
     {
-        // Endpoint and Authkey for the CosmosDB Emulator running locally.
-        // See https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=ssl-netstd21#authenticate-requests for details on the well known key being used.
-        private const string EmulatorServiceEndpoint = "https://localhost:8081";
-        private const string EmulatorAuthKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+        public string AuthKey { get; private set; }
 
         public string ServiceEndpoint { get; private set; }
 
-        public string AuthKey { get; private set; }
+        public string DatabaseId { get; private set; }
+
+        public CosmosClient Client { get; private set; }
 
         public async Task InitializeAsync()
         {
+            var attr = GetType().GetCustomAttribute(typeof(CosmosDbAttribute)) as CosmosDbAttribute;
+            DatabaseId = attr?.DatabaseId;
+
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile("appsettings.Development.json", true, true)
@@ -32,13 +37,33 @@ namespace IntegrationTests.Azure
 
             ServiceEndpoint = configuration["Azure:CosmosDB:ServiceEndpoint"];
             AuthKey = configuration["Azure:CosmosDB:AuthKey"];
-            
+
+            Client = new CosmosClient(
+                ServiceEndpoint,
+                AuthKey,
+                new CosmosClientOptions());
+
             await IsServiceRunning();
+
+            await Client.CreateDatabaseIfNotExistsAsync(DatabaseId);
         }
 
-        public Task DisposeAsync()
+        public async Task DisposeAsync()
         {
-            return Task.CompletedTask;
+            await DeleteDatabase(DatabaseId);
+        }
+
+        protected Task<DatabaseResponse> DeleteDatabase(string name)
+        {
+            try
+            {
+                return Client.GetDatabase(name).DeleteAsync();
+            }
+            catch (Exception ex)
+            {
+                const string message = "CosmosDB: Error cleaning up resources.";
+                throw new Exception(message, ex);
+            }
         }
 
         protected async Task<bool> IsServiceRunning()

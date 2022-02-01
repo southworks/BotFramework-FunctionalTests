@@ -10,193 +10,105 @@ using Xunit;
 
 namespace IntegrationTests.Azure
 {
-    public class StorageBaseTests 
+    public class StorageBaseTests
     {
-        protected async Task ReadUnknownTest(IStorage storage)
+        private readonly StoreItem _itemToTest = new StoreItem() { MessageList = new string[] { "hi", "how are u" }, City = "Contoso" };
+
+        protected async Task ReadUnknownStoreItemTest(IStorage storage)
         {
             var result = await storage.ReadAsync(new[] { "unknown" });
-            Assert.NotNull(result);
-            Assert.Null(result.FirstOrDefault(e => e.Key == "unknown").Value);
+
+            Assert.Empty(result);
         }
 
-        protected async Task CreateObjectTest(IStorage storage)
+        protected async Task CreateStoreItemTest(IStorage storage)
         {
-            var storeItems = new Dictionary<string, object>
+            var dict = new Dictionary<string, object>
             {
-                ["createPoco"] = new PocoItem() { Id = "1" },
-                ["createPocoStoreItem"] = new PocoStoreItem() { Id = "2" },
+                { "createItem", _itemToTest },
             };
 
-            await storage.WriteAsync(storeItems);
+            await storage.WriteAsync(dict);
 
-            var readStoreItems = new Dictionary<string, object>(await storage.ReadAsync(storeItems.Keys.ToArray()));
+            var items = await storage.ReadAsync<StoreItem>(dict.Keys.ToArray());
+            var item = items.FirstOrDefault().Value;
 
-            Assert.IsType<PocoItem>(readStoreItems["createPoco"]);
-            Assert.IsType<PocoStoreItem>(readStoreItems["createPocoStoreItem"]);
-
-            var createPoco = readStoreItems["createPoco"] as PocoItem;
-
-            Assert.NotNull(createPoco);
-            Assert.Equal("1", createPoco.Id);
-
-            var createPocoStoreItem = readStoreItems["createPocoStoreItem"] as PocoStoreItem;
-
-            Assert.NotNull(createPocoStoreItem);
-            Assert.Equal("2", createPocoStoreItem.Id);
-            Assert.NotNull(createPocoStoreItem.ETag);
+            Assert.Single(items);
+            Assert.NotNull(item);
+            Assert.NotNull(item.ETag);
+            Assert.Equal(_itemToTest.City, item.City);
+            Assert.Equal(_itemToTest.MessageList, item.MessageList);
         }
 
-        protected async Task HandleCrazyKeys(IStorage storage)
+        protected async Task CreateStoreItemWithSpecialCharactersTest(IStorage storage)
         {
             var key = "!@#$%^&*()~/\\><,.?';\"`~";
-            var storeItem = new PocoStoreItem() { Id = "1" };
-
-            var dict = new Dictionary<string, object>() { { key, storeItem } };
-
-            await storage.WriteAsync(dict);
-
-            var storeItems = await storage.ReadAsync(new[] { key });
-
-            storeItem = storeItems.FirstOrDefault(si => si.Key == key).Value as PocoStoreItem;
-
-            Assert.NotNull(storeItem);
-            Assert.Equal("1", storeItem.Id);
-        }
-
-        protected async Task UpdateObjectTest<T>(IStorage storage)
-            where T : Exception
-        {
-            var originalPocoItem = new PocoItem() { Id = "1", Count = 1 };
-            var originalPocoStoreItem = new PocoStoreItem() { Id = "1", Count = 1 };
-
-            // first write should work
-            var dict = new Dictionary<string, object>()
+            var dict = new Dictionary<string, object>
             {
-                { "pocoItem", originalPocoItem },
-                { "pocoStoreItem", originalPocoStoreItem },
+                { key, _itemToTest },
             };
 
             await storage.WriteAsync(dict);
 
-            var loadedStoreItems = new Dictionary<string, object>(await storage.ReadAsync(new[] { "pocoItem", "pocoStoreItem" }));
+            var items = await storage.ReadAsync<StoreItem>(dict.Keys.ToArray());
+            var item = items.FirstOrDefault().Value;
 
-            var updatePocoItem = loadedStoreItems["pocoItem"] as PocoItem;
-            var updatePocoStoreItem = loadedStoreItems["pocoStoreItem"] as PocoStoreItem;
-            Assert.NotNull(updatePocoStoreItem.ETag);
-
-            // 2nd write should work, because we have new etag, or no etag
-            updatePocoItem.Count++;
-            updatePocoStoreItem.Count++;
-
-            await storage.WriteAsync(loadedStoreItems);
-
-            var reloadedStoreItems = new Dictionary<string, object>(await storage.ReadAsync(new[] { "pocoItem", "pocoStoreItem" }));
-
-            var reloeadedUpdatePocoItem = reloadedStoreItems["pocoItem"] as PocoItem;
-            var reloadedUpdatePocoStoreItem = reloadedStoreItems["pocoStoreItem"] as PocoStoreItem;
-
-            Assert.NotNull(reloadedUpdatePocoStoreItem.ETag);
-            Assert.NotEqual(updatePocoStoreItem.ETag, reloadedUpdatePocoStoreItem.ETag);
-            Assert.Equal(2, reloeadedUpdatePocoItem.Count);
-            Assert.Equal(2, reloadedUpdatePocoStoreItem.Count);
-
-            // write with old etag should succeed for non-storeitem
-            try
-            {
-                updatePocoItem.Count = 123;
-
-                await storage.WriteAsync(
-                    new Dictionary<string, object>() { { "pocoItem", updatePocoItem } });
-            }
-            catch
-            {
-                Assert.True(false); // This should not be hit
-            }
-
-            // write with old etag should FAIL for storeitem
-            
-            updatePocoStoreItem.Count = 123;
-
-            await Assert.ThrowsAnyAsync<Exception>(() => storage.WriteAsync(
-                new Dictionary<string, object>() { { "pocoStoreItem", updatePocoStoreItem } }));
-
-            var reloadedStoreItems2 = new Dictionary<string, object>(await storage.ReadAsync(new[] { "pocoItem", "pocoStoreItem" }));
-
-            var reloadedPocoItem2 = reloadedStoreItems2["pocoItem"] as PocoItem;
-            var reloadedPocoStoreItem2 = reloadedStoreItems2["pocoStoreItem"] as PocoStoreItem;
-
-            Assert.Equal(123, reloadedPocoItem2.Count);
-            Assert.Equal(2, reloadedPocoStoreItem2.Count);
-
-            // write with wildcard etag should work
-            reloadedPocoItem2.Count = 100;
-            reloadedPocoStoreItem2.Count = 100;
-            reloadedPocoStoreItem2.ETag = "*";
-
-            var wildcardEtagedict = new Dictionary<string, object>()
-            {
-                { "pocoItem", reloadedPocoItem2 },
-                { "pocoStoreItem", reloadedPocoStoreItem2 },
-            };
-
-            await storage.WriteAsync(wildcardEtagedict);
-
-            var reloadedStoreItems3 = new Dictionary<string, object>(await storage.ReadAsync(new[] { "pocoItem", "pocoStoreItem" }));
-
-            Assert.Equal(100, (reloadedStoreItems3["pocoItem"] as PocoItem).Count);
-            Assert.Equal(100, (reloadedStoreItems3["pocoStoreItem"] as PocoStoreItem).Count);
-
-            // write with empty etag should not work
-            try
-            {
-                var reloadedStoreItems4 = await storage.ReadAsync(new[] { "pocoStoreItem" });
-                var reloadedStoreItem4 = reloadedStoreItems4["pocoStoreItem"] as PocoStoreItem;
-
-                Assert.NotNull(reloadedStoreItem4);
-
-                reloadedStoreItem4.ETag = string.Empty;
-                var dict2 = new Dictionary<string, object>()
-                {
-                    { "pocoStoreItem", reloadedStoreItem4 },
-                };
-
-                await storage.WriteAsync(dict2);
-
-                Assert.True(false); // "Should have thrown exception on write with storeitem because of empty etag"
-            }
-            catch
-            {
-            }
-
-            var finalStoreItems = new Dictionary<string, object>(await storage.ReadAsync(new[] { "pocoItem", "pocoStoreItem" }));
-            Assert.Equal(100, (finalStoreItems["pocoItem"] as PocoItem).Count);
-            Assert.Equal(100, (finalStoreItems["pocoStoreItem"] as PocoStoreItem).Count);
+            Assert.Single(items);
+            Assert.NotNull(item);
+            Assert.NotNull(item.ETag);
+            Assert.Equal(_itemToTest.City, item.City);
+            Assert.Equal(_itemToTest.MessageList, item.MessageList);
         }
 
-        protected async Task DeleteObjectTest(IStorage storage)
+        protected async Task UpdateStoreItemTest(IStorage storage)
         {
-            // first write should work
-            var dict = new Dictionary<string, object>()
-                {
-                    { "delete1", new PocoStoreItem() { Id = "1", Count = 1 } },
-                };
+            var dict = new Dictionary<string, object>
+            {
+                { "updateItem", _itemToTest },
+            };
 
             await storage.WriteAsync(dict);
 
-            var storeItems = await storage.ReadAsync(new[] { "delete1" });
-            var storeItem = storeItems.First().Value as PocoStoreItem;
+            var items = await storage.ReadAsync(dict.Keys.ToArray());
+            var created = items.FirstOrDefault().Value as StoreItem;
 
-            Assert.NotNull(storeItem.ETag);
-            Assert.Equal(1, storeItem.Count);
+            // Update store item
+            var list = created.MessageList.ToList();
+            list.Add("new message");
+            created.MessageList = list.ToArray();
 
-            await storage.DeleteAsync(new[] { "delete1" });
+            await storage.WriteAsync(items);
 
-            var reloadedStoreItems = await storage.ReadAsync(new[] { "delete1" });
+            var updatedItems = await storage.ReadAsync(dict.Keys.ToArray());
+            var updated = updatedItems.FirstOrDefault().Value as StoreItem;
 
-            Assert.False(reloadedStoreItems.Any(), "no store item should have been found because it was deleted");
+            Assert.NotEqual(created.ETag, updated.ETag);
+            Assert.Equal(3, updated.MessageList.Length);
+            Assert.Equal(created.MessageList, updated.MessageList);
         }
 
-        protected async Task DeleteUnknownObjectTest(IStorage storage)
+        protected async Task DeleteStoreItemTest(IStorage storage)
+        {
+            var dict = new Dictionary<string, object>
+            {
+                { "deleteItem", _itemToTest },
+            };
+
+            await storage.WriteAsync(dict);
+
+            var items = await storage.ReadAsync<StoreItem>(dict.Keys.ToArray());
+            var item = items.FirstOrDefault().Value;
+
+            // Delete store item
+            await storage.DeleteAsync(dict.Keys.ToArray());
+
+            var deleted = await storage.ReadAsync(dict.Keys.ToArray());
+
+            Assert.NotNull(item);
+            Assert.Empty(deleted);
+        }
+
+        protected async Task DeleteUnknownStoreItemTest(IStorage storage)
         {
             await storage.DeleteAsync(new[] { "unknown_key" });
         }
