@@ -22,12 +22,15 @@ namespace IntegrationTests.Azure
 
         public string DatabaseId { get; private set; }
 
+        public string ContainerId { get; private set; }
+
         public CosmosClient Client { get; private set; }
 
         public async Task InitializeAsync()
         {
             var attr = GetType().GetCustomAttribute(typeof(CosmosDbAttribute)) as CosmosDbAttribute;
             DatabaseId = attr?.DatabaseId;
+            ContainerId = attr?.ContainerId;
 
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -51,6 +54,8 @@ namespace IntegrationTests.Azure
         public async Task DisposeAsync()
         {
             await DeleteDatabase(DatabaseId);
+
+            //await Task.FromResult(true);
         }
 
         protected Task<DatabaseResponse> DeleteDatabase(string name)

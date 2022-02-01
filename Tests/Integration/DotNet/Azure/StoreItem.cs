@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace IntegrationTests.Azure
 {
-    internal class StoreItem : IStoreItem
+    public class StoreItem : IStoreItem
     {
         [JsonProperty(PropertyName = "messageList")]
         public string[] MessageList { get; set; }

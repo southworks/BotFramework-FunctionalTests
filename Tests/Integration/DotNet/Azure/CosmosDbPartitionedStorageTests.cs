@@ -13,9 +13,8 @@ using Xunit;
 
 namespace IntegrationTests.Azure
 {
-    //[Collection("CosmosDb")]
     [Trait("TestCategory", "Storage")]
-    [Trait("TestCategory", "Storage - CosmosDB Partitioned")]
+    [Trait("TestCategory", "CosmosDBPartitioned")]
     public class CosmosDbPartitionedStorageTests : StorageBaseTests, IClassFixture<CosmosDbPartitionedStorageFixture>
     {
         private readonly CosmosDbPartitionedStorageFixture _cosmosDbFixture;

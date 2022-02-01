@@ -12,7 +12,12 @@ namespace IntegrationTests.Azure
 {
     public class StorageBaseTests
     {
-        private readonly StoreItem _itemToTest = new StoreItem() { MessageList = new string[] { "hi", "how are u" }, City = "Contoso" };
+        public StorageBaseTests()
+        {
+            StoreItemSample = new StoreItem() { MessageList = new string[] { "hi", "how are u" }, City = "Contoso" };
+        }
+
+        public StoreItem StoreItemSample { get; private set; }
 
         protected async Task ReadUnknownStoreItemTest(IStorage storage)
         {
@@ -25,7 +30,7 @@ namespace IntegrationTests.Azure
         {
             var dict = new Dictionary<string, object>
             {
-                { "createItem", _itemToTest },
+                { "createItem", StoreItemSample },
             };
 
             await storage.WriteAsync(dict);
@@ -36,8 +41,8 @@ namespace IntegrationTests.Azure
             Assert.Single(items);
             Assert.NotNull(item);
             Assert.NotNull(item.ETag);
-            Assert.Equal(_itemToTest.City, item.City);
-            Assert.Equal(_itemToTest.MessageList, item.MessageList);
+            Assert.Equal(StoreItemSample.City, item.City);
+            Assert.Equal(StoreItemSample.MessageList, item.MessageList);
         }
 
         protected async Task CreateStoreItemWithSpecialCharactersTest(IStorage storage)
@@ -45,7 +50,7 @@ namespace IntegrationTests.Azure
             var key = "!@#$%^&*()~/\\><,.?';\"`~";
             var dict = new Dictionary<string, object>
             {
-                { key, _itemToTest },
+                { key, StoreItemSample },
             };
 
             await storage.WriteAsync(dict);
@@ -56,15 +61,15 @@ namespace IntegrationTests.Azure
             Assert.Single(items);
             Assert.NotNull(item);
             Assert.NotNull(item.ETag);
-            Assert.Equal(_itemToTest.City, item.City);
-            Assert.Equal(_itemToTest.MessageList, item.MessageList);
+            Assert.Equal(StoreItemSample.City, item.City);
+            Assert.Equal(StoreItemSample.MessageList, item.MessageList);
         }
 
         protected async Task UpdateStoreItemTest(IStorage storage)
         {
             var dict = new Dictionary<string, object>
             {
-                { "updateItem", _itemToTest },
+                { "updateItem", StoreItemSample },
             };
 
             await storage.WriteAsync(dict);
@@ -91,7 +96,7 @@ namespace IntegrationTests.Azure
         {
             var dict = new Dictionary<string, object>
             {
-                { "deleteItem", _itemToTest },
+                { "deleteItem", StoreItemSample },
             };
 
             await storage.WriteAsync(dict);
@@ -110,48 +115,48 @@ namespace IntegrationTests.Azure
 
         protected async Task DeleteUnknownStoreItemTest(IStorage storage)
         {
-            await storage.DeleteAsync(new[] { "unknown_key" });
+            await storage.DeleteAsync(new[] { "unknown" });
         }
 
-        protected async Task BatchCreateObjectTest(IStorage storage, long minimumExtraBytes = 0)
-        {
-            string[] stringArray = null;
+        //protected async Task BatchCreateObjectTest(IStorage storage, long minimumExtraBytes = 0)
+        //{
+        //    string[] stringArray = null;
 
-            if (minimumExtraBytes > 0)
-            {
-                // chunks of maximum string size to fill the extra bytes request
-                var extraStringCount = (int)(minimumExtraBytes / int.MaxValue);
-                stringArray = Enumerable.Range(0, extraStringCount).Select(i => new string('X', int.MaxValue / 2)).ToArray();
+        //    if (minimumExtraBytes > 0)
+        //    {
+        //        // chunks of maximum string size to fill the extra bytes request
+        //        var extraStringCount = (int)(minimumExtraBytes / int.MaxValue);
+        //        stringArray = Enumerable.Range(0, extraStringCount).Select(i => new string('X', int.MaxValue / 2)).ToArray();
 
-                // Append the remaining string size
-                stringArray = stringArray.Append(new string('X', (int)(minimumExtraBytes % int.MaxValue) / 2)).ToArray();
-            }
+        //        // Append the remaining string size
+        //        stringArray = stringArray.Append(new string('X', (int)(minimumExtraBytes % int.MaxValue) / 2)).ToArray();
+        //    }
 
-            var storeItemsList = new List<Dictionary<string, object>>(new[]
-                {
-                new Dictionary<string, object> { ["createPoco"] = new PocoItem() { Id = "1", Count = 0, ExtraBytes = stringArray } },
-                new Dictionary<string, object> { ["createPoco"] = new PocoItem() { Id = "1", Count = 1, ExtraBytes = stringArray } },
-                new Dictionary<string, object> { ["createPoco"] = new PocoItem() { Id = "1", Count = 2, ExtraBytes = stringArray } },
-                });
+        //    var storeItemsList = new List<Dictionary<string, object>>(new[]
+        //        {
+        //        new Dictionary<string, object> { ["createPoco"] = new PocoItem() { Id = "1", Count = 0, ExtraBytes = stringArray } },
+        //        new Dictionary<string, object> { ["createPoco"] = new PocoItem() { Id = "1", Count = 1, ExtraBytes = stringArray } },
+        //        new Dictionary<string, object> { ["createPoco"] = new PocoItem() { Id = "1", Count = 2, ExtraBytes = stringArray } },
+        //        });
 
-            // TODO: this code as a generic test doesn't make much sense - for now just eliminating the custom exception
-            // Writing large objects in parallel might raise an InvalidOperationException
-            try
-            {
-                await Task.WhenAll(
-                    storeItemsList.Select(storeItems =>
-                        Task.Run(async () => await storage.WriteAsync(storeItems))));
-            }
-            catch (Exception ex)
-            {
-                Assert.IsType<InvalidOperationException>(ex);
-            }
+        //    // TODO: this code as a generic test doesn't make much sense - for now just eliminating the custom exception
+        //    // Writing large objects in parallel might raise an InvalidOperationException
+        //    try
+        //    {
+        //        await Task.WhenAll(
+        //            storeItemsList.Select(storeItems =>
+        //                Task.Run(async () => await storage.WriteAsync(storeItems))));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Assert.IsType<InvalidOperationException>(ex);
+        //    }
 
-            var readStoreItems = new Dictionary<string, object>(await storage.ReadAsync(new[] { "createPoco" }));
-            Assert.IsType<PocoItem>(readStoreItems["createPoco"]);
-            var createPoco = readStoreItems["createPoco"] as PocoItem;
-            Assert.Equal("1", createPoco.Id);
-        }
+        //    var readStoreItems = new Dictionary<string, object>(await storage.ReadAsync(new[] { "createPoco" }));
+        //    Assert.IsType<PocoItem>(readStoreItems["createPoco"]);
+        //    var createPoco = readStoreItems["createPoco"] as PocoItem;
+        //    Assert.Equal("1", createPoco.Id);
+        //}
 
         //protected async Task StatePersistsThroughMultiTurn(IStorage storage)
         //{

@@ -11,14 +11,7 @@ namespace IntegrationTests.Azure
     [CosmosDb(databaseId: "CosmosDbPartitionedStorageTests")]
     public class CosmosDbPartitionedStorageFixture : CosmosDbFixture, IAsyncLifetime
     {
-        public CosmosDbPartitionedStorageFixture()
-        {
-            ContainerId = "Storage";
-        }
-
         public IStorage Storage { get; private set; }
-
-        public string ContainerId { get; private set; }
 
         public new async Task InitializeAsync()
         {

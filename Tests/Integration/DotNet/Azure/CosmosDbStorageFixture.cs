@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Azure;
 using Xunit;
@@ -14,12 +17,12 @@ namespace IntegrationTests.Azure
     {
         public CosmosDbStorageFixture()
         {
-            ContainerId = "Storage";
+            PartitionedContainerId = "CosmosPartitionedContainer";
         }
 
         public IStorage Storage { get; private set; }
 
-        public string ContainerId { get; private set; }
+        public string PartitionedContainerId { get; private set; }
 
         public new async Task InitializeAsync()
         {
@@ -32,6 +35,28 @@ namespace IntegrationTests.Azure
                 CosmosDBEndpoint = new Uri(ServiceEndpoint),
                 DatabaseId = DatabaseId,
             });
+        }
+
+        public IStorage GetStoragePartitionedContainer(string partitionKey)
+        {
+            return new CosmosDbStorage(new CosmosDbStorageOptions()
+            {
+                PartitionKey = partitionKey,
+                AuthKey = AuthKey,
+                CollectionId = PartitionedContainerId,
+                CosmosDBEndpoint = new Uri(ServiceEndpoint),
+                DatabaseId = DatabaseId,
+            });
+        }
+
+        public async Task CreateStoragePartitionedContainer(string partitionKeyPaths)
+        {
+            using var client = new DocumentClient(new Uri(ServiceEndpoint), AuthKey);
+            Database database = await client.CreateDatabaseIfNotExistsAsync(new Database { Id = DatabaseId });
+            var partitionKeyDefinition = new PartitionKeyDefinition { Paths = new Collection<string> { $"/{partitionKeyPaths}" } };
+            var collectionDefinition = new DocumentCollection { Id = PartitionedContainerId, PartitionKey = partitionKeyDefinition };
+
+            await client.CreateDocumentCollectionIfNotExistsAsync(database.SelfLink, collectionDefinition);
         }
     }
 }
