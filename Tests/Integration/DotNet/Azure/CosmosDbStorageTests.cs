@@ -21,79 +21,45 @@ namespace IntegrationTests.Azure
     [Trait("TestCategory", "Storage")]
     [Trait("TestCategory", "Storage - CosmosDB")]
     [Trait("TestCategory", "Deprecated")]
-    public class CosmosDbStorageTests : StorageBaseTests, IAsyncLifetime, IClassFixture<CosmosDbFixture>
+    public class CosmosDbStorageTests : StorageBaseTests, IClassFixture<CosmosDbStorageFixture>
     {
-        private const string DatabaseId = "CosmosDbStorageTests";
-        private const string CollectionId = "Storage";
-        private const string PartitionedCollectionId = "PartitionedStorage";
-
         private readonly StoreItem _itemToTest = new StoreItem() { MessageList = new string[] { "hi", "how are u" }, City = "Contoso" };
 
-        private IStorage _storage;
+        private readonly CosmosDbStorageFixture _cosmosDbFixture;
 
-        private CosmosDbFixture _cosmosDbFixture;
-
-        public CosmosDbStorageTests(CosmosDbFixture cosmosDbFixture)
+        public CosmosDbStorageTests(CosmosDbStorageFixture cosmosDbFixture)
         {
             _cosmosDbFixture = cosmosDbFixture;
-
-            _storage = new CosmosDbStorage(new CosmosDbStorageOptions
-            {
-                AuthKey = _cosmosDbFixture.AuthKey,
-                CollectionId = CollectionId,
-                CosmosDBEndpoint = new Uri(_cosmosDbFixture.ServiceEndpoint),
-                DatabaseId = DatabaseId,
-            });
-        }
-
-        public Task InitializeAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task DisposeAsync()
-        {
-            return Task.CompletedTask;
-
-            //var client = new DocumentClient(new Uri(_cosmosDbFixture.ServiceEndpoint), _cosmosDbFixture.AuthKey);
-            //try
-            //{
-            //    await client.DeleteDatabaseAsync(UriFactory.CreateDatabaseUri(CosmosDatabaseName)).ConfigureAwait(false);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine("Error cleaning up resources: {0}", ex.ToString());
-            //}
         }
 
         [Fact]
         public Task CreateStoreItem()
         {
-            return CreateStoreItemTest(_storage);
+            return CreateStoreItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
         public Task UpdateStoreItem()
         {
-            return UpdateStoreItemTest(_storage);
+            return UpdateStoreItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
         public Task ReadUnknownStoreItem()
         {
-            return ReadUnknownStoreItemTest(_storage);
+            return ReadUnknownStoreItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
         public Task DeleteStoreItem()
         {
-            return DeleteStoreItemTest(_storage);
+            return DeleteStoreItemTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
         public Task CreateStoreItemWithSpecialCharacters()
         {
-            return CreateStoreItemWithSpecialCharactersTest(_storage);
+            return CreateStoreItemWithSpecialCharactersTest(_cosmosDbFixture.Storage);
         }
 
         [Fact]
