@@ -132,12 +132,23 @@ stages:
           #     platform: "$(BUILDPLATFORM)"
           #     configuration: "$(BUILDCONFIGURATION)"
           
+          # - task: DotNetCoreCLI@2
+          #   displayName: "Build"
+          #   inputs:
+          #     command: publish
+          #     publishWebProjects: false
+          #     projects: "FunctionalTests.sln"
+          #     arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build"
+          #     modifyOutputPath: false
+
           - task: DotNetCoreCLI@2
             displayName: "Build"
             inputs:
               command: publish
               publishWebProjects: false
-              projects: "FunctionalTests.sln"
+              projects: |
+                Tests/**/FunctionalTests.csproj
+                Tests/**/IntegrationTests.csproj
               arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build"
               modifyOutputPath: false
 
@@ -147,8 +158,8 @@ stages:
               pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build/FunctionalTests-Build.zip"
               artifactName: "FunctionalTests"
 
-  - stage: "Integration"
-    displayName: "Integration"
+  - stage: "Integration_DotNet"
+    displayName: "Integration DotNet"
     dependsOn: [Build]
     jobs:
       - job: "Integration_DotNet"
