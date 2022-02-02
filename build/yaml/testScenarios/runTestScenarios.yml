@@ -241,7 +241,7 @@ stages:
 
                 $endpoint, $key = $connection.Trim(";") -split ";" | ForEach-Object { 
                   $key, $value = $_ -split "=";
-                  return $value;
+                  return [string]$value;
                 }
 
                 if ([string]::IsNullOrEmpty($endpoint) -or [string]::IsNullOrEmpty($key)) {
