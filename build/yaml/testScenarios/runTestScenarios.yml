@@ -266,4 +266,4 @@ stages:
               custom: vstest
               testRunTitle: "Integration-DotNet"
               projects: "Tests/Integration/DotNet/IntegrationTests.csproj"
-              arguments: "Tests/Integration/DotNet/bin/Debug/netcoreapp3.1/IntegrationTests.dll --logger:"trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx""
+              arguments: "Tests/Integration/DotNet/bin/Debug/netcoreapp3.1/IntegrationTests.dll --logger:\"trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx\""
