@@ -150,7 +150,7 @@ stages:
                 Tests/**/FunctionalTests.csproj
                 Tests/**/IntegrationTests.csproj
               arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build"
-              modifyOutputPath: false
+              modifyOutputPath: true
 
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Build'
