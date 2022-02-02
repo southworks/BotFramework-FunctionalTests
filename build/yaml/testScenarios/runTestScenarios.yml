@@ -161,8 +161,8 @@ stages:
 
           - task: ExtractFiles@1
             inputs:
-              archiveFilePatterns: "FunctionalTests/FunctionalTests-Build.zip"
-              destinationFolder: "Tests/Integration/DotNet/bin/Debug/netcoreapp3.1"
+              archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/FunctionalTests/FunctionalTests-Build.zip"
+              destinationFolder: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Tests/Integration/DotNet/bin/Debug/netcoreapp3.1"
               cleanDestinationFolder: true 
 
           - script: |
