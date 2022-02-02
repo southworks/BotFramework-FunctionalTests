@@ -229,20 +229,8 @@ stages:
       - job: "Test_Azure"
         displayName: "Test IntegrationTests.Azure"
         steps:
-          - task: DownloadBuildArtifacts@0
-            displayName: "Download Build"
-            inputs:
-              artifactName: "Build"
-
-          - task: ExtractFiles@1
-            displayName: "Extract Build"
-            inputs:
-              archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build/Integration/DotNet.zip"
-              destinationFolder: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
-              cleanDestinationFolder: true 
-
           - task: AzureCLI@2
-            displayName: "Set CosmosDb Credentials"
+            displayName: "Set CosmosDb Connection variables"
             inputs:
               azureSubscription: "$(AZURESUBSCRIPTION)"
               scriptType: pscore
@@ -261,8 +249,26 @@ stages:
                   exit 1 # Force exit
                 }
 
+                Write-Host "CosmosDb Connection variables:";
+                [PSCustomObject]@{ 
+                  ServiceEndpoint = $endpoint
+                  AuthKey = $key.Substring(0, 3) + "***"
+                } | Format-Table -AutoSize
+
                 Write-Host "##vso[task.setvariable variable=AzureCosmosDbServiceEndpoint;isOutput=true]$endpoint";
                 Write-Host "##vso[task.setvariable variable=AzureCosmosDbAuthKey;isOutput=true]$key";
+
+          - task: DownloadBuildArtifacts@0
+            displayName: "Download Build"
+            inputs:
+              artifactName: "Build"
+
+          - task: ExtractFiles@1
+            displayName: "Extract Build"
+            inputs:
+              archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build/Integration/DotNet.zip"
+              destinationFolder: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
+              cleanDestinationFolder: true 
 
           - task: DotNetCoreCLI@2
             displayName: "Test"
