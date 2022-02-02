@@ -19,6 +19,7 @@ resources:
 
 variables:
   BuildConfiguration: "Debug"
+  BuildPlatform: "Any CPU"
 
   ## Azure Resources (Define these variables in Azure)
   # AzureSubscription: Service Connection Name to Manage Azure resources.
@@ -111,3 +112,48 @@ stages:
           dependsOn: [Download_Variables]
           testCategories:
             - SingleTurn
+
+  - stage: "Build_FunctionalTests"
+    displayName: "Build FunctionalTests.sln"
+    jobs:
+      - job: "Build_FunctionalTests"
+        displayName: "Build FunctionalTests.sln"
+        steps:
+          - task: UseDotNet@2
+            displayName: "Use .Net Core sdk 3.1.x"
+            inputs:
+              version: 3.1.x
+
+          # - task: MSBuild@1
+          #   displayName: "Build"
+          #   inputs:
+          #     solution: "FunctionalTests.sln"
+          #     vsVersion: 16.0
+          #     platform: "$(BUILDPLATFORM)"
+          #     configuration: "$(BUILDCONFIGURATION)"
+          
+          - task: DotNetCoreCLI@2
+            displayName: "Build"
+            inputs:
+              command: publish
+              publishWebProjects: false
+              projects: "FunctionalTests.sln"
+              arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build"
+              modifyOutputPath: false
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish zip package'
+            inputs:
+              pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build/FunctionalTests-Build.zip"
+              artifactName: "FunctionalTests"
+
+  - stage: "Build_FunctionalTests"
+    displayName: "Build FunctionalTests.sln"
+    dependsOn: [Build_FunctionalTests]
+    jobs:
+      - job: "Build_FunctionalTests"
+        displayName: "Build FunctionalTests.sln"
+        steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              artifactName: "FunctionalTests"
