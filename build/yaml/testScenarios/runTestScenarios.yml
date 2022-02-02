@@ -239,10 +239,9 @@ stages:
               inlineScript: |
                 $connection, $rest = az cosmosdb keys list --name $(INTERNALCOSMOSDBNAME) --resource-group $(INTERNALSHAREDRESOURCEGROUPNAME) --type connection-strings | ConvertFrom-Json | Select-Object -ExpandProperty connectionStrings | Select-Object -ExpandProperty connectionString;
 
-                $endpoint, $key = $connection.Trim(";") -split ";" | ForEach-Object { 
-                  $key, $value = $_ -split "=";
-                  return [string]$value;
-                }
+                $AccountEndpoint, $AccountKey = $connection.Trim(";") -split ";";
+                $endpoint = $AccountEndpoint -replace "AccountEndpoint=";
+                $key = $AccountKey -replace "AccountKey=";
 
                 if ([string]::IsNullOrEmpty($endpoint) -or [string]::IsNullOrEmpty($key)) {
                   Write-Host "##vso[task.logissue type=error]CosmosDb ServiceEndpoint and AuthKey couldn't be retrieved from Azure."
