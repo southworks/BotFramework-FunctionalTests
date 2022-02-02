@@ -23,6 +23,8 @@ namespace IntegrationTests.Azure.CosmosDb
 
         public CosmosClient Client { get; private set; }
 
+        protected bool IsRunning { get; private set; }
+
         public async Task InitializeAsync()
         {
             var attr = GetType().GetCustomAttribute(typeof(CosmosDbAttribute)) as CosmosDbAttribute;
@@ -43,13 +45,18 @@ namespace IntegrationTests.Azure.CosmosDb
                 AuthKey,
                 new CosmosClientOptions());
 
-            await IsServiceRunning();
+            IsRunning = await IsServiceRunning();
 
             await Client.CreateDatabaseIfNotExistsAsync(DatabaseId);
         }
 
         public async Task DisposeAsync()
         {
+            if (!IsRunning)
+            {
+                return;
+            }
+
             await DeleteDatabase(DatabaseId);
         }
 

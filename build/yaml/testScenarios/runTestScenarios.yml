@@ -25,6 +25,7 @@ variables:
   # AzureSubscription: Service Connection Name to Manage Azure resources.
   # ResourceGroup: (optional) Name of the Resource Group where the bots are deployed.
   # ResourceSuffix: (optional) Alphanumeric suffix to add to the resources' name to avoid collisions.
+  # SharedResourceGroup: (optional) Name of the Shared Resource Group.
 
   ## Bots Configuration (Define these variables in Azure)
   # BffnComposerSkillBotDotNetAppId: (optional) App Id for BffnComposerSkillBotDotNet bot.
@@ -40,9 +41,11 @@ variables:
   # DeployBotResourcesGuid: (optional) Deploy Bot Resources pipeline GUID.
 
   ## Internal variables
+  InternalCosmosDbName: "bffnbotstatedb$(INTERNALRESOURCESUFFIX)"
   InternalKeyVaultName: "bffnbotkeyvault$(INTERNALRESOURCESUFFIX)"
   InternalResourceGroupName: $[coalesce(variables['RESOURCEGROUP'], 'BFFN')]
   InternalResourceSuffix: $[coalesce(variables['RESOURCESUFFIX'], '')]
+  InternalSharedResourceGroupName: $[coalesce(variables['SHAREDRESOURCEGROUP'], 'BFFN-Shared')]
 
 pool:
   vmImage: "windows-2019"
@@ -213,13 +216,6 @@ stages:
                 New-Item -Path "Publish/Integration/" -ItemType Directory
                 Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/DotNet.zip"
 
-          # - script: |
-          #     cd $(BUILD.ARTIFACTSTAGINGDIRECTORY)
-          #     dir *.* /s
-          #   displayName: 'Dir workspace'
-          #   continueOnError: true
-          #   condition: succeededOrFailed()
-
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Build'
             inputs:
@@ -245,13 +241,28 @@ stages:
               destinationFolder: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
               cleanDestinationFolder: true 
 
-          # - task: DotNetCoreCLI@2
-          #   displayName: "Test"
-          #   inputs:
-          #     command: test
-          #     testRunTitle: "Integration-DotNet"
-          #     projects: "Tests/Integration/DotNet/IntegrationTests.csproj"
-          #     arguments: "-v n --configuration $(BUILDCONFIGURATION) --no-build --no-restore --logger trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
+          - task: AzureCLI@2
+            displayName: "Set CosmosDb Credentials"
+            inputs:
+              azureSubscription: "$(AZURESUBSCRIPTION)"
+              scriptType: pscore
+              scriptLocation: inlineScript
+              failOnStderr: true
+              inlineScript: |
+                $connection, $rest = az cosmosdb keys list --name $(INTERNALCOSMOSDBNAME) --resource-group $(INTERNALSHAREDRESOURCEGROUPNAME) --type connection-strings | ConvertFrom-Json | Select-Object -ExpandProperty connectionStrings | Select-Object -ExpandProperty connectionString;
+
+                $endpoint, $key = $connection.Trim(";") -split ";" | ForEach-Object { 
+                  $key, $value = $_ -split "=";
+                  return $value;
+                }
+
+                if ([string]::IsNullOrEmpty($endpoint) -or [string]::IsNullOrEmpty($key)) {
+                  Write-Host "##vso[task.logissue type=error]CosmosDb ServiceEndpoint and AuthKey couldn't be retrieved from Azure."
+                  exit 1 # Force exit
+                }
+
+                Write-Host "##vso[task.setvariable variable=AzureCosmosDbServiceEndpoint;isOutput=true]$endpoint";
+                Write-Host "##vso[task.setvariable variable=AzureCosmosDbAuthKey;isOutput=true]$key";
 
           - task: DotNetCoreCLI@2
             displayName: "Test"
@@ -259,7 +270,7 @@ stages:
               command: custom
               custom: vstest
               testRunTitle: "Integration-DotNet"
-              arguments: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/IntegrationTests.dll --logger:\"trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx\""
+              arguments: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/IntegrationTests.dll --logger:\"trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx\" --TestCaseFilter:FullyQualifiedName~IntegrationTests.Azure"
             env:
-              Azure:CosmosDb:ServiceEndpoint: "https://bffnbotstatedbjmut.documents.azure.com:443/"
-              Azure:CosmosDb:AuthKey: "T21SddIDL43E2q5Mc3eRlAgt2pJpNzqHwFI0YecYpblJ0iiUs9kvAHq8mkZREcAR3ZST3B43J6oqGN7m7RHLQg=="
+              Azure:CosmosDb:ServiceEndpoint: "$(AZURECOSMOSDBSERVICEENDPOINT)"
+              Azure:CosmosDb:AuthKey: "$(AZURECOSMOSDBAUTHKEY)"
