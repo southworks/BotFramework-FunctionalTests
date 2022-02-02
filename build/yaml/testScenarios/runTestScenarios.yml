@@ -227,7 +227,7 @@ stages:
 
   - stage: "Test_DotNet_Integration"
     displayName: "Test DotNet Integration"
-    dependsOn: [Build]
+    dependsOn: [Build_DotNet_Integration]
     jobs:
       - job: "Test"
         displayName: "Test IntegrationTests.csproj"
