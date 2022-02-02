@@ -210,6 +210,7 @@ stages:
               failOnStderr: true
               workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
               script: |
+                New-Item -Path "Publish/Integration/" -ItemType Directory
                 Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/DotNet.zip"
 
           - script: |
