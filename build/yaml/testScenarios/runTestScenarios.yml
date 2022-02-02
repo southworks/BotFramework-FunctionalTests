@@ -113,63 +113,104 @@ stages:
   #         testCategories:
   #           - SingleTurn
 
-  - stage: "Build"
-    displayName: "Build FunctionalTests.sln"
+  # - stage: "Build"
+  #   displayName: "Build FunctionalTests.sln"
+  #   jobs:
+  #     - job: "Build"
+  #       displayName: "Build FunctionalTests.sln"
+  #       steps:
+  #         - task: UseDotNet@2
+  #           displayName: "Use .Net Core sdk 3.1.x"
+  #           inputs:
+  #             version: 3.1.x
+
+  #         # - task: MSBuild@1
+  #         #   displayName: "Build"
+  #         #   inputs:
+  #         #     solution: "FunctionalTests.sln"
+  #         #     vsVersion: 16.0
+  #         #     platform: "$(BUILDPLATFORM)"
+  #         #     configuration: "$(BUILDCONFIGURATION)"
+          
+  #         # - task: DotNetCoreCLI@2
+  #         #   displayName: "Build"
+  #         #   inputs:
+  #         #     command: publish
+  #         #     publishWebProjects: false
+  #         #     projects: "FunctionalTests.sln"
+  #         #     arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build"
+  #         #     modifyOutputPath: false
+
+  #         - task: DotNetCoreCLI@2
+  #           displayName: "Build"
+  #           inputs:
+  #             command: publish
+  #             publishWebProjects: false
+  #             projects: |
+  #               Tests/Functional/FunctionalTests.csproj
+  #               Tests/Integration/DotNet/IntegrationTests.csproj
+  #             arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
+  #             modifyOutputPath: true
+
+  #         # - task: DotNetCoreCLI@2
+  #         #   displayName: "Build"
+  #         #   inputs:
+  #         #     command: publish
+  #         #     publishWebProjects: false
+  #         #     projects: "FunctionalTests.sln"
+  #         #     arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
+  #         #     modifyOutputPath: true
+
+  #         - task: PowerShell@2
+  #           displayName: 'Prepare Artifact'
+  #           inputs:
+  #             targetType: inline
+  #             failOnStderr: true
+  #             workingDirectory: $(BUILD.ARTIFACTSTAGINGDIRECTORY)
+  #             script: |
+  #               Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/"
+  #               Move-Item -Path "Build/Functional.zip" -Destination "Publish/Functional/"
+
+  #         - script: |
+  #             cd $(BUILD.ARTIFACTSTAGINGDIRECTORY)
+  #             dir *.* /s
+  #           displayName: 'Dir workspace'
+  #           continueOnError: true
+  #           condition: succeededOrFailed()
+
+  #         - task: PublishBuildArtifacts@1
+  #           displayName: 'Publish Build'
+  #           inputs:
+  #             pathToPublish: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Publish"
+  #             artifactName: "Build"
+  - stage: "Build_DotNet_Integration"
+    displayName: "Build DotNet Integration"
     jobs:
       - job: "Build"
-        displayName: "Build FunctionalTests.sln"
+        displayName: "Build IntegrationTests.csproj"
         steps:
           - task: UseDotNet@2
             displayName: "Use .Net Core sdk 3.1.x"
             inputs:
               version: 3.1.x
 
-          # - task: MSBuild@1
-          #   displayName: "Build"
-          #   inputs:
-          #     solution: "FunctionalTests.sln"
-          #     vsVersion: 16.0
-          #     platform: "$(BUILDPLATFORM)"
-          #     configuration: "$(BUILDCONFIGURATION)"
-          
-          # - task: DotNetCoreCLI@2
-          #   displayName: "Build"
-          #   inputs:
-          #     command: publish
-          #     publishWebProjects: false
-          #     projects: "FunctionalTests.sln"
-          #     arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build"
-          #     modifyOutputPath: false
-
           - task: DotNetCoreCLI@2
             displayName: "Build"
             inputs:
               command: publish
               publishWebProjects: false
-              projects: |
-                Tests/Functional/FunctionalTests.csproj
-                Tests/Integration/DotNet/IntegrationTests.csproj
+              projects: "Tests/Integration/DotNet/IntegrationTests.csproj"
               arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
               modifyOutputPath: true
-
-          # - task: DotNetCoreCLI@2
-          #   displayName: "Build"
-          #   inputs:
-          #     command: publish
-          #     publishWebProjects: false
-          #     projects: "FunctionalTests.sln"
-          #     arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
-          #     modifyOutputPath: true
 
           - task: PowerShell@2
             displayName: 'Prepare Artifact'
             inputs:
               targetType: inline
               failOnStderr: true
-              workingDirectory: $(BUILD.ARTIFACTSTAGINGDIRECTORY)
+              workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
               script: |
-                Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/"
-                Move-Item -Path "Build/Functional.zip" -Destination "Publish/Functional/"
+                Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/DotNet.zip"
 
           - script: |
               cd $(BUILD.ARTIFACTSTAGINGDIRECTORY)
@@ -184,17 +225,17 @@ stages:
               pathToPublish: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Publish"
               artifactName: "Build"
 
-  - stage: "Integration_DotNet"
-    displayName: "Integration DotNet"
+  - stage: "Test_DotNet_Integration"
+    displayName: "Test DotNet Integration"
     dependsOn: [Build]
     jobs:
-      - job: "Integration_DotNet"
-        displayName: "Integration DotNet"
+      - job: "Test"
+        displayName: "Test IntegrationTests.csproj"
         steps:
           - task: DownloadBuildArtifacts@0
             displayName: "Download Build"
             inputs:
-              artifactName: "FunctionalTests"
+              artifactName: "Build"
 
           - task: ExtractFiles@1
             inputs:
