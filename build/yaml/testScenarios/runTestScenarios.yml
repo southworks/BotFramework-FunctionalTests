@@ -161,7 +161,7 @@ stages:
 
           - task: ExtractFiles@1
             inputs:
-              archiveFilePatterns: "FunctionalTests/FunctionalTests.zip"
+              archiveFilePatterns: "FunctionalTests/FunctionalTests-Build.zip"
               destinationFolder: "Tests/Integration/DotNet/bin/Debug/netcoreapp3.1"
               cleanDestinationFolder: true 
 
@@ -172,10 +172,19 @@ stages:
             continueOnError: true
             condition: succeededOrFailed()
 
+          # - task: DotNetCoreCLI@2
+          #   displayName: "Test"
+          #   inputs:
+          #     command: test
+          #     testRunTitle: "Integration-DotNet"
+          #     projects: "Tests/Integration/DotNet/IntegrationTests.csproj"
+          #     arguments: "-v n --configuration $(BUILDCONFIGURATION) --no-build --no-restore --logger trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
+
           - task: DotNetCoreCLI@2
             displayName: "Test"
             inputs:
-              command: test
+              command: custom
+              custom: vstest
               testRunTitle: "Integration-DotNet"
               projects: "Tests/Integration/DotNet/IntegrationTests.csproj"
-              arguments: "-v n --configuration $(BUILDCONFIGURATION) --no-build --no-restore --logger trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
+              arguments: "Tests/Integration/DotNet/bin/Debug/netcoreapp3.1/IntegrationTests.dll -lt --logger trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
