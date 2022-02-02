@@ -261,5 +261,5 @@ stages:
               testRunTitle: "Integration-DotNet"
               arguments: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/IntegrationTests.dll --logger:\"trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx\""
             env:
-              Azure_CosmosDb_ServiceEndpoint: "https://bffnbotstatedbjmut.documents.azure.com:443/"
-              Azure_CosmosDb_AuthKey: "T21SddIDL43E2q5Mc3eRlAgt2pJpNzqHwFI0YecYpblJ0iiUs9kvAHq8mkZREcAR3ZST3B43J6oqGN7m7RHLQg=="
+              Azure:CosmosDb:ServiceEndpoint: "https://bffnbotstatedbjmut.documents.azure.com:443/"
+              Azure:CosmosDb:AuthKey: "T21SddIDL43E2q5Mc3eRlAgt2pJpNzqHwFI0YecYpblJ0iiUs9kvAHq8mkZREcAR3ZST3B43J6oqGN7m7RHLQg=="
