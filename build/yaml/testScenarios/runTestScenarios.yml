@@ -141,25 +141,25 @@ stages:
           #     arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build"
           #     modifyOutputPath: false
 
-          # - task: DotNetCoreCLI@2
-          #   displayName: "Build"
-          #   inputs:
-          #     command: publish
-          #     publishWebProjects: false
-          #     projects: |
-          #       Tests/Functional/FunctionalTests.csproj
-          #       Tests/Integration/DotNet/IntegrationTests.csproj
-          #     arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build"
-          #     modifyOutputPath: true
-
           - task: DotNetCoreCLI@2
             displayName: "Build"
             inputs:
               command: publish
               publishWebProjects: false
-              projects: "FunctionalTests.sln"
-              arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
+              projects: |
+                Tests/Functional/FunctionalTests.csproj
+                Tests/Integration/DotNet/IntegrationTests.csproj
+              arguments: "--output $(SYSTEM.ARTIFACTSTAGINGDIRECTORY)/Build"
               modifyOutputPath: true
+
+          # - task: DotNetCoreCLI@2
+          #   displayName: "Build"
+          #   inputs:
+          #     command: publish
+          #     publishWebProjects: false
+          #     projects: "FunctionalTests.sln"
+          #     arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
+          #     modifyOutputPath: true
 
           - task: PowerShell@2
             displayName: 'Prepare Artifact'
