@@ -18,6 +18,7 @@ parameters:
   - name: env
     displayName: Environment variables to share to the test process
     type: object
+    default: []
 
 steps:
   - task: DownloadBuildArtifacts@0
