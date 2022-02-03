@@ -254,8 +254,8 @@ stages:
                   AuthKey = $key.Substring(0, 3) + "***"
                 } | Format-Table -AutoSize
 
-                Write-Host "##vso[task.setvariable variable=AzureCosmosDbServiceEndpoint;isOutput=true]$endpoint";
-                Write-Host "##vso[task.setvariable variable=AzureCosmosDbAuthKey;isOutput=true]$key";
+                Write-Host "##vso[task.setvariable variable=AzureCosmosDbServiceEndpoint]$endpoint";
+                Write-Host "##vso[task.setvariable variable=AzureCosmosDbAuthKey]$key";
 
           - task: DownloadBuildArtifacts@0
             displayName: "Download Build"
