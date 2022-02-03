@@ -1,0 +1,45 @@
+parameters:
+- name: project
+  displayName: Path to the .csproj file
+  type: string
+
+- name: publish
+  displayName: Publish configuration
+  type: object
+  default:
+    zipName: ""
+    destFolder: ""
+
+steps:
+  - task: UseDotNet@2
+    displayName: "Use .Net Core sdk 3.1.x"
+    inputs:
+      version: 3.1.x
+
+  - task: DotNetCoreCLI@2
+    displayName: "Build"
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: "${{ parameters.project }}"
+      arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
+      modifyOutputPath: true
+
+  - task: PowerShell@2
+    displayName: 'Prepare Publish'
+    inputs:
+      targetType: inline
+      failOnStderr: true
+      workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
+      script: |
+        $zipName = "${{ parameters.publish.zipName }}.zip";
+        $destFolder = "Publish/${{ parameters.publish.destFolder }}";
+
+        New-Item -Path $destFolder -ItemType Directory
+        Move-Item -Path "Build/$zipName" -Destination "$destFolder/$zipName"
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Build'
+    inputs:
+      pathToPublish: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Publish"
+      artifactName: "Build"

@@ -116,111 +116,31 @@ stages:
   #         testCategories:
   #           - SingleTurn
 
-  # - stage: "Build"
-  #   displayName: "Build FunctionalTests.sln"
-  #   jobs:
-  #     - job: "Build"
-  #       displayName: "Build FunctionalTests.sln"
-  #       steps:
-  #         - task: UseDotNet@2
-  #           displayName: "Use .Net Core sdk 3.1.x"
-  #           inputs:
-  #             version: 3.1.x
-
-  #         # - task: MSBuild@1
-  #         #   displayName: "Build"
-  #         #   inputs:
-  #         #     solution: "FunctionalTests.sln"
-  #         #     vsVersion: 16.0
-  #         #     platform: "$(BUILDPLATFORM)"
-  #         #     configuration: "$(BUILDCONFIGURATION)"
-          
-  #         # - task: DotNetCoreCLI@2
-  #         #   displayName: "Build"
-  #         #   inputs:
-  #         #     command: publish
-  #         #     publishWebProjects: false
-  #         #     projects: "FunctionalTests.sln"
-  #         #     arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/FunctionalTests-Build"
-  #         #     modifyOutputPath: false
-
-  #         - task: DotNetCoreCLI@2
-  #           displayName: "Build"
-  #           inputs:
-  #             command: publish
-  #             publishWebProjects: false
-  #             projects: |
-  #               Tests/Functional/FunctionalTests.csproj
-  #               Tests/Integration/DotNet/IntegrationTests.csproj
-  #             arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
-  #             modifyOutputPath: true
-
-  #         # - task: DotNetCoreCLI@2
-  #         #   displayName: "Build"
-  #         #   inputs:
-  #         #     command: publish
-  #         #     publishWebProjects: false
-  #         #     projects: "FunctionalTests.sln"
-  #         #     arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
-  #         #     modifyOutputPath: true
-
-  #         - task: PowerShell@2
-  #           displayName: 'Prepare Artifact'
-  #           inputs:
-  #             targetType: inline
-  #             failOnStderr: true
-  #             workingDirectory: $(BUILD.ARTIFACTSTAGINGDIRECTORY)
-  #             script: |
-  #               Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/"
-  #               Move-Item -Path "Build/Functional.zip" -Destination "Publish/Functional/"
-
-  #         - script: |
-  #             cd $(BUILD.ARTIFACTSTAGINGDIRECTORY)
-  #             dir *.* /s
-  #           displayName: 'Dir workspace'
-  #           continueOnError: true
-  #           condition: succeededOrFailed()
-
-  #         - task: PublishBuildArtifacts@1
-  #           displayName: 'Publish Build'
-  #           inputs:
-  #             pathToPublish: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Publish"
-  #             artifactName: "Build"
   - stage: "Build_DotNet_Integration"
     displayName: "Build DotNet Integration"
     jobs:
       - job: "Build"
         displayName: "Build IntegrationTests.csproj"
         steps:
-          - task: UseDotNet@2
-            displayName: "Use .Net Core sdk 3.1.x"
-            inputs:
-              version: 3.1.x
+          - tempalte: build.yml
+            parameters:
+              project: "Tests/Integration/DotNet/IntegrationTests.csproj"
+              publish:
+                zipName: "DotNet"
+                destFolder: "Integration"
 
-          - task: DotNetCoreCLI@2
-            displayName: "Build"
-            inputs:
-              command: publish
-              publishWebProjects: false
-              projects: "Tests/Integration/DotNet/IntegrationTests.csproj"
-              arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
-              modifyOutputPath: true
-
-          - task: PowerShell@2
-            displayName: 'Prepare Publish'
-            inputs:
-              targetType: inline
-              failOnStderr: true
-              workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
-              script: |
-                New-Item -Path "Publish/Integration/" -ItemType Directory
-                Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/DotNet.zip"
-
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish Build'
-            inputs:
-              pathToPublish: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Publish"
-              artifactName: "Build"
+  - stage: "Build_DotNet_Functional"
+    displayName: "Build DotNet Functional"
+    jobs:
+      - job: "Build"
+        displayName: "Build FunctionalTests.csproj"
+        steps:
+          - tempalte: build.yml
+            parameters:
+              project: "Tests/Functional/DotNet/FunctionalTests.csproj"
+              publish:
+                zipName: "DotNet"
+                destFolder: "Functional"
 
   - stage: "Test_DotNet_Integration"
     displayName: "Test DotNet Integration"
@@ -257,31 +177,80 @@ stages:
                 Write-Host "##vso[task.setvariable variable=AzureCosmosDbServiceEndpoint]$endpoint";
                 Write-Host "##vso[task.setvariable variable=AzureCosmosDbAuthKey]$key";
 
-          - task: DownloadBuildArtifacts@0
-            displayName: "Download Build"
-            inputs:
-              artifactName: "Build"
+          - template: test.yml
+            parameters:
+              zip: "Integration/DotNet"
+              dll: "IntegrationTests"
+              namespace: "IntegrationTests.Azure"
+              trx: "Integration-DotNet-$(BUILD.BUILDNUMBER)"
+              env:
+                Azure:CosmosDb:ServiceEndpoint: "$(AZURECOSMOSDBSERVICEENDPOINT)"
+                Azure:CosmosDb:AuthKey: "$(AZURECOSMOSDBAUTHKEY)"
 
-          - task: ExtractFiles@1
-            displayName: "Extract Build"
-            inputs:
-              archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build/Integration/DotNet.zip"
-              destinationFolder: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
-              cleanDestinationFolder: true 
 
-          - task: DotNetCoreCLI@2
-            displayName: "Test"
-            inputs:
-              command: custom
-              custom: vstest
-              testRunTitle: "Integration-DotNet"
-              arguments: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/IntegrationTests.dll --logger:\"trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx\" --TestCaseFilter:FullyQualifiedName~IntegrationTests.Azure"
-            env:
-              Azure:CosmosDb:ServiceEndpoint: "$(AZURECOSMOSDBSERVICEENDPOINT)"
-              Azure:CosmosDb:AuthKey: "$(AZURECOSMOSDBAUTHKEY)"
 
-          - task: PublishTestResults@2
-            displayName: "Publish Test Result"
-            inputs:
-              testResultsFormat: "VSTest"
-              testResultsFiles: "TestResults/Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
+
+# Test
+
+          # - task: DownloadBuildArtifacts@0
+          #   displayName: "Download Build"
+          #   inputs:
+          #     artifactName: "Build"
+
+          # - task: ExtractFiles@1
+          #   displayName: "Extract Build"
+          #   inputs:
+          #     archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build/Integration/DotNet.zip"
+          #     destinationFolder: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
+          #     cleanDestinationFolder: true 
+
+          # - task: DotNetCoreCLI@2
+          #   displayName: "Test"
+          #   inputs:
+          #     command: custom
+          #     custom: vstest
+          #     testRunTitle: "Integration-DotNet"
+          #     arguments: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/IntegrationTests.dll --logger:\"trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx\" --TestCaseFilter:FullyQualifiedName~IntegrationTests.Azure"
+          #   env:
+          #     Azure:CosmosDb:ServiceEndpoint: "$(AZURECOSMOSDBSERVICEENDPOINT)"
+          #     Azure:CosmosDb:AuthKey: "$(AZURECOSMOSDBAUTHKEY)"
+
+          # - task: PublishTestResults@2
+          #   displayName: "Publish Test Result"
+          #   inputs:
+          #     testResultsFormat: "VSTest"
+          #     testResultsFiles: "TestResults/Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
+
+
+
+# build integration
+
+          # - task: UseDotNet@2
+          #   displayName: "Use .Net Core sdk 3.1.x"
+          #   inputs:
+          #     version: 3.1.x
+
+          # - task: DotNetCoreCLI@2
+          #   displayName: "Build"
+          #   inputs:
+          #     command: publish
+          #     publishWebProjects: false
+          #     projects: "Tests/Integration/DotNet/IntegrationTests.csproj"
+          #     arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
+          #     modifyOutputPath: true
+
+          # - task: PowerShell@2
+          #   displayName: 'Prepare Publish'
+          #   inputs:
+          #     targetType: inline
+          #     failOnStderr: true
+          #     workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
+          #     script: |
+          #       New-Item -Path "Publish/Integration/" -ItemType Directory
+          #       Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/DotNet.zip"
+
+          # - task: PublishBuildArtifacts@1
+          #   displayName: 'Publish Build'
+          #   inputs:
+          #     pathToPublish: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Publish"
+          #     artifactName: "Build"
