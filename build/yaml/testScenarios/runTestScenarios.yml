@@ -151,7 +151,7 @@ stages:
       - job: "Test_Azure_CosmosDb"
         displayName: "Test Azure.CosmosDb"
         steps:
-          - template: ../getCosmosDbConnectionVariables.yml
+          - template: ../common/getCosmosDbConnectionVariables.yml
             parameters:
               azureSubscription: "$(AZURESUBSCRIPTION)"
               resourceName: "$(INTERNALCOSMOSDBNAME)"
