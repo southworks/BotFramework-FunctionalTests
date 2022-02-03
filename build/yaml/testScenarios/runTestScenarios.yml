@@ -137,6 +137,7 @@ stages:
       - job: "Test_Azure_CosmosDb"
         displayName: "Test Azure.CosmosDb"
         steps:
+          - checkout: none
           - template: ../common/getCosmosDbConnectionVariables.yml
             parameters:
               azureSubscription: "$(AZURESUBSCRIPTION)"
@@ -173,6 +174,7 @@ stages:
       - job: "Test_Skills_CardActions"
         displayName: "Test Skills.CardActions"
         steps:
+          - checkout: none
           - template: test.yml
             parameters:
               zip: "Functional/DotNet.zip"
