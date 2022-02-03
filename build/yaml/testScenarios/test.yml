@@ -1,22 +1,22 @@
 parameters:
   - name: zip
-    displayName: Artifacts path to the built project .zip file.
+    displayName: Artifacts path to the built project .zip file
     type: string
 
   - name: trx
-    displayName: Name of the .trx file that will be generated.
+    displayName: Name of the .trx file that will be generated
     type: string
 
   - name: dll
-    displayName: Name of the .dll file to execute the tests from.
+    displayName: Name of the .dll file to execute the tests from
     type: string
 
   - name: namespace
-    displayName: Namespace to filter what tests should be executed. Could be full or partial.
+    displayName: Namespace to filter what tests should be executed, could be full or partial
     type: string
 
   - name: env
-    displayName: Environment variables to share to the test process.
+    displayName: Environment variables to share to the test process
     type: object
 
 steps:

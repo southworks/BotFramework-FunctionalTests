@@ -118,6 +118,7 @@ stages:
 
   - stage: "Build_DotNet_Integration"
     displayName: "Build DotNet Integration"
+    dependsOn: []
     jobs:
       - job: "Build"
         displayName: "Build IntegrationTests.csproj"
@@ -131,13 +132,14 @@ stages:
 
   - stage: "Build_DotNet_Functional"
     displayName: "Build DotNet Functional"
+    dependsOn: []
     jobs:
       - job: "Build"
         displayName: "Build FunctionalTests.csproj"
         steps:
           - template: build.yml
             parameters:
-              project: "Tests/Functional/DotNet/FunctionalTests.csproj"
+              project: "Tests/Functional/FunctionalTests.csproj"
               publish:
                 zipName: "DotNet"
                 destFolder: "Functional"
@@ -149,34 +151,11 @@ stages:
       - job: "Test_Azure_CosmosDb"
         displayName: "Test Azure.CosmosDb"
         steps:
-          - task: AzureCLI@2
-            displayName: "Set CosmosDb Connection variables"
-            inputs:
+          - template: ../getCosmosDbConnectionVariables.yml
+            parameters:
               azureSubscription: "$(AZURESUBSCRIPTION)"
-              scriptType: pscore
-              scriptLocation: inlineScript
-              failOnStderr: true
-              inlineScript: |
-                $connection, $rest = az cosmosdb keys list --name $(INTERNALCOSMOSDBNAME) --resource-group $(INTERNALSHAREDRESOURCEGROUPNAME) --type connection-strings | ConvertFrom-Json | Select-Object -ExpandProperty connectionStrings | Select-Object -ExpandProperty connectionString;
-
-                $AccountEndpoint, $AccountKey = $connection.Trim(";") -split ";";
-                $endpoint = $AccountEndpoint -replace "AccountEndpoint=";
-                $key = $AccountKey -replace "AccountKey=";
-
-                if ([string]::IsNullOrEmpty($endpoint) -or [string]::IsNullOrEmpty($key)) {
-                  Write-Host "##vso[task.logissue type=error]CosmosDb ServiceEndpoint and AuthKey couldn't be retrieved from Azure."
-                  exit 1 # Force exit
-                }
-
-                Write-Host "CosmosDb Connection variables:";
-                [PSCustomObject]@{ 
-                  ServiceEndpoint = $endpoint
-                  AuthKey = $key.Substring(0, 3) + "***"
-                } | Format-Table -AutoSize
-
-                Write-Host "##vso[task.setvariable variable=AzureCosmosDbServiceEndpoint]$endpoint";
-                Write-Host "##vso[task.setvariable variable=AzureCosmosDbAuthKey]$key";
-
+              resourceName: "$(INTERNALCOSMOSDBNAME)"
+              resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
           - template: test.yml
             parameters:
               zip: "Integration/DotNet"
@@ -184,13 +163,41 @@ stages:
               namespace: "IntegrationTests.Azure"
               trx: "Integration-DotNet-$(BUILD.BUILDNUMBER)"
               env:
-                Azure:CosmosDb:ServiceEndpoint: "$(AZURECOSMOSDBSERVICEENDPOINT)"
-                Azure:CosmosDb:AuthKey: "$(AZURECOSMOSDBAUTHKEY)"
+                Azure:CosmosDb:ServiceEndpoint: "$(COSMOSDBSERVICEENDPOINT)"
+                Azure:CosmosDb:AuthKey: "$(COSMOSDBAUTHKEY)"
 
 
 
 
 # Test
+
+          # - task: AzureCLI@2
+          #   displayName: "Set CosmosDb Connection variables"
+          #   inputs:
+          #     azureSubscription: "$(AZURESUBSCRIPTION)"
+          #     scriptType: pscore
+          #     scriptLocation: inlineScript
+          #     failOnStderr: true
+          #     inlineScript: |
+          #       $connection, $rest = az cosmosdb keys list --name $(INTERNALCOSMOSDBNAME) --resource-group $(INTERNALSHAREDRESOURCEGROUPNAME) --type connection-strings | ConvertFrom-Json | Select-Object -ExpandProperty connectionStrings | Select-Object -ExpandProperty connectionString;
+
+          #       $AccountEndpoint, $AccountKey = $connection.Trim(";") -split ";";
+          #       $endpoint = $AccountEndpoint -replace "AccountEndpoint=";
+          #       $key = $AccountKey -replace "AccountKey=";
+
+          #       if ([string]::IsNullOrEmpty($endpoint) -or [string]::IsNullOrEmpty($key)) {
+          #         Write-Host "##vso[task.logissue type=error]CosmosDb ServiceEndpoint and AuthKey couldn't be retrieved from Azure."
+          #         exit 1 # Force exit
+          #       }
+
+          #       Write-Host "CosmosDb Connection variables:";
+          #       [PSCustomObject]@{ 
+          #         ServiceEndpoint = $endpoint
+          #         AuthKey = $key.Substring(0, 3) + "***"
+          #       } | Format-Table -AutoSize
+
+          #       Write-Host "##vso[task.setvariable variable=AzureCosmosDbServiceEndpoint]$endpoint";
+          #       Write-Host "##vso[task.setvariable variable=AzureCosmosDbAuthKey]$key";
 
           # - task: DownloadBuildArtifacts@0
           #   displayName: "Download Build"

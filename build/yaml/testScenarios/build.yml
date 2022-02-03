@@ -1,14 +1,14 @@
 parameters:
-- name: project
-  displayName: Path to the .csproj file
-  type: string
+  - name: project
+    displayName: Path to the .csproj file
+    type: string
 
-- name: publish
-  displayName: Publish configuration
-  type: object
-  default:
-    zipName: ""
-    destFolder: ""
+  - name: publish
+    displayName: Publish configuration
+    type: object
+    default:
+      zipName: ""
+      destFolder: ""
 
 steps:
   - task: UseDotNet@2
@@ -26,7 +26,7 @@ steps:
       modifyOutputPath: true
 
   - task: PowerShell@2
-    displayName: 'Prepare Publish'
+    displayName: "Prepare Publish"
     inputs:
       targetType: inline
       failOnStderr: true
@@ -39,7 +39,7 @@ steps:
         Move-Item -Path "Build/$zipName" -Destination "$destFolder/$zipName"
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Build'
+    displayName: "Publish Build"
     inputs:
       pathToPublish: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Publish"
       artifactName: "Build"
