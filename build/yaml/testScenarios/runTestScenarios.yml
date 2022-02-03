@@ -125,62 +125,89 @@ stages:
       - job: "Build"
         displayName: "Build IntegrationTests.csproj"
         steps:
-          - template: build.yml
-            parameters:
-              project: "Tests/Integration/DotNet/IntegrationTests.csproj"
-              destZip: "Integration/DotNet.zip"
+          - powershell: |
+              $vars = "
+                MY_MAPPED_ENV_VAR: "testing"
+                MY_MAPPED_ENV_VAR2: "testing2"
+              "
+              Write-Host "##vso[task.setvariable variable=envars]$vars";
 
-  - stage: "Test_DotNet_Integration"
-    displayName: "Test DotNet Integration"
-    dependsOn: [Build_DotNet_Integration]
-    jobs:
-      - job: "Test_Azure_CosmosDb"
-        displayName: "Test Azure.CosmosDb"
-        steps:
-          - checkout: none
-          - template: ../common/getCosmosDbConnectionVariables.yml
-            parameters:
-              azureSubscription: "$(AZURESUBSCRIPTION)"
-              resourceName: "$(INTERNALCOSMOSDBNAME)"
-              resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-          - template: test.yml
-            parameters:
-              zip: "Integration/DotNet.zip"
-              dll: "IntegrationTests.dll"
-              namespace: "IntegrationTests.Azure"
-              trx: "Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
-              env:
-                Azure:CosmosDb:ServiceEndpoint: "$(COSMOSDBSERVICEENDPOINT)"
-                Azure:CosmosDb:AuthKey: "$(COSMOSDBAUTHKEY)"
+          - powershell: |
+              Write-Host "Using an input-macro works: $(mySecret)"
+              Write-Host "Using the env var directly does not work: $env:MYSECRET"
+              Write-Host "Using a global secret var mapped in the pipeline does not work either: $env:GLOBAL_MYSECRET"
+              Write-Host "Using a global non-secret var mapped in the pipeline works: $env:GLOBAL_MY_MAPPED_ENV_VAR" 
+              Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR"
+              Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR2"
+            env: "$(envars)"
 
-  # Functional Tests
+  # - stage: "Build_DotNet_Integration"
+  #   displayName: "Build DotNet Integration"
+  #   dependsOn: []
+  #   jobs:
+  #     - job: "Build"
+  #       displayName: "Build IntegrationTests.csproj"
+  #       steps:
+  #         - template: build.yml
+  #           parameters:
+  #             project: "Tests/Integration/DotNet/IntegrationTests.csproj"
+  #             destZip: "Integration/DotNet.zip"
 
-  - stage: "Build_DotNet_Functional"
-    displayName: "Build DotNet Functional"
-    dependsOn: []
-    jobs:
-      - job: "Build"
-        displayName: "Build FunctionalTests.csproj"
-        steps:
-          - template: build.yml
-            parameters:
-              project: "Tests/Functional/FunctionalTests.csproj"
-              destZip: "Functional/DotNet.zip"
+  # - stage: "Test_DotNet_Integration"
+  #   displayName: "Test DotNet Integration"
+  #   dependsOn: [Build_DotNet_Integration]
+  #   jobs:
+  #     - job: "Test_Azure_CosmosDb"
+  #       displayName: "Test Azure.CosmosDb"
+  #       steps:
+  #         - checkout: none
+  #         - template: ../common/getCosmosDbConnectionVariables.yml
+  #           parameters:
+  #             azureSubscription: "$(AZURESUBSCRIPTION)"
+  #             resourceName: "$(INTERNALCOSMOSDBNAME)"
+  #             resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+  #         - template: test.yml
+  #           parameters:
+  #             zip: "Integration/DotNet.zip"
+  #             dll: "IntegrationTests.dll"
+  #             namespace: "IntegrationTests.Azure"
+  #             trx: "Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
+  #             env:
+  #               Azure:CosmosDb:ServiceEndpoint: "$(COSMOSDBSERVICEENDPOINT)"
+  #               Azure:CosmosDb:AuthKey: "$(COSMOSDBAUTHKEY)"
 
-  - stage: "Test_DotNet_Functional"
-    displayName: "Test DotNet Functional"
-    dependsOn: [Build_DotNet_Functional]
-    jobs:
-      - job: "Test_Skills_CardActions"
-        displayName: "Test Skills.CardActions"
-        steps:
-          - checkout: none
-          - template: test.yml
-            parameters:
-              zip: "Functional/DotNet.zip"
-              dll: "FunctionalTests.dll"
-              namespace: "SkillFunctionalTests.Skills.CardAction"
-              trx: "Functional-DotNet-$(BUILD.BUILDNUMBER).trx"
+  # # Functional Tests
+
+  # - stage: "Build_DotNet_Functional"
+  #   displayName: "Build DotNet Functional"
+  #   dependsOn: []
+  #   jobs:
+  #     - job: "Build"
+  #       displayName: "Build FunctionalTests.csproj"
+  #       steps:
+  #         - template: build.yml
+  #           parameters:
+  #             project: "Tests/Functional/FunctionalTests.csproj"
+  #             destZip: "Functional/DotNet.zip"
+
+  # - stage: "Test_DotNet_Functional"
+  #   displayName: "Test DotNet Functional"
+  #   dependsOn: [Build_DotNet_Functional]
+  #   jobs:
+  #     - job: "Test_Skills_CardActions"
+  #       displayName: "Test Skills.CardActions"
+  #       steps:
+  #         - checkout: none
+  #         - template: test.yml
+  #           parameters:
+  #             zip: "Functional/DotNet.zip"
+  #             dll: "FunctionalTests.dll"
+  #             namespace: "SkillFunctionalTests.Skills.CardAction"
+  #             trx: "Functional-DotNet-$(BUILD.BUILDNUMBER).trx"
+  #             env:
+  #               HostBotClientOptions:WaterfallHostBotDotNet:DirectLineSecret: ""
+  #               HostBotClientOptions:WaterfallHostBotJS:DirectLineSecret: ""
+  #               HostBotClientOptions:WaterfallHostBotPython:DirectLineSecret: ""
 
 # Test
 
