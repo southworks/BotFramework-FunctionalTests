@@ -28,7 +28,7 @@ steps:
   - task: ExtractFiles@1
     displayName: "Extract Build"
     inputs:
-      archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build/${{ parameters.zip }}.zip"
+      archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build/${{ parameters.zip }}"
       destinationFolder: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
       cleanDestinationFolder: true
 
@@ -38,11 +38,11 @@ steps:
       command: custom
       custom: vstest
       testRunTitle: "${{ parameters.trx }}"
-      arguments: '$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/${{ parameters.dll }}.dll --logger:"trx;LogFileName=${{ parameters.trx }}.trx" --TestCaseFilter:FullyQualifiedName~${{ parameters.namespace }}'
+      arguments: '$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/${{ parameters.dll }} --logger:"trx;LogFileName=${{ parameters.trx }}" --TestCaseFilter:FullyQualifiedName~${{ parameters.namespace }}'
     env: ${{ parameters.env }}
 
   - task: PublishTestResults@2
     displayName: "Publish Test Result"
     inputs:
       testResultsFormat: "VSTest"
-      testResultsFiles: "TestResults/${{ parameters.trx }}.trx"
+      testResultsFiles: "TestResults/${{ parameters.trx }}"

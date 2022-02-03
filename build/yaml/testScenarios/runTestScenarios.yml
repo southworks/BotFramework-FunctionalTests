@@ -9,13 +9,13 @@ pr: none
 
 resources:
   pipelines:
-  - pipeline: "02ADeploySkillBots"
-    source: "02.A. Deploy skill bots (daily)"
-    trigger:
-      branches:
-        include:
-        - main
-        - releases/*
+    - pipeline: "02ADeploySkillBots"
+      source: "02.A. Deploy skill bots (daily)"
+      trigger:
+        branches:
+          include:
+            - main
+            - releases/*
 
 variables:
   BuildConfiguration: "Debug"
@@ -116,6 +116,8 @@ stages:
   #         testCategories:
   #           - SingleTurn
 
+  # Integration Tests
+
   - stage: "Build_DotNet_Integration"
     displayName: "Build DotNet Integration"
     dependsOn: []
@@ -126,23 +128,7 @@ stages:
           - template: build.yml
             parameters:
               project: "Tests/Integration/DotNet/IntegrationTests.csproj"
-              publish:
-                zipName: "DotNet"
-                destFolder: "Integration"
-
-  - stage: "Build_DotNet_Functional"
-    displayName: "Build DotNet Functional"
-    dependsOn: []
-    jobs:
-      - job: "Build"
-        displayName: "Build FunctionalTests.csproj"
-        steps:
-          - template: build.yml
-            parameters:
-              project: "Tests/Functional/FunctionalTests.csproj"
-              publish:
-                zipName: "DotNet"
-                destFolder: "Functional"
+              destZip: "Integration/DotNet.zip"
 
   - stage: "Test_DotNet_Integration"
     displayName: "Test DotNet Integration"
@@ -158,106 +144,129 @@ stages:
               resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
           - template: test.yml
             parameters:
-              zip: "Integration/DotNet"
-              dll: "IntegrationTests"
+              zip: "Integration/DotNet.zip"
+              dll: "IntegrationTests.dll"
               namespace: "IntegrationTests.Azure"
-              trx: "Integration-DotNet-$(BUILD.BUILDNUMBER)"
+              trx: "Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
               env:
                 Azure:CosmosDb:ServiceEndpoint: "$(COSMOSDBSERVICEENDPOINT)"
                 Azure:CosmosDb:AuthKey: "$(COSMOSDBAUTHKEY)"
 
+  # Functional Tests
 
+  - stage: "Build_DotNet_Functional"
+    displayName: "Build DotNet Functional"
+    dependsOn: []
+    jobs:
+      - job: "Build"
+        displayName: "Build FunctionalTests.csproj"
+        steps:
+          - template: build.yml
+            parameters:
+              project: "Tests/Functional/FunctionalTests.csproj"
+              destZip: "Functional/DotNet.zip"
 
+  - stage: "Test_DotNet_Functional"
+    displayName: "Test DotNet Functional"
+    dependsOn: [Build_DotNet_Functional]
+    jobs:
+      - job: "Test_Skills_CardActions"
+        displayName: "Test Skills.CardActions"
+        steps:
+          - template: test.yml
+            parameters:
+              zip: "Functional/DotNet.zip"
+              dll: "FunctionalTests.dll"
+              namespace: "SkillFunctionalTests.Skills.CardAction"
+              trx: "Functional-DotNet-$(BUILD.BUILDNUMBER).trx"
 
 # Test
 
-          # - task: AzureCLI@2
-          #   displayName: "Set CosmosDb Connection variables"
-          #   inputs:
-          #     azureSubscription: "$(AZURESUBSCRIPTION)"
-          #     scriptType: pscore
-          #     scriptLocation: inlineScript
-          #     failOnStderr: true
-          #     inlineScript: |
-          #       $connection, $rest = az cosmosdb keys list --name $(INTERNALCOSMOSDBNAME) --resource-group $(INTERNALSHAREDRESOURCEGROUPNAME) --type connection-strings | ConvertFrom-Json | Select-Object -ExpandProperty connectionStrings | Select-Object -ExpandProperty connectionString;
+# - task: AzureCLI@2
+#   displayName: "Set CosmosDb Connection variables"
+#   inputs:
+#     azureSubscription: "$(AZURESUBSCRIPTION)"
+#     scriptType: pscore
+#     scriptLocation: inlineScript
+#     failOnStderr: true
+#     inlineScript: |
+#       $connection, $rest = az cosmosdb keys list --name $(INTERNALCOSMOSDBNAME) --resource-group $(INTERNALSHAREDRESOURCEGROUPNAME) --type connection-strings | ConvertFrom-Json | Select-Object -ExpandProperty connectionStrings | Select-Object -ExpandProperty connectionString;
 
-          #       $AccountEndpoint, $AccountKey = $connection.Trim(";") -split ";";
-          #       $endpoint = $AccountEndpoint -replace "AccountEndpoint=";
-          #       $key = $AccountKey -replace "AccountKey=";
+#       $AccountEndpoint, $AccountKey = $connection.Trim(";") -split ";";
+#       $endpoint = $AccountEndpoint -replace "AccountEndpoint=";
+#       $key = $AccountKey -replace "AccountKey=";
 
-          #       if ([string]::IsNullOrEmpty($endpoint) -or [string]::IsNullOrEmpty($key)) {
-          #         Write-Host "##vso[task.logissue type=error]CosmosDb ServiceEndpoint and AuthKey couldn't be retrieved from Azure."
-          #         exit 1 # Force exit
-          #       }
+#       if ([string]::IsNullOrEmpty($endpoint) -or [string]::IsNullOrEmpty($key)) {
+#         Write-Host "##vso[task.logissue type=error]CosmosDb ServiceEndpoint and AuthKey couldn't be retrieved from Azure."
+#         exit 1 # Force exit
+#       }
 
-          #       Write-Host "CosmosDb Connection variables:";
-          #       [PSCustomObject]@{ 
-          #         ServiceEndpoint = $endpoint
-          #         AuthKey = $key.Substring(0, 3) + "***"
-          #       } | Format-Table -AutoSize
+#       Write-Host "CosmosDb Connection variables:";
+#       [PSCustomObject]@{
+#         ServiceEndpoint = $endpoint
+#         AuthKey = $key.Substring(0, 3) + "***"
+#       } | Format-Table -AutoSize
 
-          #       Write-Host "##vso[task.setvariable variable=AzureCosmosDbServiceEndpoint]$endpoint";
-          #       Write-Host "##vso[task.setvariable variable=AzureCosmosDbAuthKey]$key";
+#       Write-Host "##vso[task.setvariable variable=AzureCosmosDbServiceEndpoint]$endpoint";
+#       Write-Host "##vso[task.setvariable variable=AzureCosmosDbAuthKey]$key";
 
-          # - task: DownloadBuildArtifacts@0
-          #   displayName: "Download Build"
-          #   inputs:
-          #     artifactName: "Build"
+# - task: DownloadBuildArtifacts@0
+#   displayName: "Download Build"
+#   inputs:
+#     artifactName: "Build"
 
-          # - task: ExtractFiles@1
-          #   displayName: "Extract Build"
-          #   inputs:
-          #     archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build/Integration/DotNet.zip"
-          #     destinationFolder: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
-          #     cleanDestinationFolder: true 
+# - task: ExtractFiles@1
+#   displayName: "Extract Build"
+#   inputs:
+#     archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build/Integration/DotNet.zip"
+#     destinationFolder: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
+#     cleanDestinationFolder: true
 
-          # - task: DotNetCoreCLI@2
-          #   displayName: "Test"
-          #   inputs:
-          #     command: custom
-          #     custom: vstest
-          #     testRunTitle: "Integration-DotNet"
-          #     arguments: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/IntegrationTests.dll --logger:\"trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx\" --TestCaseFilter:FullyQualifiedName~IntegrationTests.Azure"
-          #   env:
-          #     Azure:CosmosDb:ServiceEndpoint: "$(AZURECOSMOSDBSERVICEENDPOINT)"
-          #     Azure:CosmosDb:AuthKey: "$(AZURECOSMOSDBAUTHKEY)"
+# - task: DotNetCoreCLI@2
+#   displayName: "Test"
+#   inputs:
+#     command: custom
+#     custom: vstest
+#     testRunTitle: "Integration-DotNet"
+#     arguments: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/IntegrationTests.dll --logger:\"trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx\" --TestCaseFilter:FullyQualifiedName~IntegrationTests.Azure"
+#   env:
+#     Azure:CosmosDb:ServiceEndpoint: "$(AZURECOSMOSDBSERVICEENDPOINT)"
+#     Azure:CosmosDb:AuthKey: "$(AZURECOSMOSDBAUTHKEY)"
 
-          # - task: PublishTestResults@2
-          #   displayName: "Publish Test Result"
-          #   inputs:
-          #     testResultsFormat: "VSTest"
-          #     testResultsFiles: "TestResults/Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
-
-
+# - task: PublishTestResults@2
+#   displayName: "Publish Test Result"
+#   inputs:
+#     testResultsFormat: "VSTest"
+#     testResultsFiles: "TestResults/Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
 
 # build integration
 
-          # - task: UseDotNet@2
-          #   displayName: "Use .Net Core sdk 3.1.x"
-          #   inputs:
-          #     version: 3.1.x
+# - task: UseDotNet@2
+#   displayName: "Use .Net Core sdk 3.1.x"
+#   inputs:
+#     version: 3.1.x
 
-          # - task: DotNetCoreCLI@2
-          #   displayName: "Build"
-          #   inputs:
-          #     command: publish
-          #     publishWebProjects: false
-          #     projects: "Tests/Integration/DotNet/IntegrationTests.csproj"
-          #     arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
-          #     modifyOutputPath: true
+# - task: DotNetCoreCLI@2
+#   displayName: "Build"
+#   inputs:
+#     command: publish
+#     publishWebProjects: false
+#     projects: "Tests/Integration/DotNet/IntegrationTests.csproj"
+#     arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
+#     modifyOutputPath: true
 
-          # - task: PowerShell@2
-          #   displayName: 'Prepare Publish'
-          #   inputs:
-          #     targetType: inline
-          #     failOnStderr: true
-          #     workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
-          #     script: |
-          #       New-Item -Path "Publish/Integration/" -ItemType Directory
-          #       Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/DotNet.zip"
+# - task: PowerShell@2
+#   displayName: 'Prepare Publish'
+#   inputs:
+#     targetType: inline
+#     failOnStderr: true
+#     workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
+#     script: |
+#       New-Item -Path "Publish/Integration/" -ItemType Directory
+#       Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/DotNet.zip"
 
-          # - task: PublishBuildArtifacts@1
-          #   displayName: 'Publish Build'
-          #   inputs:
-          #     pathToPublish: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Publish"
-          #     artifactName: "Build"
+# - task: PublishBuildArtifacts@1
+#   displayName: 'Publish Build'
+#   inputs:
+#     pathToPublish: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Publish"
+#     artifactName: "Build"

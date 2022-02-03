@@ -3,12 +3,9 @@ parameters:
     displayName: Path to the .csproj file
     type: string
 
-  - name: publish
-    displayName: Publish configuration
-    type: object
-    default:
-      zipName: ""
-      destFolder: ""
+  - name: destZip
+    displayName: Path where the .zip file will be saved into Artifacts
+    type: string
 
 steps:
   - task: UseDotNet@2
@@ -32,11 +29,13 @@ steps:
       failOnStderr: true
       workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
       script: |
-        $zipName = "${{ parameters.publish.zipName }}.zip";
-        $destFolder = "Publish/${{ parameters.publish.destFolder }}";
+        $zipName = "${{ parameters.project }}".Split("/")[-2] + ".zip";
+        $destZip = "Publish/${{ parameters.destZip }}";
+        $newZipName = $destZip.Split("/")[-1];
+        $destFolder = $destZip.Replace($newZipName, "");
 
-        New-Item -Path $destFolder -ItemType Directory
-        Move-Item -Path "Build/$zipName" -Destination "$destFolder/$zipName"
+        New-Item -Path $destFolder -ItemType Directory;
+        Move-Item -Path "Build/$zipName" -Destination $destZip;
 
   - task: PublishBuildArtifacts@1
     displayName: "Publish Build"
