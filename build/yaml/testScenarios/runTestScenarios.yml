@@ -118,56 +118,59 @@ stages:
 
   # Integration Tests
 
-  - stage: "Build_DotNet_Integration2"
-    displayName: "Build DotNet Integration"
-    dependsOn: []
-    jobs:
-      - job: "Build"
-        displayName: "Build IntegrationTests.csproj"
-        steps:
-          - powershell: |
-              Write-Host "##vso[task.setvariable variable=MY_MAPPED_ENV_VAR]testing";
-              Write-Host "##vso[task.setvariable variable=MY_MAPPED_ENV_VAR2]testing2";
-
-          - powershell: |
-              Write-Host "Using a global non-secret var mapped in the pipeline works: $env:GLOBAL_MY_MAPPED_ENV_VAR" 
-              Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR"
-              Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR2"
-
-  # - stage: "Build_DotNet_Integration"
+  # - stage: "Build_DotNet_Integration2"
   #   displayName: "Build DotNet Integration"
   #   dependsOn: []
   #   jobs:
   #     - job: "Build"
   #       displayName: "Build IntegrationTests.csproj"
   #       steps:
-  #         - template: build.yml
-  #           parameters:
-  #             project: "Tests/Integration/DotNet/IntegrationTests.csproj"
-  #             destZip: "Integration/DotNet.zip"
+  #         - powershell: |
+  #             Write-Host "##vso[task.setvariable variable=MY_MAPPED_ENV_VAR]testing";
+  #             Write-Host "##vso[task.setvariable variable=MY_MAPPED_ENV_VAR2]testing2";
 
-  # - stage: "Test_DotNet_Integration"
-  #   displayName: "Test DotNet Integration"
-  #   dependsOn: [Build_DotNet_Integration]
-  #   jobs:
-  #     - job: "Test_Azure_CosmosDb"
-  #       displayName: "Test Azure.CosmosDb"
-  #       steps:
-  #         - checkout: none
-  #         - template: ../common/getCosmosDbConnectionVariables.yml
-  #           parameters:
-  #             azureSubscription: "$(AZURESUBSCRIPTION)"
-  #             resourceName: "$(INTERNALCOSMOSDBNAME)"
-  #             resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-  #         - template: test.yml
-  #           parameters:
-  #             zip: "Integration/DotNet.zip"
-  #             dll: "IntegrationTests.dll"
-  #             namespace: "IntegrationTests.Azure"
-  #             trx: "Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
-  #             env:
-  #               Azure:CosmosDb:ServiceEndpoint: "$(COSMOSDBSERVICEENDPOINT)"
-  #               Azure:CosmosDb:AuthKey: "$(COSMOSDBAUTHKEY)"
+  #         - powershell: |
+  #             Write-Host "Using a global non-secret var mapped in the pipeline works: $env:GLOBAL_MY_MAPPED_ENV_VAR" 
+  #             Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR"
+  #             Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR2"
+
+  - stage: "Build_DotNet_Integration"
+    displayName: "Build DotNet Integration"
+    dependsOn: []
+    jobs:
+      - job: "Build"
+        displayName: "Build IntegrationTests.csproj"
+        steps:
+          - template: build.yml
+            parameters:
+              project: "Tests/Integration/DotNet/IntegrationTests.csproj"
+              destZip: "Integration/DotNet.zip"
+
+  - stage: "Test_DotNet_Integration"
+    displayName: "Test DotNet Integration"
+    dependsOn: [Build_DotNet_Integration]
+    jobs:
+      - job: "Test_Azure_CosmosDb"
+        displayName: "Test Azure.CosmosDb"
+        steps:
+          - checkout: none
+          - template: ../common/getCosmosDbConnectionVariables.yml
+            parameters:
+              azureSubscription: "$(AZURESUBSCRIPTION)"
+              resourceName: "$(INTERNALCOSMOSDBNAME)"
+              resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+          - powershell: |
+              Write-Host "##vso[task.setvariable variable=Azure:CosmosDb:ServiceEndpoint]$(COSMOSDBSERVICEENDPOINT)";
+              Write-Host "##vso[task.setvariable variable=Azure:CosmosDb:AuthKey]$(COSMOSDBAUTHKEY)";
+          - template: test.yml
+            parameters:
+              zip: "Integration/DotNet.zip"
+              dll: "IntegrationTests.dll"
+              namespace: "IntegrationTests.Azure"
+              trx: "Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
+              # env:
+              #   Azure:CosmosDb:ServiceEndpoint: "$(COSMOSDBSERVICEENDPOINT)"
+              #   Azure:CosmosDb:AuthKey: "$(COSMOSDBAUTHKEY)"
 
   # # Functional Tests
 
