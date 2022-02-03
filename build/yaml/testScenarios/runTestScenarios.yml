@@ -226,8 +226,8 @@ stages:
     displayName: "Test DotNet Integration"
     dependsOn: [Build_DotNet_Integration]
     jobs:
-      - job: "Test_Azure"
-        displayName: "Test IntegrationTests.Azure"
+      - job: "Test_Azure_CosmosDb"
+        displayName: "Test Azure.CosmosDb"
         steps:
           - task: AzureCLI@2
             displayName: "Set CosmosDb Connection variables"
@@ -279,3 +279,9 @@ stages:
             env:
               Azure:CosmosDb:ServiceEndpoint: "$(AZURECOSMOSDBSERVICEENDPOINT)"
               Azure:CosmosDb:AuthKey: "$(AZURECOSMOSDBAUTHKEY)"
+
+          - task: PublishTestResults@2
+            displayName: "Publish Test Result"
+            inputs:
+              testResultsFormat: "VSTest"
+              testResultsFiles: "TestResults/Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
