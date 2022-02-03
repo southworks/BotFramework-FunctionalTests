@@ -47,3 +47,4 @@ steps:
     inputs:
       testResultsFormat: "VSTest"
       testResultsFiles: "TestResults/${{ parameters.trx }}"
+      condition: succeededOrFailed()
