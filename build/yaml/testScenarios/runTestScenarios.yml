@@ -142,13 +142,14 @@ stages:
           Testing: $[stageDependencies.Build_DotNet_Integration.Build.outputs['Set_Variables.envars']]
         steps:
           - powershell: |
+              "$(Testing)"
               Write-Host "Using an input-macro works: $(mySecret)"
               Write-Host "Using the env var directly does not work: $env:MYSECRET"
               Write-Host "Using a global secret var mapped in the pipeline does not work either: $env:GLOBAL_MYSECRET"
               Write-Host "Using a global non-secret var mapped in the pipeline works: $env:GLOBAL_MY_MAPPED_ENV_VAR" 
               Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR"
               Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR2"
-            env: $(Testing)
+            # env: "$(Testing)"
 
   # - stage: "Build_DotNet_Integration"
   #   displayName: "Build DotNet Integration"
