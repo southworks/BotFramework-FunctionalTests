@@ -122,7 +122,7 @@ stages:
       - job: "Build"
         displayName: "Build IntegrationTests.csproj"
         steps:
-          - tempalte: build.yml
+          - template: build.yml
             parameters:
               project: "Tests/Integration/DotNet/IntegrationTests.csproj"
               publish:
@@ -135,7 +135,7 @@ stages:
       - job: "Build"
         displayName: "Build FunctionalTests.csproj"
         steps:
-          - tempalte: build.yml
+          - template: build.yml
             parameters:
               project: "Tests/Functional/DotNet/FunctionalTests.csproj"
               publish:
