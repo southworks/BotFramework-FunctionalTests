@@ -118,7 +118,7 @@ stages:
 
   # Integration Tests
 
-  - stage: "Build_DotNet_Integration"
+  - stage: "Build_DotNet_Integration2"
     displayName: "Build DotNet Integration"
     dependsOn: []
     jobs:
@@ -126,30 +126,16 @@ stages:
         displayName: "Build IntegrationTests.csproj"
         steps:
           - powershell: |
-              $vars = "
-                MY_MAPPED_ENV_VAR: 'testing'
-                MY_MAPPED_ENV_VAR2: 'testing2'
-              "
-              Write-Host "##vso[task.setvariable variable=envars;isOutput=true]$vars";
+              Write-Host "##vso[task.setvariable variable=MY_MAPPED_ENV_VAR]testing";
+              Write-Host "##vso[task.setvariable variable=MY_MAPPED_ENV_VAR2]testing2";
 
-  - stage: "Build_DotNet_Integration2"
-    displayName: "Build DotNet Integration"
-    dependsOn: [Build_DotNet_Integration]
-    jobs:
-      - job: "Build"
-        displayName: "Build IntegrationTests.csproj"
-        variables:
-          Testing: coalesce($[stageDependencies.Build_DotNet_Integration.Build.outputs['Set_Variables.envars']], "MY_MAPPED_ENV_VAR=asd")
-        steps:
           - powershell: |
-              "$(Testing)"
               Write-Host "Using an input-macro works: $(mySecret)"
               Write-Host "Using the env var directly does not work: $env:MYSECRET"
               Write-Host "Using a global secret var mapped in the pipeline does not work either: $env:GLOBAL_MYSECRET"
               Write-Host "Using a global non-secret var mapped in the pipeline works: $env:GLOBAL_MY_MAPPED_ENV_VAR" 
               Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR"
               Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR2"
-            env: "MY_MAPPED_ENV_VAR=asd"
 
   # - stage: "Build_DotNet_Integration"
   #   displayName: "Build DotNet Integration"
