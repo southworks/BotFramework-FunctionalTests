@@ -29,7 +29,7 @@ steps:
       failOnStderr: true
       workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
       script: |
-        $originZip = "Build/${{ parameters.project }}".Split("/")[-2] + ".zip";
+        $originZip = "Build/$('${{ parameters.project }}'.Split('/')[-2]).zip";
         $destZip = "Publish/${{ parameters.destZip }}";
         $destFolder = $destZip.Replace($destZip.Split("/")[-1], "");
 
