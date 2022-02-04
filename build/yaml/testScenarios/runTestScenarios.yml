@@ -182,30 +182,30 @@ stages:
               project: "Tests/Functional/FunctionalTests.csproj"
               destZip: "Functional/DotNet.zip"
 
-  - stage: "Configure_DotNet_Functional"
-    displayName: "Configure DotNet Functional"
-    dependsOn: []
-    jobs:
-      - job: "Configure"
-        displayName: "Configure Consumers"
-        steps:
-          - template: configureConsumers.yml
-            parameters:
-              appIds:
-                ComposerSkillBotDotNet: "$(BFFNCOMPOSERSKILLBOTDOTNETAPPID)"
-                EchoSkillBotComposerDotNet: "$(BFFNECHOSKILLBOTCOMPOSERDOTNETAPPID)"
-                EchoSkillBotDotNet: "$(BFFNECHOSKILLBOTDOTNETAPPID)"
-                EchoSkillBotDotNetV3: "$(BFFNECHOSKILLBOTDOTNETV3APPID)"
-                EchoSkillBotJS: "$(BFFNECHOSKILLBOTJSAPPID)"
-                EchoSkillBotJSV3: "$(BFFNECHOSKILLBOTJSV3APPID)"
-                EchoSkillBotPython: "$(BFFNECHOSKILLBOTPYTHONAPPID)"
-                WaterfallSkillBotDotNet: "$(BFFNWATERFALLSKILLBOTDOTNETAPPID)"
-                WaterfallSkillBotJS: "$(BFFNWATERFALLSKILLBOTJSAPPID)"
-                WaterfallSkillBotPython: "$(BFFNWATERFALLSKILLBOTPYTHONAPPID)"
-              azureSubscription: "$(AZURESUBSCRIPTION)"
-              keyVault: "$(INTERNALKEYVAULTNAME)"
-              resourceGroup: "$(INTERNALRESOURCEGROUPNAME)"
-              resourceSuffix: "$(INTERNALRESOURCESUFFIX)$(BUILDIDSUFFIX)"
+  # - stage: "Configure_DotNet_Functional"
+  #   displayName: "Configure DotNet Functional"
+  #   dependsOn: []
+  #   jobs:
+  #     - job: "Configure"
+  #       displayName: "Configure Consumers"
+  #       steps:
+  #         - template: configureConsumers.yml
+  #           parameters:
+  #             appIds:
+  #               ComposerSkillBotDotNet: "$(BFFNCOMPOSERSKILLBOTDOTNETAPPID)"
+  #               EchoSkillBotComposerDotNet: "$(BFFNECHOSKILLBOTCOMPOSERDOTNETAPPID)"
+  #               EchoSkillBotDotNet: "$(BFFNECHOSKILLBOTDOTNETAPPID)"
+  #               EchoSkillBotDotNetV3: "$(BFFNECHOSKILLBOTDOTNETV3APPID)"
+  #               EchoSkillBotJS: "$(BFFNECHOSKILLBOTJSAPPID)"
+  #               EchoSkillBotJSV3: "$(BFFNECHOSKILLBOTJSV3APPID)"
+  #               EchoSkillBotPython: "$(BFFNECHOSKILLBOTPYTHONAPPID)"
+  #               WaterfallSkillBotDotNet: "$(BFFNWATERFALLSKILLBOTDOTNETAPPID)"
+  #               WaterfallSkillBotJS: "$(BFFNWATERFALLSKILLBOTJSAPPID)"
+  #               WaterfallSkillBotPython: "$(BFFNWATERFALLSKILLBOTPYTHONAPPID)"
+  #             azureSubscription: "$(AZURESUBSCRIPTION)"
+  #             keyVault: "$(INTERNALKEYVAULTNAME)"
+  #             resourceGroup: "$(INTERNALRESOURCEGROUPNAME)"
+  #             resourceSuffix: "$(INTERNALRESOURCESUFFIX)$(BUILDIDSUFFIX)"
 
   - stage: "Test_DotNet_Functional"
     displayName: "Test DotNet Functional"
