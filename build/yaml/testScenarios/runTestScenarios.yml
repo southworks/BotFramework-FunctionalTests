@@ -78,7 +78,7 @@ stages:
         displayName: "Download Variables"
         steps:
           - powershell: |
-              $appsettings = "$(Test)" | ConvertFrom-Json;
+              $appsettings = $(Test) | ConvertFrom-Json;
               Set-Content -Path test.json -Value $appsettings
               Get-Content -Path test.json
             displayName: "Set Deploy Bot Resources GUID"
