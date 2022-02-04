@@ -61,6 +61,20 @@ stages:
           - powershell: |
               Write-Host "##vso[task.setvariable variable=DeploymentBuildSuffix;isOutput=true;issecret=true]Testing"
             displayName: "Set Deploy Bot Resources GUID"
+  - stage: "Download_Variables2"
+    displayName: "Download Variables"
+    dependsOn: Download_Variables
+    variables:
+      Test: $[stageDependencies.Download_Variables.Download_Variables.outputs['Set_Variables.DeploymentBuildSuffix']]
+    jobs:
+      - job: "Download_Variables"
+        displayName: "Download Variables"
+        steps:
+          - checkout: none
+          - powershell: |
+              "Prueba $(Test)"
+              "Prueba2 $Test"
+            displayName: "Set Deploy Bot Resources GUID"
 
   # - stage: "Download_Variables"
   #   displayName: "Download Variables"
