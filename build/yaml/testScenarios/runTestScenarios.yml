@@ -51,6 +51,18 @@ pool:
   vmImage: "windows-2019"
 
 stages:
+  - stage: "Download_Variables"
+    displayName: "Download Variables"
+    jobs:
+      - job: "Download_Variables"
+        displayName: "Download Variables"
+        steps:
+          - checkout: none
+          - powershell: |
+              Write-output "This pipeline has been triggered by: $(resources.pipeline.02ADeploySkillBots.pipelineName)"
+              Write-output "This pipeline has been triggered by: $(resources.pipeline.02ADeploySkillBots.runID)"
+            displayName: "Set Deploy Bot Resources GUID"
+
   # - stage: "Download_Variables"
   #   displayName: "Download Variables"
   #   jobs:
@@ -118,22 +130,6 @@ stages:
 
   # Integration Tests
 
-  # - stage: "Build_DotNet_Integration2"
-  #   displayName: "Build DotNet Integration"
-  #   dependsOn: []
-  #   jobs:
-  #     - job: "Build"
-  #       displayName: "Build IntegrationTests.csproj"
-  #       steps:
-  #         - powershell: |
-  #             Write-Host "##vso[task.setvariable variable=MY_MAPPED_ENV_VAR]testing";
-  #             Write-Host "##vso[task.setvariable variable=MY_MAPPED_ENV_VAR2]testing2";
-
-  #         - powershell: |
-  #             Write-Host "Using a global non-secret var mapped in the pipeline works: $env:GLOBAL_MY_MAPPED_ENV_VAR" 
-  #             Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR"
-  #             Write-Host "Using the mapped env var for this task works and is recommended: $env:MY_MAPPED_ENV_VAR2"
-
   - stage: "Build_DotNet_Integration"
     displayName: "Build DotNet Integration"
     dependsOn: []
@@ -174,36 +170,61 @@ stages:
 
   # # Functional Tests
 
-  # - stage: "Build_DotNet_Functional"
-  #   displayName: "Build DotNet Functional"
-  #   dependsOn: []
-  #   jobs:
-  #     - job: "Build"
-  #       displayName: "Build FunctionalTests.csproj"
-  #       steps:
-  #         - template: build.yml
-  #           parameters:
-  #             project: "Tests/Functional/FunctionalTests.csproj"
-  #             destZip: "Functional/DotNet.zip"
+  - stage: "Build_DotNet_Functional"
+    displayName: "Build DotNet Functional"
+    dependsOn: []
+    jobs:
+      - job: "Build"
+        displayName: "Build FunctionalTests.csproj"
+        steps:
+          - template: build.yml
+            parameters:
+              project: "Tests/Functional/FunctionalTests.csproj"
+              destZip: "Functional/DotNet.zip"
 
-  # - stage: "Test_DotNet_Functional"
-  #   displayName: "Test DotNet Functional"
-  #   dependsOn: [Build_DotNet_Functional]
-  #   jobs:
-  #     - job: "Test_Skills_CardActions"
-  #       displayName: "Test Skills.CardActions"
-  #       steps:
-  #         - checkout: none
-  #         - template: test.yml
-  #           parameters:
-  #             zip: "Functional/DotNet.zip"
-  #             dll: "FunctionalTests.dll"
-  #             namespace: "SkillFunctionalTests.Skills.CardAction"
-  #             trx: "Functional-DotNet-$(BUILD.BUILDNUMBER).trx"
-  #             env:
-  #               HostBotClientOptions:WaterfallHostBotDotNet:DirectLineSecret: ""
-  #               HostBotClientOptions:WaterfallHostBotJS:DirectLineSecret: ""
-  #               HostBotClientOptions:WaterfallHostBotPython:DirectLineSecret: ""
+  - stage: "Configure_DotNet_Functional"
+    displayName: "Configure DotNet Functional"
+    dependsOn: []
+    jobs:
+      - job: "Configure"
+        displayName: "Configure Consumers"
+        steps:
+          - template: configureConsumers.yml
+            parameters:
+              appIds:
+                ComposerSkillBotDotNet: "$(BFFNCOMPOSERSKILLBOTDOTNETAPPID)"
+                EchoSkillBotComposerDotNet: "$(BFFNECHOSKILLBOTCOMPOSERDOTNETAPPID)"
+                EchoSkillBotDotNet: "$(BFFNECHOSKILLBOTDOTNETAPPID)"
+                EchoSkillBotDotNetV3: "$(BFFNECHOSKILLBOTDOTNETV3APPID)"
+                EchoSkillBotJS: "$(BFFNECHOSKILLBOTJSAPPID)"
+                EchoSkillBotJSV3: "$(BFFNECHOSKILLBOTJSV3APPID)"
+                EchoSkillBotPython: "$(BFFNECHOSKILLBOTPYTHONAPPID)"
+                WaterfallSkillBotDotNet: "$(BFFNWATERFALLSKILLBOTDOTNETAPPID)"
+                WaterfallSkillBotJS: "$(BFFNWATERFALLSKILLBOTJSAPPID)"
+                WaterfallSkillBotPython: "$(BFFNWATERFALLSKILLBOTPYTHONAPPID)"
+              azureSubscription: "$(AZURESUBSCRIPTION)"
+              keyVault: "$(INTERNALKEYVAULTNAME)"
+              resourceGroup: "$(INTERNALRESOURCEGROUPNAME)"
+              resourceSuffix: "$(INTERNALRESOURCESUFFIX)$(BUILDIDSUFFIX)"
+
+  - stage: "Test_DotNet_Functional"
+    displayName: "Test DotNet Functional"
+    dependsOn: [Build_DotNet_Functional]
+    jobs:
+      - job: "Test_Skills_CardActions"
+        displayName: "Test Skills.CardActions"
+        steps:
+          - checkout: none
+          - template: test.yml
+            parameters:
+              zip: "Functional/DotNet.zip"
+              dll: "FunctionalTests.dll"
+              namespace: "SkillFunctionalTests.Skills.CardAction"
+              trx: "Functional-DotNet-$(BUILD.BUILDNUMBER).trx"
+              env:
+                HostBotClientOptions:WaterfallHostBotDotNet:DirectLineSecret: ""
+                HostBotClientOptions:WaterfallHostBotJS:DirectLineSecret: ""
+                HostBotClientOptions:WaterfallHostBotPython:DirectLineSecret: ""
 
 # Test
 
