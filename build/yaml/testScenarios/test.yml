@@ -45,7 +45,7 @@ steps:
         targetType: inline
         failOnStderr: true
         workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
-        script: Set-Content -Path appsettings.json -Value "${{ parameters.appsettings }}";
+        script: Set-Content -Path appsettings.json -Value ('${{ parameters.appsettings }}' | ConvertFrom-Json);
 
   - task: DotNetCoreCLI@2
     displayName: "Test"

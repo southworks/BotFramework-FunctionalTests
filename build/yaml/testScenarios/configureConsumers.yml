@@ -606,5 +606,5 @@ steps:
         Write-Host $(AddTimeStamp -text "Process Finished!");
 
         # Share appSettings.json file content.
-        $appSettings = Get-Content $appSettingsPath -Raw;
-        Write-Host "##vso[task.setvariable variable=ConfigureAppSettingsContent;isOutput=true]$appSettings"
+        $appSettings = Get-Content -Path $appSettingsPath | Out-String | ConvertTo-Json -Compress
+        Write-Host "##vso[task.setvariable variable=ConfigureAppSettingsContent;isOutput=true;isSecret=true]$appSettings"
