@@ -62,5 +62,4 @@ steps:
     inputs:
       testResultsFormat: "VSTest"
       testResultsFiles: "TestResults/${{ parameters.trx }}"
-      testRunTitle: "Test-$(BUILD.BUILDNUMBER)"
-      mergeTestResults: true
+      testRunTitle: "${{ parameters.namespace }}-$(BUILD.BUILDNUMBER)"
