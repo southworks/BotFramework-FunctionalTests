@@ -29,13 +29,12 @@ steps:
       failOnStderr: true
       workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
       script: |
-        $zipName = "${{ parameters.project }}".Split("/")[-2] + ".zip";
+        $originZip = "Build/${{ parameters.project }}".Split("/")[-2] + ".zip";
         $destZip = "Publish/${{ parameters.destZip }}";
-        $newZipName = $destZip.Split("/")[-1];
-        $destFolder = $destZip.Replace($newZipName, "");
+        $destFolder = $destZip.Replace($destZip.Split("/")[-1], "");
 
         New-Item -Path $destFolder -ItemType Directory;
-        Move-Item -Path "Build/$zipName" -Destination $destZip;
+        Move-Item -Path $originZip -Destination $destZip;
 
   - task: PublishBuildArtifacts@1
     displayName: "Publish Build"
