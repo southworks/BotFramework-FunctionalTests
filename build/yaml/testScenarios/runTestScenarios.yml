@@ -57,11 +57,16 @@ stages:
       - job: "Download_Variables"
         displayName: "Download Variables"
         steps:
-          - checkout: none
-          - powershell: |
-              Write-Host "##vso[task.setvariable variable=DeploymentBuildSuffix;isOutput=true;issecret=true]Testing"
-            displayName: "Set Deploy Bot Resources GUID"
+          - task: PowerShell@2
+            displayName: "Update appsettings.json"
             name: "Set_Variables"
+            inputs:
+              targetType: inline
+              failOnStderr: true
+              workingDirectory: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Tests/Functional"
+              script: | 
+                $appsettings = Get-Content -Path appsettings.json -Raw
+                Write-Host "##vso[task.setvariable variable=DeploymentBuildSuffix;isOutput=true;issecret=true]$appsettings"
 
   - stage: "Download_Variables2"
     displayName: "Download Variables"
@@ -72,13 +77,18 @@ stages:
       - job: "Download_Variables"
         displayName: "Download Variables"
         steps:
-          - checkout: none
           - powershell: |
               "Prueba $(Test)"
               "Prueba2 $Test"
               Set-Content -Path test.json -Value "$(Test) $Test"
               Get-Content -Path test.json
             displayName: "Set Deploy Bot Resources GUID"
+          - task: PublishBuildArtifacts@1
+            displayName: "Publish Build"
+            inputs:
+              pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)"
+              artifactName: "Testing"
+
 
   # - stage: "Download_Variables"
   #   displayName: "Download Variables"
