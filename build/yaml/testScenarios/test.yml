@@ -16,9 +16,14 @@ parameters:
     type: string
 
   - name: env
-    displayName: Environment variables to share to the test process
+    displayName: (optional) Environment variables to share to the test process
     type: object
     default: {}
+
+  - name: appsettings
+    displayName: (optional) Raw content to set in the appsettings.json file
+    type: string
+    default: ""
 
 steps:
   - task: DownloadBuildArtifacts@0
@@ -32,6 +37,15 @@ steps:
       archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build/${{ parameters.zip }}"
       destinationFolder: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
       cleanDestinationFolder: true
+
+  - ${{ if ne(parameters.appsettings, '') }}:
+    - task: PowerShell@2
+      displayName: "Update appsettings.json"
+      inputs:
+        targetType: inline
+        failOnStderr: true
+        workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
+        script: Set-Content -Path appsettings.json -Value "${{ parameters.appsettings }}";
 
   - task: DotNetCoreCLI@2
     displayName: "Test"
