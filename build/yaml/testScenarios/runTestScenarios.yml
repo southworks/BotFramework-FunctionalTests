@@ -65,7 +65,7 @@ stages:
               failOnStderr: true
               workingDirectory: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Tests/Functional"
               script: | 
-                $appsettings = Get-Content -Path appsettings.json -Raw
+                $appsettings = Get-Content -Path appsettings.json | Out-String | ConvertTo-Json -Compress;
                 Write-Host "##vso[task.setvariable variable=DeploymentBuildSuffix;isOutput=true;issecret=true]$appsettings"
 
   - stage: "Download_Variables2"
@@ -78,15 +78,14 @@ stages:
         displayName: "Download Variables"
         steps:
           - powershell: |
-              "Prueba $(Test)"
-              "Prueba2 $Test"
-              Set-Content -Path test.json -Value "$(Test) $Test"
+              $appsettings = "$(Test)" | ConvertFrom-Json;
+              Set-Content -Path test.json -Value $appsettings
               Get-Content -Path test.json
             displayName: "Set Deploy Bot Resources GUID"
           - task: PublishBuildArtifacts@1
             displayName: "Publish Build"
             inputs:
-              pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)"
+              pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/test.json"
               artifactName: "Testing"
 
 
