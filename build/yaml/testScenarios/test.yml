@@ -39,13 +39,13 @@ steps:
       cleanDestinationFolder: true
 
   - ${{ if ne(parameters.appsettings, '') }}:
-    - task: PowerShell@2
-      displayName: "Update appsettings.json"
-      inputs:
-        targetType: inline
-        failOnStderr: true
-        workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
-        script: Set-Content -Path appsettings.json -Value ('${{ parameters.appsettings }}' | ConvertFrom-Json);
+      - task: PowerShell@2
+        displayName: "Update appsettings.json"
+        inputs:
+          targetType: inline
+          failOnStderr: true
+          workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
+          script: Set-Content -Path appsettings.json -Value ('${{ parameters.appsettings }}' | ConvertFrom-Json);
 
   - task: DotNetCoreCLI@2
     displayName: "Test"

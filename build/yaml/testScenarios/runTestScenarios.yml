@@ -51,354 +51,179 @@ pool:
   vmImage: "windows-2019"
 
 stages:
-  # - stage: "Download_Variables"
-  #   displayName: "Download Variables"
+  - template: integration.yml
+    parameters:
+      azureSubscription: "$(AZURESUBSCRIPTION)"
+      cosmosDb: "$(INTERNALCOSMOSDBNAME)"
+      resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+
+  - template: functional.yml
+    parameters:
+      appIds:
+        ComposerSkillBotDotNet: "$(BFFNCOMPOSERSKILLBOTDOTNETAPPID)"
+        EchoSkillBotComposerDotNet: "$(BFFNECHOSKILLBOTCOMPOSERDOTNETAPPID)"
+        EchoSkillBotDotNet: "$(BFFNECHOSKILLBOTDOTNETAPPID)"
+        EchoSkillBotDotNetV3: "$(BFFNECHOSKILLBOTDOTNETV3APPID)"
+        EchoSkillBotJS: "$(BFFNECHOSKILLBOTJSAPPID)"
+        EchoSkillBotJSV3: "$(BFFNECHOSKILLBOTJSV3APPID)"
+        EchoSkillBotPython: "$(BFFNECHOSKILLBOTPYTHONAPPID)"
+        WaterfallSkillBotDotNet: "$(BFFNWATERFALLSKILLBOTDOTNETAPPID)"
+        WaterfallSkillBotJS: "$(BFFNWATERFALLSKILLBOTJSAPPID)"
+        WaterfallSkillBotPython: "$(BFFNWATERFALLSKILLBOTPYTHONAPPID)"
+      azureSubscription: "$(AZURESUBSCRIPTION)"
+      deployBuildId: "$(resources.pipeline.02ADeploySkillBots.runID)"
+      keyVault: "$(INTERNALKEYVAULTNAME)"
+      resourceGroup: "$(INTERNALRESOURCEGROUPNAME)"
+      resourceSuffix: "$(INTERNALRESOURCESUFFIX)"
+
+  # - stage: "Build_DotNet_Integration"
+  #   displayName: "Build DotNet Integration"
+  #   dependsOn: []
   #   jobs:
-  #     - job: "Download_Variables"
-  #       displayName: "Download Variables"
+  #     - job: "Build"
+  #       displayName: "Build IntegrationTests.csproj"
   #       steps:
-  #         - task: PowerShell@2
-  #           displayName: "Update appsettings.json"
-  #           name: "Set_Variables"
-  #           inputs:
-  #             targetType: inline
-  #             failOnStderr: true
-  #             workingDirectory: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Tests/Functional"
-  #             script: | 
-  #               $appsettings = Get-Content -Path appsettings.json | Out-String | ConvertTo-Json -Compress;
-  #               Write-Host "##vso[task.setvariable variable=DeploymentBuildSuffix;isOutput=true;issecret=true]$appsettings"
+  #         - template: build.yml
+  #           parameters:
+  #             project: "Tests/Integration/DotNet/IntegrationTests.csproj"
+  #             destZip: "Integration/DotNet.zip"
 
-  # - stage: "Download_Variables2"
-  #   displayName: "Download Variables"
-  #   dependsOn: Download_Variables
-  #   variables:
-  #     Test: $[stageDependencies.Download_Variables.Download_Variables.outputs['Set_Variables.DeploymentBuildSuffix']]
+  # - stage: "Test_DotNet_Integration"
+  #   displayName: "Test DotNet Integration"
+  #   dependsOn: Build_DotNet_Integration
   #   jobs:
-  #     - job: "Download_Variables"
-  #       displayName: "Download Variables"
-  #       steps:
-  #         - powershell: |
-  #             $appsettings = '$(Test)' | ConvertFrom-Json;
-  #             Set-Content -Path test.json -Value $appsettings
-  #             Get-Content -Path test.json
-  #           displayName: "Set Deploy Bot Resources GUID"
-  #         - task: PublishBuildArtifacts@1
-  #           displayName: "Publish Build"
-  #           inputs:
-  #             pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/test.json"
-  #             artifactName: "Testing"
-
-
-  # - stage: "Download_Variables"
-  #   displayName: "Download Variables"
-  #   jobs:
-  #     - job: "Download_Variables"
-  #       displayName: "Download Variables"
+  #     - job: "Test_Azure_CosmosDb"
+  #       displayName: "Test Azure.CosmosDb"
   #       steps:
   #         - checkout: none
-  #         - powershell: |
-  #             $pipelineGuid = if ([string]::IsNullOrEmpty("$env:DEPLOYBOTRESOURCESGUID")) { "02.A. Deploy skill bots (daily)" } else { "$(DEPLOYBOTRESOURCESGUID)" }
-  #             Write-Host "Deploy Bot Resources Pipeline GUID: " $pipelineGuid
-  #             Write-Host "##vso[task.setvariable variable=PipelineGuid]$pipelineGuid"
-  #           displayName: "Set Deploy Bot Resources GUID"
-
-  #         - task: DownloadPipelineArtifact@2
-  #           displayName: "Download Variables artifact"
-  #           inputs:
-  #             source: "specific"
-  #             project: "$(SYSTEM.TEAMPROJECT)"
-  #             pipeline: "$(PIPELINEGUID)"
-  #             allowPartiallySucceededBuilds: true
-  #             allowFailedBuilds: true
-  #             artifact: "Variables"
-  #             path: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Variables/"
-
-  #         - powershell: |
-  #             $deploymentBuildSuffix = (Get-Content -Path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Variables/variables.json" | ConvertFrom-Json).deploymentBuildSuffix
-  #             Write-Host "Deployment Build Suffix: " $deploymentBuildSuffix
-  #             Write-Host "##vso[task.setvariable variable=DeploymentBuildSuffix;isOutput=true]-$deploymentBuildSuffix"
-  #           displayName: "Set variables"
-  #           name: "Set_Variables"
-
-  # - template: runScenario.yml
-  #   parameters:
-  #     appIds:
-  #       ComposerSkillBotDotNet: "$(BFFNCOMPOSERSKILLBOTDOTNETAPPID)"
-  #       EchoSkillBotComposerDotNet: "$(BFFNECHOSKILLBOTCOMPOSERDOTNETAPPID)"
-  #       EchoSkillBotDotNet: "$(BFFNECHOSKILLBOTDOTNETAPPID)"
-  #       EchoSkillBotDotNetV3: "$(BFFNECHOSKILLBOTDOTNETV3APPID)"
-  #       EchoSkillBotJS: "$(BFFNECHOSKILLBOTJSAPPID)"
-  #       EchoSkillBotJSV3: "$(BFFNECHOSKILLBOTJSV3APPID)"
-  #       EchoSkillBotPython: "$(BFFNECHOSKILLBOTPYTHONAPPID)"
-  #       WaterfallSkillBotDotNet: "$(BFFNWATERFALLSKILLBOTDOTNETAPPID)"
-  #       WaterfallSkillBotJS: "$(BFFNWATERFALLSKILLBOTJSAPPID)"
-  #       WaterfallSkillBotPython: "$(BFFNWATERFALLSKILLBOTPYTHONAPPID)"
-  #     azureSubscription: "$(AZURESUBSCRIPTION)"
-  #     buildConfiguration: "$(BUILDCONFIGURATION)"
-  #     buildIdSuffix: $[stageDependencies.Download_Variables.Download_Variables.outputs['Set_Variables.DeploymentBuildSuffix']]
-  #     keyVault: "$(INTERNALKEYVAULTNAME)"
-  #     resourceGroup: "$(INTERNALRESOURCEGROUPNAME)"
-  #     resourceSuffix: "$(INTERNALRESOURCESUFFIX)"
-  #     scenarios:
-  #       - name: Waterfall
-  #         dependsOn: [Download_Variables]
-  #         testCategories:
-  #           - Attachments
-  #           - CardActions
-  #           - ProactiveMessages
-  #           - FileUpload
-  #           - SignIn
-
-  #       - name: SingleTurn
-  #         dependsOn: [Download_Variables]
-  #         testCategories:
-  #           - SingleTurn
-
-  # Integration Tests
-
-  - stage: "Build_DotNet_Integration"
-    displayName: "Build DotNet Integration"
-    dependsOn: []
-    jobs:
-      - job: "Build"
-        displayName: "Build IntegrationTests.csproj"
-        steps:
-          - template: build.yml
-            parameters:
-              project: "Tests/Integration/DotNet/IntegrationTests.csproj"
-              destZip: "Integration/DotNet.zip"
-
-  - stage: "Test_DotNet_Integration"
-    displayName: "Test DotNet Integration"
-    dependsOn: Build_DotNet_Integration
-    jobs:
-      - job: "Test_Azure_CosmosDb"
-        displayName: "Test Azure.CosmosDb"
-        steps:
-          - checkout: none
-          - template: ../common/getCosmosDbConnectionVariables.yml
-            parameters:
-              azureSubscription: "$(AZURESUBSCRIPTION)"
-              resourceName: "$(INTERNALCOSMOSDBNAME)"
-              resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
-          - powershell: |
-              Write-Host "##vso[task.setvariable variable=Azure:CosmosDb:ServiceEndpoint]$(COSMOSDBSERVICEENDPOINT)";
-              Write-Host "##vso[task.setvariable variable=Azure:CosmosDb:AuthKey]$(COSMOSDBAUTHKEY)";
-          - template: test.yml
-            parameters:
-              zip: "Integration/DotNet.zip"
-              dll: "IntegrationTests.dll"
-              namespace: "IntegrationTests.Azure.CosmosDb"
-              trx: "Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
-              # env:
-              #   Azure:CosmosDb:ServiceEndpoint: "$(COSMOSDBSERVICEENDPOINT)"
-              #   Azure:CosmosDb:AuthKey: "$(COSMOSDBAUTHKEY)"
+  #         - template: ../common/getCosmosDbConnectionVariables.yml
+  #           parameters:
+  #             azureSubscription: "$(AZURESUBSCRIPTION)"
+  #             resourceName: "$(INTERNALCOSMOSDBNAME)"
+  #             resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+  #         - template: test.yml
+  #           parameters:
+  #             zip: "Integration/DotNet.zip"
+  #             dll: "IntegrationTests.dll"
+  #             namespace: "IntegrationTests.Azure.CosmosDb"
+  #             trx: "Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
+  #             env:
+  #               Azure:CosmosDb:ServiceEndpoint: "$(COSMOSDBSERVICEENDPOINT)"
+  #               Azure:CosmosDb:AuthKey: "$(COSMOSDBAUTHKEY)"
 
   # Functional Tests
 
-  - stage: "Build_Functional"
-    displayName: "Build Functional"
-    dependsOn: []
-    jobs:
-      - job: "Build"
-        displayName: "Build FunctionalTests.csproj"
-        steps:
-          - template: build.yml
-            parameters:
-              project: "Tests/Functional/FunctionalTests.csproj"
-              destZip: "Functional/Functional.zip"
+  # - stage: "Build_Functional"
+  #   displayName: "Build Functional"
+  #   dependsOn: []
+  #   jobs:
+  #     - job: "Build"
+  #       displayName: "Build FunctionalTests.csproj"
+  #       steps:
+  #         - template: build.yml
+  #           parameters:
+  #             project: "Tests/Functional/FunctionalTests.csproj"
+  #             destZip: "Functional/Functional.zip"
 
-  - stage: "Configure_Functional"
-    displayName: "Configure Functional"
-    dependsOn: Build_Functional
-    variables:
-      DeployBuildId: "$(resources.pipeline.02ADeploySkillBots.runID)"
-    jobs:
-      - job: "Configure"
-        displayName: "Configure Consumers"
-        steps:
-          - template: configureConsumers.yml
-            parameters:
-              appIds:
-                ComposerSkillBotDotNet: "$(BFFNCOMPOSERSKILLBOTDOTNETAPPID)"
-                EchoSkillBotComposerDotNet: "$(BFFNECHOSKILLBOTCOMPOSERDOTNETAPPID)"
-                EchoSkillBotDotNet: "$(BFFNECHOSKILLBOTDOTNETAPPID)"
-                EchoSkillBotDotNetV3: "$(BFFNECHOSKILLBOTDOTNETV3APPID)"
-                EchoSkillBotJS: "$(BFFNECHOSKILLBOTJSAPPID)"
-                EchoSkillBotJSV3: "$(BFFNECHOSKILLBOTJSV3APPID)"
-                EchoSkillBotPython: "$(BFFNECHOSKILLBOTPYTHONAPPID)"
-                WaterfallSkillBotDotNet: "$(BFFNWATERFALLSKILLBOTDOTNETAPPID)"
-                WaterfallSkillBotJS: "$(BFFNWATERFALLSKILLBOTJSAPPID)"
-                WaterfallSkillBotPython: "$(BFFNWATERFALLSKILLBOTPYTHONAPPID)"
-              azureSubscription: "$(AZURESUBSCRIPTION)"
-              keyVault: "$(INTERNALKEYVAULTNAME)"
-              resourceGroup: "$(INTERNALRESOURCEGROUPNAME)"
-              resourceSuffix: "$(INTERNALRESOURCESUFFIX)-$(DEPLOYBUILDID)"
+  # - stage: "Configure_Functional"
+  #   displayName: "Configure Functional"
+  #   dependsOn: Build_Functional
+  #   variables:
+  #     DeployBuildId: "$(resources.pipeline.02ADeploySkillBots.runID)"
+  #   jobs:
+  #     - job: "Configure"
+  #       displayName: "Configure Consumers"
+  #       steps:
+  #         - template: configureConsumers.yml
+  #           parameters:
+  #             appIds:
+  #               ComposerSkillBotDotNet: "$(BFFNCOMPOSERSKILLBOTDOTNETAPPID)"
+  #               EchoSkillBotComposerDotNet: "$(BFFNECHOSKILLBOTCOMPOSERDOTNETAPPID)"
+  #               EchoSkillBotDotNet: "$(BFFNECHOSKILLBOTDOTNETAPPID)"
+  #               EchoSkillBotDotNetV3: "$(BFFNECHOSKILLBOTDOTNETV3APPID)"
+  #               EchoSkillBotJS: "$(BFFNECHOSKILLBOTJSAPPID)"
+  #               EchoSkillBotJSV3: "$(BFFNECHOSKILLBOTJSV3APPID)"
+  #               EchoSkillBotPython: "$(BFFNECHOSKILLBOTPYTHONAPPID)"
+  #               WaterfallSkillBotDotNet: "$(BFFNWATERFALLSKILLBOTDOTNETAPPID)"
+  #               WaterfallSkillBotJS: "$(BFFNWATERFALLSKILLBOTJSAPPID)"
+  #               WaterfallSkillBotPython: "$(BFFNWATERFALLSKILLBOTPYTHONAPPID)"
+  #             azureSubscription: "$(AZURESUBSCRIPTION)"
+  #             keyVault: "$(INTERNALKEYVAULTNAME)"
+  #             resourceGroup: "$(INTERNALRESOURCEGROUPNAME)"
+  #             resourceSuffix: "$(INTERNALRESOURCESUFFIX)-$(DEPLOYBUILDID)"
 
-  - stage: "Test_Functional"
-    displayName: "Test Functional"
-    dependsOn: Configure_Functional
-    variables:
-      Zip: "Functional/Functional.zip"
-      Dll: "FunctionalTests.dll"
-      BaseNamespace: "SkillFunctionalTests.Skills"
-      AppSettings: $[stageDependencies.Configure_Functional.Configure.outputs['Configure_Consumers.ConfigureAppSettingsContent']]
-    jobs:
-      - job: "Test_Skills_CardActions"
-        displayName: "Test Skills.CardActions"
-        steps:
-          - checkout: none
-          - template: test.yml
-            parameters:
-              zip: "$(ZIP)"
-              dll: "$(DLL)"
-              namespace: "$(BASENAMESPACE).CardActions"
-              trx: "$(BASENAMESPACE).CardActions-$(BUILD.BUILDNUMBER).trx"
-              appSettings: "$(APPSETTINGS)"
-      - job: "Test_Skills_FileUpload"
-        displayName: "Test Skills.FileUpload"
-        steps:
-          - checkout: none
-          - template: test.yml
-            parameters:
-              zip: "$(ZIP)"
-              dll: "$(DLL)"
-              namespace: "$(BASENAMESPACE).FileUpload"
-              trx: "$(BASENAMESPACE).FileUpload-$(BUILD.BUILDNUMBER).trx"
-              appSettings: "$(APPSETTINGS)"
-      - job: "Test_Skills_MessageWithAttachment"
-        displayName: "Test Skills.MessageWithAttachment"
-        steps:
-          - checkout: none
-          - template: test.yml
-            parameters:
-              zip: "$(ZIP)"
-              dll: "$(DLL)"
-              namespace: "$(BASENAMESPACE).MessageWithAttachment"
-              trx: "$(BASENAMESPACE).MessageWithAttachment-$(BUILD.BUILDNUMBER).trx"
-              appSettings: "$(APPSETTINGS)"
-      - job: "Test_Skills_ProactiveMessages"
-        displayName: "Test Skills.ProactiveMessages"
-        steps:
-          - checkout: none
-          - template: test.yml
-            parameters:
-              zip: "$(ZIP)"
-              dll: "$(DLL)"
-              namespace: "$(BASENAMESPACE).ProactiveMessages"
-              trx: "$(BASENAMESPACE).ProactiveMessages-$(BUILD.BUILDNUMBER).trx"
-              appSettings: "$(APPSETTINGS)"
-      - job: "Test_Skills_SignIn"
-        displayName: "Test Skills.SignIn"
-        steps:
-          - checkout: none
-          - template: test.yml
-            parameters:
-              zip: "$(ZIP)"
-              dll: "$(DLL)"
-              namespace: "$(BASENAMESPACE).SignIn"
-              trx: "$(BASENAMESPACE).SignIn-$(BUILD.BUILDNUMBER).trx"
-              appSettings: "$(APPSETTINGS)"
-      - job: "Test_Skills_SingleTurn"
-        displayName: "Test Skills.SingleTurn"
-        steps:
-          - checkout: none
-          - template: test.yml
-            parameters:
-              zip: "$(ZIP)"
-              dll: "$(DLL)"
-              namespace: "$(BASENAMESPACE).SingleTurn"
-              trx: "$(BASENAMESPACE).SingleTurn-$(BUILD.BUILDNUMBER).trx"
-              appsettings: "$(APPSETTINGS)"
-
-
-# Test
-
-# - task: AzureCLI@2
-#   displayName: "Set CosmosDb Connection variables"
-#   inputs:
-#     azureSubscription: "$(AZURESUBSCRIPTION)"
-#     scriptType: pscore
-#     scriptLocation: inlineScript
-#     failOnStderr: true
-#     inlineScript: |
-#       $connection, $rest = az cosmosdb keys list --name $(INTERNALCOSMOSDBNAME) --resource-group $(INTERNALSHAREDRESOURCEGROUPNAME) --type connection-strings | ConvertFrom-Json | Select-Object -ExpandProperty connectionStrings | Select-Object -ExpandProperty connectionString;
-
-#       $AccountEndpoint, $AccountKey = $connection.Trim(";") -split ";";
-#       $endpoint = $AccountEndpoint -replace "AccountEndpoint=";
-#       $key = $AccountKey -replace "AccountKey=";
-
-#       if ([string]::IsNullOrEmpty($endpoint) -or [string]::IsNullOrEmpty($key)) {
-#         Write-Host "##vso[task.logissue type=error]CosmosDb ServiceEndpoint and AuthKey couldn't be retrieved from Azure."
-#         exit 1 # Force exit
-#       }
-
-#       Write-Host "CosmosDb Connection variables:";
-#       [PSCustomObject]@{
-#         ServiceEndpoint = $endpoint
-#         AuthKey = $key.Substring(0, 3) + "***"
-#       } | Format-Table -AutoSize
-
-#       Write-Host "##vso[task.setvariable variable=AzureCosmosDbServiceEndpoint]$endpoint";
-#       Write-Host "##vso[task.setvariable variable=AzureCosmosDbAuthKey]$key";
-
-# - task: DownloadBuildArtifacts@0
-#   displayName: "Download Build"
-#   inputs:
-#     artifactName: "Build"
-
-# - task: ExtractFiles@1
-#   displayName: "Extract Build"
-#   inputs:
-#     archiveFilePatterns: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build/Integration/DotNet.zip"
-#     destinationFolder: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests"
-#     cleanDestinationFolder: true
-
-# - task: DotNetCoreCLI@2
-#   displayName: "Test"
-#   inputs:
-#     command: custom
-#     custom: vstest
-#     testRunTitle: "Integration-DotNet"
-#     arguments: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/IntegrationTests.dll --logger:\"trx;LogFileName=Integration-DotNet-$(BUILD.BUILDNUMBER).trx\" --TestCaseFilter:FullyQualifiedName~IntegrationTests.Azure"
-#   env:
-#     Azure:CosmosDb:ServiceEndpoint: "$(AZURECOSMOSDBSERVICEENDPOINT)"
-#     Azure:CosmosDb:AuthKey: "$(AZURECOSMOSDBAUTHKEY)"
-
-# - task: PublishTestResults@2
-#   displayName: "Publish Test Result"
-#   inputs:
-#     testResultsFormat: "VSTest"
-#     testResultsFiles: "TestResults/Integration-DotNet-$(BUILD.BUILDNUMBER).trx"
-
-# build integration
-
-# - task: UseDotNet@2
-#   displayName: "Use .Net Core sdk 3.1.x"
-#   inputs:
-#     version: 3.1.x
-
-# - task: DotNetCoreCLI@2
-#   displayName: "Build"
-#   inputs:
-#     command: publish
-#     publishWebProjects: false
-#     projects: "Tests/Integration/DotNet/IntegrationTests.csproj"
-#     arguments: "--output $(BUILD.ARTIFACTSTAGINGDIRECTORY)/Build"
-#     modifyOutputPath: true
-
-# - task: PowerShell@2
-#   displayName: 'Prepare Publish'
-#   inputs:
-#     targetType: inline
-#     failOnStderr: true
-#     workingDirectory: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)"
-#     script: |
-#       New-Item -Path "Publish/Integration/" -ItemType Directory
-#       Move-Item -Path "Build/DotNet.zip" -Destination "Publish/Integration/DotNet.zip"
-
-# - task: PublishBuildArtifacts@1
-#   displayName: 'Publish Build'
-#   inputs:
-#     pathToPublish: "$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Publish"
-#     artifactName: "Build"
+  # - stage: "Test_Functional"
+  #   displayName: "Test Functional"
+  #   dependsOn: Configure_Functional
+  #   variables:
+  #     Zip: "Functional/Functional.zip"
+  #     Dll: "FunctionalTests.dll"
+  #     BaseNamespace: "SkillFunctionalTests.Skills"
+  #     AppSettings: $[stageDependencies.Configure_Functional.Configure.outputs['Configure_Consumers.ConfigureAppSettingsContent']]
+  #   jobs:
+  #     - job: "Test_Skills_CardActions"
+  #       displayName: "Test Skills.CardActions"
+  #       steps:
+  #         - checkout: none
+  #         - template: test.yml
+  #           parameters:
+  #             zip: "$(ZIP)"
+  #             dll: "$(DLL)"
+  #             namespace: "$(BASENAMESPACE).CardActions"
+  #             trx: "$(BASENAMESPACE).CardActions-$(BUILD.BUILDNUMBER).trx"
+  #             appSettings: "$(APPSETTINGS)"
+  #     - job: "Test_Skills_FileUpload"
+  #       displayName: "Test Skills.FileUpload"
+  #       steps:
+  #         - checkout: none
+  #         - template: test.yml
+  #           parameters:
+  #             zip: "$(ZIP)"
+  #             dll: "$(DLL)"
+  #             namespace: "$(BASENAMESPACE).FileUpload"
+  #             trx: "$(BASENAMESPACE).FileUpload-$(BUILD.BUILDNUMBER).trx"
+  #             appSettings: "$(APPSETTINGS)"
+  #     - job: "Test_Skills_MessageWithAttachment"
+  #       displayName: "Test Skills.MessageWithAttachment"
+  #       steps:
+  #         - checkout: none
+  #         - template: test.yml
+  #           parameters:
+  #             zip: "$(ZIP)"
+  #             dll: "$(DLL)"
+  #             namespace: "$(BASENAMESPACE).MessageWithAttachment"
+  #             trx: "$(BASENAMESPACE).MessageWithAttachment-$(BUILD.BUILDNUMBER).trx"
+  #             appSettings: "$(APPSETTINGS)"
+  #     - job: "Test_Skills_ProactiveMessages"
+  #       displayName: "Test Skills.ProactiveMessages"
+  #       steps:
+  #         - checkout: none
+  #         - template: test.yml
+  #           parameters:
+  #             zip: "$(ZIP)"
+  #             dll: "$(DLL)"
+  #             namespace: "$(BASENAMESPACE).ProactiveMessages"
+  #             trx: "$(BASENAMESPACE).ProactiveMessages-$(BUILD.BUILDNUMBER).trx"
+  #             appSettings: "$(APPSETTINGS)"
+  #     - job: "Test_Skills_SignIn"
+  #       displayName: "Test Skills.SignIn"
+  #       steps:
+  #         - checkout: none
+  #         - template: test.yml
+  #           parameters:
+  #             zip: "$(ZIP)"
+  #             dll: "$(DLL)"
+  #             namespace: "$(BASENAMESPACE).SignIn"
+  #             trx: "$(BASENAMESPACE).SignIn-$(BUILD.BUILDNUMBER).trx"
+  #             appSettings: "$(APPSETTINGS)"
+  #     - job: "Test_Skills_SingleTurn"
+  #       displayName: "Test Skills.SingleTurn"
+  #       steps:
+  #         - checkout: none
+  #         - template: test.yml
+  #           parameters:
+  #             zip: "$(ZIP)"
+  #             dll: "$(DLL)"
+  #             namespace: "$(BASENAMESPACE).SingleTurn"
+  #             trx: "$(BASENAMESPACE).SingleTurn-$(BUILD.BUILDNUMBER).trx"
+  #             appsettings: "$(APPSETTINGS)"
