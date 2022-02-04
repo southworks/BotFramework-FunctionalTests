@@ -74,6 +74,8 @@ stages:
           - powershell: |
               "Prueba $(Test)"
               "Prueba2 $Test"
+              Set-Content -Path test.json -Value "$(Test) $Test"
+              Get-Content -Path test.json
             displayName: "Set Deploy Bot Resources GUID"
 
   # - stage: "Download_Variables"
