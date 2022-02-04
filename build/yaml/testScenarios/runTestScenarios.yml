@@ -61,6 +61,8 @@ stages:
           - powershell: |
               Write-Host "##vso[task.setvariable variable=DeploymentBuildSuffix;isOutput=true;issecret=true]Testing"
             displayName: "Set Deploy Bot Resources GUID"
+            name: "Set_Variables"
+
   - stage: "Download_Variables2"
     displayName: "Download Variables"
     dependsOn: Download_Variables
@@ -228,7 +230,7 @@ stages:
     displayName: "Test Functional"
     dependsOn: Configure_Functional
     variables:
-      ConfigureAppSettingsContent: $[stageDependencies.Configure_Functional.Configure.outputs['Set_Variables.ConfigureAppSettingsContent']]
+      ConfigureAppSettingsContent: $[stageDependencies.Configure_Functional.Configure.outputs['Configure_Consumers.ConfigureAppSettingsContent']]
     jobs:
       - job: "Test_Skills_CardActions"
         displayName: "Test Skills.CardActions"
