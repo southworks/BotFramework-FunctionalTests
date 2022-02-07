@@ -56,6 +56,17 @@ steps:
       arguments: '$(BUILD.ARTIFACTSTAGINGDIRECTORY)/Tests/${{ parameters.dll }} --logger:"trx;LogFileName=${{ parameters.trx }}" --TestCaseFilter:FullyQualifiedName~${{ parameters.namespace }}'
     env: ${{ parameters.env }}
 
+  - task: PowerShell@2
+    displayName: "Update ${{ parameters.trx }}"
+    inputs:
+      targetType: inline
+      failOnStderr: true
+      workingDirectory: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/TestResults"
+      script: |
+        [XML]$xml = Get-Content "${{ parameters.trx }}";
+        $xml.TestRun.TestDefinitions.UnitTest | ForEach-Object { $_.TestMethod.name = $_.name; };
+        $xml.save("${{ parameters.trx }}");
+
   - task: PublishTestResults@2
     displayName: "Publish Test Result"
     condition: succeededOrFailed()
