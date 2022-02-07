@@ -18,6 +18,11 @@ resources:
             - releases/*
 
 parameters:
+  - name: dependenciesVersionDotNet
+    displayName: DotNet Version
+    type: string
+    default: $env:DEPENDENCIESVERSIONDOTNET
+
   - name: dependenciesRegistryDotNet
     displayName: DotNet Registry
     type: string
@@ -26,11 +31,6 @@ parameters:
       - Artifacts
       - MyGet
       - NuGet
-
-  - name: dependenciesVersionDotNet
-    displayName: DotNet Version
-    type: string
-    default: $env:DEPENDENCIESVERSIONDOTNET
 
 variables:
   BuildConfiguration: "Debug"
