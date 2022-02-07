@@ -33,9 +33,6 @@ parameters:
       - NuGet
 
 variables:
-  BuildConfiguration: "Debug"
-  BuildPlatform: "Any CPU"
-
   ## Azure Resources (Define these variables in Azure)
   # AzureSubscription: Service Connection Name to Manage Azure resources.
   # ResourceGroup: (optional) Name of the Resource Group where the bots are deployed.
