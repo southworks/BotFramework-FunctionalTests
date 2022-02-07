@@ -11,6 +11,13 @@ parameters:
     displayName: Resource Group name
     type: string
 
+  - name: dotnet
+    displayName: DotNet Integration configuration
+    type: object
+    default:
+      registry: ""
+      version: ""
+
 stages:
   - stage: "Build_DotNet_Integration"
     displayName: "Build DotNet Integration"
@@ -19,10 +26,21 @@ stages:
       - job: "Build"
         displayName: "Build IntegrationTests.csproj"
         steps:
+          - template: ../common/dotnet/evaluateDependenciesVariables.yml
+            parameters:
+              registry: "${{ parameters.dotnet.registry }}"
+              version: "${{ parameters.dotnet.version }}"
+          - template: ../common/tagBotBuilderVersion.yml
+            parameters:
+              name: "DotNet Integration"
+              version: "$(DEPENDENCIESVERSIONNUMBER)"
           - template: build.yml
             parameters:
               project: "Tests/Integration/DotNet/IntegrationTests.csproj"
               destZip: "Integration/DotNet.zip"
+              env:
+                BotBuilderVersion: "$(DEPENDENCIESVERSIONNUMBER)"
+                BotBuilderRegistry: "$(DEPENDENCIESSOURCE)"
 
   - stage: "Test_DotNet_Integration"
     displayName: "Test DotNet Integration"

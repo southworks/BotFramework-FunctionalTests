@@ -17,6 +17,21 @@ resources:
             - main
             - releases/*
 
+parameters:
+  - name: dependenciesRegistryDotNet
+    displayName: DotNet Registry
+    type: string
+    default: Artifacts
+    values:
+      - Artifacts
+      - MyGet
+      - NuGet
+
+  - name: dependenciesVersionDotNet
+    displayName: DotNet Version
+    type: string
+    default: $env:DEPENDENCIESVERSIONDOTNET
+
 variables:
   BuildConfiguration: "Debug"
   BuildPlatform: "Any CPU"
@@ -39,6 +54,9 @@ variables:
   # BffnWaterfallSkillBotJSAppId: (optional) App Id for BffnWaterfallSkillBotJS bot.
   # BffnWaterfallSkillBotPythonAppId: (optional) App Id for BffnWaterfallSkillBotPython bot.
   # DeployBotResourcesGuid: (optional) Deploy Bot Resources pipeline GUID.
+
+  ## DependenciesVersion (Define these variables in Azure) Possible values are: Latest (default), Stable, or specific version numbers.
+  # DependenciesVersionDotNet: (optional) Bot Builder dependency version to use for DotNet.
 
   ## Internal variables
   InternalCosmosDbName: "bffnbotstatedb$(INTERNALRESOURCESUFFIX)"
@@ -75,3 +93,6 @@ stages:
       azureSubscription: "$(AZURESUBSCRIPTION)"
       cosmosDb: "$(INTERNALCOSMOSDBNAME)"
       resourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
+      dotnet:
+        registry: ${{ parameters.dependenciesRegistryDotNet }}
+        version: ${{ parameters.dependenciesVersionDotNet }}
