@@ -44,8 +44,8 @@ stages:
         steps:
           - template: build.yml
             parameters:
-              project: "Tests/Functional/FunctionalTests.csproj"
               destZip: "Functional/Functional.zip"
+              project: "Tests/Functional/FunctionalTests.csproj"
 
   - stage: "Configure_Functional"
     displayName: "Configure Functional"
@@ -77,63 +77,63 @@ stages:
           - checkout: none
           - template: test.yml
             parameters:
-              zip: "$(ZIP)"
+              appSettings: "$(APPSETTINGS)"
               dll: "$(DLL)"
               namespace: "$(BASENAMESPACE).CardActions"
               trx: "$(BASENAMESPACE).CardActions-$(BUILD.BUILDNUMBER).trx"
-              appSettings: "$(APPSETTINGS)"
+              zip: "$(ZIP)"
       - job: "Test_Skills_FileUpload"
         displayName: "Test Skills.FileUpload"
         steps:
           - checkout: none
           - template: test.yml
             parameters:
-              zip: "$(ZIP)"
+              appSettings: "$(APPSETTINGS)"
               dll: "$(DLL)"
               namespace: "$(BASENAMESPACE).FileUpload"
               trx: "$(BASENAMESPACE).FileUpload-$(BUILD.BUILDNUMBER).trx"
-              appSettings: "$(APPSETTINGS)"
+              zip: "$(ZIP)"
       - job: "Test_Skills_MessageWithAttachment"
         displayName: "Test Skills.MessageWithAttachment"
         steps:
           - checkout: none
           - template: test.yml
             parameters:
-              zip: "$(ZIP)"
+              appSettings: "$(APPSETTINGS)"
               dll: "$(DLL)"
               namespace: "$(BASENAMESPACE).MessageWithAttachment"
               trx: "$(BASENAMESPACE).MessageWithAttachment-$(BUILD.BUILDNUMBER).trx"
-              appSettings: "$(APPSETTINGS)"
+              zip: "$(ZIP)"
       - job: "Test_Skills_ProactiveMessages"
         displayName: "Test Skills.ProactiveMessages"
         steps:
           - checkout: none
           - template: test.yml
             parameters:
-              zip: "$(ZIP)"
+              appSettings: "$(APPSETTINGS)"
               dll: "$(DLL)"
               namespace: "$(BASENAMESPACE).ProactiveMessages"
               trx: "$(BASENAMESPACE).ProactiveMessages-$(BUILD.BUILDNUMBER).trx"
-              appSettings: "$(APPSETTINGS)"
+              zip: "$(ZIP)"
       - job: "Test_Skills_SignIn"
         displayName: "Test Skills.SignIn"
         steps:
           - checkout: none
           - template: test.yml
             parameters:
-              zip: "$(ZIP)"
+              appSettings: "$(APPSETTINGS)"
               dll: "$(DLL)"
               namespace: "$(BASENAMESPACE).SignIn"
               trx: "$(BASENAMESPACE).SignIn-$(BUILD.BUILDNUMBER).trx"
-              appSettings: "$(APPSETTINGS)"
+              zip: "$(ZIP)"
       - job: "Test_Skills_SingleTurn"
         displayName: "Test Skills.SingleTurn"
         steps:
           - checkout: none
           - template: test.yml
             parameters:
-              zip: "$(ZIP)"
+              appsettings: "$(APPSETTINGS)"
               dll: "$(DLL)"
               namespace: "$(BASENAMESPACE).SingleTurn"
               trx: "$(BASENAMESPACE).SingleTurn-$(BUILD.BUILDNUMBER).trx"
-              appsettings: "$(APPSETTINGS)"
+              zip: "$(ZIP)"

@@ -7,16 +7,16 @@ parameters:
     displayName: CosmosDb name
     type: string
 
-  - name: resourceGroup
-    displayName: Resource Group name
-    type: string
-
   - name: dotnet
     displayName: DotNet Integration configuration
     type: object
     default:
       registry: ""
       version: ""
+
+  - name: resourceGroup
+    displayName: Resource Group name
+    type: string
 
 stages:
   - stage: "Build_DotNet_Integration"
@@ -36,11 +36,11 @@ stages:
               version: "$(DEPENDENCIESVERSIONNUMBER)"
           - template: build.yml
             parameters:
-              project: "Tests/Integration/DotNet/IntegrationTests.csproj"
               destZip: "Integration/DotNet.zip"
               env:
                 BotBuilderVersion: "$(DEPENDENCIESVERSIONNUMBER)"
                 BotBuilderRegistry: "$(DEPENDENCIESSOURCE)"
+              project: "Tests/Integration/DotNet/IntegrationTests.csproj"
 
   - stage: "Test_DotNet_Integration"
     displayName: "Test DotNet Integration"
@@ -61,10 +61,10 @@ stages:
               resourceGroup: "${{ parameters.resourceGroup }}"
           - template: test.yml
             parameters:
-              zip: "$(ZIP)"
               dll: "$(DLL)"
-              namespace: "$(BASENAMESPACE).CosmosDb"
-              trx: "$(BASENAMESPACE).CosmosDb-$(BUILD.BUILDNUMBER).trx"
               env:
                 Azure:CosmosDb:ServiceEndpoint: "$(COSMOSDBSERVICEENDPOINT)"
                 Azure:CosmosDb:AuthKey: "$(COSMOSDBAUTHKEY)"
+              namespace: "$(BASENAMESPACE).CosmosDb"
+              trx: "$(BASENAMESPACE).CosmosDb-$(BUILD.BUILDNUMBER).trx"
+              zip: "$(ZIP)"

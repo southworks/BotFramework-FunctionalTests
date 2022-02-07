@@ -3,12 +3,12 @@ parameters:
     displayName: Azure Service Connection
     type: string
 
-  - name: resourceName
-    displayName: Name of the CosmosDb resource
-    type: string
-
   - name: resourceGroup
     displayName: Name of the group where the CosmosDb resource is located
+    type: string
+
+  - name: resourceName
+    displayName: Name of the CosmosDb resource
     type: string
 
 steps:

@@ -1,8 +1,4 @@
 parameters:
-  - name: project
-    displayName: Path to the .csproj file
-    type: string
-
   - name: destZip
     displayName: Path where the .zip file will be saved into Artifacts
     type: string
@@ -11,6 +7,10 @@ parameters:
     displayName: (optional) Environment variables to share to the build process
     type: object
     default: {}
+
+  - name: project
+    displayName: Path to the .csproj file
+    type: string
 
 steps:
   - task: UseDotNet@2
