@@ -1,0 +1,52 @@
+parameters:
+  - name: azureSubscription
+    displayName: Azure Service Connection
+    type: string
+
+  - name: cosmosDb
+    displayName: CosmosDb name
+    type: string
+
+  - name: resourceGroup
+    displayName: Resource Group name
+    type: string
+
+stages:
+  - stage: "Build_DotNet_Integration"
+    displayName: "Build DotNet Integration"
+    dependsOn: []
+    jobs:
+      - job: "Build"
+        displayName: "Build IntegrationTests.csproj"
+        steps:
+          - template: build.yml
+            parameters:
+              project: "Tests/Integration/DotNet/IntegrationTests.csproj"
+              destZip: "Integration/DotNet.zip"
+
+  - stage: "Test_DotNet_Integration"
+    displayName: "Test DotNet Integration"
+    dependsOn: Build_DotNet_Integration
+    variables:
+      Zip: "Integration/DotNet.zip"
+      Dll: "IntegrationTests.dll"
+      BaseNamespace: "IntegrationTests.Azure"
+    jobs:
+      - job: "Test_Azure_CosmosDb"
+        displayName: "Test Azure.CosmosDb"
+        steps:
+          - checkout: none
+          - template: ../common/getCosmosDbConnectionVariables.yml
+            parameters:
+              azureSubscription: "${{ parameters.azureSubscription }}"
+              resourceName: "${{ parameters.cosmosDb }}"
+              resourceGroup: "${{ parameters.resourceGroup }}"
+          - template: test.yml
+            parameters:
+              zip: "$(ZIP)"
+              dll: "$(DLL)"
+              namespace: "$(BASENAMESPACE).CosmosDb"
+              trx: "$(BASENAMESPACE).CosmosDb-$(BUILD.BUILDNUMBER).trx"
+              env:
+                Azure:CosmosDb:ServiceEndpoint: "$(COSMOSDBSERVICEENDPOINT)"
+                Azure:CosmosDb:AuthKey: "$(COSMOSDBAUTHKEY)"
