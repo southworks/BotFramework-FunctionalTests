@@ -42,7 +42,7 @@ namespace IntegrationTests.Azure.Storage.Queues
             }
             catch (TaskCanceledException ex)
             {
-                const string message = "StorageAccount: Unable to connect to the 'Queues' endpoint.";
+                const string message = "Storage: Unable to connect to the 'Queues' endpoint.";
                 throw new TaskCanceledException(message, ex);
             }
         }
