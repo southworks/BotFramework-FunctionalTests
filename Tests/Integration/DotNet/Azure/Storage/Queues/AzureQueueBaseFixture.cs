@@ -40,10 +40,10 @@ namespace IntegrationTests.Azure.Storage.Queues
                 await new QueueServiceClient(ConnectionString).GetPropertiesAsync(cancellation.Token);
                 return true;
             }
-            catch (Exception ex)
+            catch (TaskCanceledException ex)
             {
                 const string message = "StorageAccount: Unable to connect to the 'Queues' endpoint.";
-                throw new Exception(message, ex);
+                throw new TaskCanceledException(message, ex);
             }
         }
     }
