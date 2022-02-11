@@ -4,49 +4,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IntegrationTests.Azure.Storage;
+using Microsoft.Azure.Documents;
 using Microsoft.Bot.Builder;
 using Xunit;
 
 namespace IntegrationTests.Azure.Cosmos
 {
     [Trait("TestCategory", "Deprecated")]
-    public class CosmosDbStorageTests : CosmosDbBaseTests, IClassFixture<CosmosDbStorageFixture>
+    public class CosmosDbStorageTests : StorageBaseTests, IClassFixture<CosmosDbStorageFixture>
     {
         private readonly CosmosDbStorageFixture _cosmosDbFixture;
 
         public CosmosDbStorageTests(CosmosDbStorageFixture cosmosDbFixture)
         {
             _cosmosDbFixture = cosmosDbFixture;
-        }
-
-        [Fact]
-        public Task CreateItem()
-        {
-            return CreateItemTest(_cosmosDbFixture.Storage);
-        }
-
-        [Fact]
-        public Task CreateItemWithSpecialCharacters()
-        {
-            return CreateItemWithSpecialCharactersTest(_cosmosDbFixture.Storage);
-        }
-
-        [Fact]
-        public Task ReadUnknownItem()
-        {
-            return ReadUnknownItemTest(_cosmosDbFixture.Storage);
-        }
-
-        [Fact]
-        public Task UpdateItem()
-        {
-            return UpdateItemTest(_cosmosDbFixture.Storage);
-        }
-
-        [Fact]
-        public Task DeleteItem()
-        {
-            return DeleteItemTest(_cosmosDbFixture.Storage);
+            UseStorages(cosmosDbFixture.Storages);
         }
 
         [Fact]
@@ -61,7 +34,7 @@ namespace IntegrationTests.Azure.Cosmos
             };
 
             await storage.WriteAsync(dict);
-            var createdItems = await storage.ReadAsync<CosmosDbStorageItem>(dict.Keys.ToArray());
+            var createdItems = await storage.ReadAsync<StorageItem>(dict.Keys.ToArray());
 
             Assert.Equal(Sample.City, createdItems.First().Value.City);
         }
@@ -91,7 +64,7 @@ namespace IntegrationTests.Azure.Cosmos
             await storage.WriteAsync(dict);
 
             var createdItems = await storage.ReadAsync(dict.Keys.ToArray());
-            var created = createdItems.First().Value as CosmosDbStorageItem;
+            var created = createdItems.First().Value as StorageItem;
 
             // Update store item
             created.MessageList = new string[] { "new message" };
@@ -99,7 +72,7 @@ namespace IntegrationTests.Azure.Cosmos
             await storage.WriteAsync(createdItems);
 
             var updatedItems = await storage.ReadAsync(dict.Keys.ToArray());
-            var updated = updatedItems.First().Value as CosmosDbStorageItem;
+            var updated = updatedItems.First().Value as StorageItem;
 
             Assert.NotEqual(created.ETag, updated.ETag);
             Assert.Single(updated.MessageList);
@@ -124,6 +97,19 @@ namespace IntegrationTests.Azure.Cosmos
             var deleted = await storage.ReadAsync(dict.Keys.ToArray());
 
             Assert.Empty(deleted);
+        }
+
+        [Fact]
+        protected override async Task DeleteUnknownItem()
+        {
+            try
+            {
+                await base.DeleteUnknownItem();
+            }
+            catch (DocumentClientException ex)
+            {
+                Assert.Equal("NotFound", ex.Error.Code);
+            }
         }
     }
 }

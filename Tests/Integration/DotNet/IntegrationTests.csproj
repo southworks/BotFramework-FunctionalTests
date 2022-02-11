@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.Bot.Builder.Dialogs.Adaptive" Version="$(BotBuilderVersion)" />
     <PackageReference Include="Microsoft.Bot.Builder.Azure" Version="$(BotBuilderVersion)" />
     <PackageReference Include="Microsoft.Bot.Builder.Azure.Queues" Version="$(BotBuilderVersion)-preview" />
+    <PackageReference Include="Microsoft.Bot.Builder.Azure.Blobs" Version="$(BotBuilderVersion)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.9" />
   </ItemGroup>

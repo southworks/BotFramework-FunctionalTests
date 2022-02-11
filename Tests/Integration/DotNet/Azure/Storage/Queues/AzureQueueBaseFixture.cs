@@ -11,8 +11,6 @@ namespace IntegrationTests.Azure.Storage.Queues
 {
     public class AzureQueueBaseFixture : ConfigurationFixture, IAsyncLifetime
     {
-        private readonly TimeSpan timeout = TimeSpan.FromSeconds(3);
-
         public AzureQueueBaseFixture()
         {
             ConnectionString = Configuration["Azure:Storage:ConnectionString"];
@@ -36,7 +34,7 @@ namespace IntegrationTests.Azure.Storage.Queues
         {
             try
             {
-                using var cancellation = new CancellationTokenSource(timeout);
+                using var cancellation = new CancellationTokenSource(Timeout);
                 await new QueueServiceClient(ConnectionString).GetPropertiesAsync(cancellation.Token);
                 return true;
             }
