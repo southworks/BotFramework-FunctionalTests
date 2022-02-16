@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
-using Microsoft.Bot.Builder;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Xunit;
