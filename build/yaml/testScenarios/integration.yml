@@ -18,6 +18,10 @@ parameters:
     displayName: Resource Group name
     type: string
 
+  - name: storageAccount
+    displayName: StorageAccount name
+    type: string
+
 stages:
   - stage: "Build_DotNet_Integration"
     displayName: "Build DotNet Integration"
@@ -67,4 +71,21 @@ stages:
                 Azure:Cosmos:AuthKey: "$(COSMOSDBAUTHKEY)"
               namespace: "$(BASENAMESPACE).Cosmos"
               trx: "$(BASENAMESPACE).Cosmos-$(BUILD.BUILDNUMBER).trx"
+              zip: "$(ZIP)"
+      - job: "Test_Azure_Storage"
+        displayName: "Test Azure.Storage"
+        steps:
+          - checkout: none
+          - template: ../common/getStorageAccountConnectionVariables.yml
+            parameters:
+              azureSubscription: "${{ parameters.azureSubscription }}"
+              resourceName: "${{ parameters.storageAccount }}"
+              resourceGroup: "${{ parameters.resourceGroup }}"
+          - template: test.yml
+            parameters:
+              dll: "$(DLL)"
+              env:
+                Azure:Storage:ConnectionString: "$(STORAGEACCOUNTCONNECTIONSTRING)"
+              namespace: "$(BASENAMESPACE).Storage"
+              trx: "$(BASENAMESPACE).Storage-$(BUILD.BUILDNUMBER).trx"
               zip: "$(ZIP)"
