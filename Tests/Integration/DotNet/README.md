@@ -24,7 +24,7 @@ The test project can be configured either by using `Environment variables`, or t
 
 ## Using Emulators
 
-The test project is already configured out of the box to use the supported Azurite and Cosmos emulators without any extra configuration to run the tests.<br>
+The test project is already configured out of the box to use the supported Azurite and Cosmos DB emulators without any extra configuration to run the tests.<br>
 For more information on how to gather the connection values, use the following links:
 
 - [Azure Cosmos DB Emulator](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=ssl-netstd21#authenticate-requests)
@@ -32,14 +32,14 @@ For more information on how to gather the connection values, use the following l
 
 ## Using Azure Resources
 
-### Cosmos
+### Cosmos DB
 
 Cosmos' tests require the `ServiceEndpoint` and `AuthKey` properties to authenticate the requests when using the service.<br>
 For more information on how to gather the connection values, use this [link](https://docs.microsoft.com/en-us/azure/cosmos-db/sql/manage-with-cli#list-connection-strings).
 
 > **Note:** `ServiceEndpoint` and `AuthKey` properties are equal to `AccountEndpoint` and `AccountKey` respectively.
 
-### Storage
+### Storage Account
 
 Storage's tests require the `ConnectionString` property to authenticate the requests when using the service.<br>
 For more information on how to gather the connection values, use this [link](https://docs.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string#configure-a-connection-string-for-an-azure-storage-account).
