@@ -43,7 +43,6 @@ stages:
               destZip: "Integration/DotNet.zip"
               env:
                 BotBuilderVersion: "$(DEPENDENCIESVERSIONNUMBER)"
-                BotBuilderVersionType: "Custom"
                 BotBuilderRegistry: "$(DEPENDENCIESSOURCE)"
               project: "Tests/Integration/DotNet/IntegrationTests.csproj"
 
