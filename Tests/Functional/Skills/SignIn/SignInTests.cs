@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Bot.Builder.Testing.TestRunner;
+using Microsoft.Bot.Builder.Testing.TestRunner.XUnit;
 using Microsoft.Bot.Builder.Tests.Functional.Skills.Common;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using TranscriptTestRunner;
-using TranscriptTestRunner.XUnit;
 using Xunit;
 using Xunit.Abstractions;
 

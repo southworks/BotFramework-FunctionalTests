@@ -23,7 +23,10 @@ namespace Microsoft.Bot.Builder.Testing.TestRunner
     /// <summary>
     /// Test runner implementation.
     /// </summary>
+
+#pragma warning disable CA1724 // Type names should not match namespaces
     public class TestRunner
+#pragma warning restore CA1724 // Type names should not match namespaces
     {
         private readonly ILogger _logger;
         private readonly int _replyTimeout;
