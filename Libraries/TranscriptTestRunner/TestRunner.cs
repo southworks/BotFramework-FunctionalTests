@@ -18,7 +18,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using Activity = Microsoft.Bot.Schema.Activity;
 
-namespace TranscriptTestRunner
+namespace Microsoft.Bot.Builder.Testing.TestRunner
 {
     /// <summary>
     /// Test runner implementation.
