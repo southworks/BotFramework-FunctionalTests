@@ -4,12 +4,12 @@
 // index.js is used to setup and configure your bot
 
 // Import required bot configuration.
-require('dotenv').config();
+require("dotenv").config();
 
 // Import required packages
-const http = require('http');
-const https = require('https');
-const restify = require('restify');
+const http = require("http");
+const https = require("https");
+const restify = require("restify");
 
 // Import required bot services.
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.
@@ -25,20 +25,20 @@ const {
   SkillHandler,
   SkillHttpClient,
   MessageFactory,
-  SkillConversationIdFactory
-} = require('botbuilder');
+  SkillConversationIdFactory,
+} = require("botbuilder");
 
 const {
   AuthenticationConfiguration,
   PasswordServiceClientCredentialFactory,
   SimpleCredentialProvider,
-  allowedCallersClaimsValidator
-} = require('botframework-connector');
+  allowedCallersClaimsValidator,
+} = require("botframework-connector");
 
 // This bot's main dialog.
-const { HostBot } = require('./bots/hostBot');
-const { SkillsConfiguration } = require('./skillsConfiguration');
-const { SetupDialog } = require('./dialogs/setupDialog');
+const { HostBot } = require("./bots/hostBot");
+const { SkillsConfiguration } = require("./skillsConfiguration");
+const { SetupDialog } = require("./dialogs/setupDialog");
 
 // Create HTTP server
 const server = restify.createServer({ maxParamLength: 1000 });
@@ -48,7 +48,9 @@ server.use(restify.plugins.bodyParser());
 
 server.listen(process.env.port || process.env.PORT || 36000, function () {
   console.log(`\n${server.name} listening to ${server.url}`);
-  console.log('\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator');
+  console.log(
+    "\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator"
+  );
   console.log('\nTo talk to your bot, open the emulator select "Open Bot"');
 });
 
@@ -66,14 +68,36 @@ const maxTotalSockets = (
     preallocatedSnatPorts
   );
 
+const claimsValidators = allowedCallersClaimsValidator(allowedCallers);
+
+// If the MicrosoftAppTenantId is specified in the environment config, add the tenant as a valid JWT token issuer for Bot to Skill conversation.
+// The token issuer for MSI and single tenant scenarios will be the tenant where the bot is registered.
+let validTokenIssuers = [];
+const { MicrosoftAppTenantId } = process.env;
+
+if (MicrosoftAppTenantId) {
+  // For SingleTenant/MSI auth, the JWT tokens will be issued from the bot's home tenant.
+  // Therefore, these issuers need to be added to the list of valid token issuers for authenticating activity requests.
+  validTokenIssuers = [
+    `${AuthenticationConstants.ValidTokenIssuerUrlTemplateV1}${MicrosoftAppTenantId}/`,
+    `${AuthenticationConstants.ValidTokenIssuerUrlTemplateV2}${MicrosoftAppTenantId}/v2.0/`,
+    `${AuthenticationConstants.ValidGovernmentTokenIssuerUrlTemplateV1}${MicrosoftAppTenantId}/`,
+    `${AuthenticationConstants.ValidGovernmentTokenIssuerUrlTemplateV2}${MicrosoftAppTenantId}/v2.0/`,
+  ];
+}
+
 const authConfig = new AuthenticationConfiguration(
   [],
-  allowedCallersClaimsValidator([...skillsConfig.skills.appIds])
+  allowedCallersClaimsValidator(allowedCallers),
+  claimsValidators,
+  validTokenIssuers
 );
 
 const credentialsFactory = new PasswordServiceClientCredentialFactory(
-  process.env.MicrosoftAppId || '',
-  process.env.MicrosoftAppPassword || ''
+  process.env.MicrosoftAppId || "",
+  process.env.MicrosoftAppPassword || "",
+  process.env.MicrosoftAppType || "",
+  process.env.MicrosoftAppTenantId || ""
 );
 
 const botFrameworkAuthentication = new ConfigurationBotFrameworkAuthentication(
@@ -85,13 +109,13 @@ const botFrameworkAuthentication = new ConfigurationBotFrameworkAuthentication(
     agentSettings: {
       http: new http.Agent({
         keepAlive: true,
-        maxTotalSockets: maxTotalSockets(1024, 4, 0.3)
+        maxTotalSockets: maxTotalSockets(1024, 4, 0.3),
       }),
       https: new https.Agent({
         keepAlive: true,
-        maxTotalSockets: maxTotalSockets(1024, 4, 0.7)
-      })
-    }
+        maxTotalSockets: maxTotalSockets(1024, 4, 0.7),
+      }),
+    },
   }
 );
 
@@ -110,24 +134,33 @@ adapter.onTurnError = async (context, error) => {
     const { message, stack } = error;
 
     // Send a message to the user.
-    let errorMessageText = 'The bot encountered an error or bug.';
-    let errorMessage = MessageFactory.text(errorMessageText, errorMessageText, InputHints.IgnoringInput);
+    let errorMessageText = "The bot encountered an error or bug.";
+    let errorMessage = MessageFactory.text(
+      errorMessageText,
+      errorMessageText,
+      InputHints.IgnoringInput
+    );
     errorMessage.value = { message, stack };
     await context.sendActivity(errorMessage);
 
     await context.sendActivity(`Exception: ${message}`);
     await context.sendActivity(stack);
 
-    errorMessageText = 'To continue to run this bot, please fix the bot source code.';
-    errorMessage = MessageFactory.text(errorMessageText, errorMessageText, InputHints.ExpectingInput);
+    errorMessageText =
+      "To continue to run this bot, please fix the bot source code.";
+    errorMessage = MessageFactory.text(
+      errorMessageText,
+      errorMessageText,
+      InputHints.ExpectingInput
+    );
     await context.sendActivity(errorMessage);
 
     // Send a trace activity, which will be displayed in Bot Framework Emulator
     await context.sendTraceActivity(
-      'OnTurnError Trace',
+      "OnTurnError Trace",
       `${error}`,
-      'https://www.botframework.com/schemas/error',
-      'TurnError'
+      "https://www.botframework.com/schemas/error",
+      "TurnError"
     );
   } catch (err) {
     console.error(`\n [onTurnError] Exception caught in onTurnError : ${err}`);
@@ -138,29 +171,43 @@ adapter.onTurnError = async (context, error) => {
     // a chance to clean up.
     // Note: ActiveSkillPropertyName is set by the RooBot while messages are being
     // forwarded to a Skill.
-    const activeSkill = await conversationState.createProperty(HostBot.ActiveSkillPropertyName).get(context);
+    const activeSkill = await conversationState
+      .createProperty(HostBot.ActiveSkillPropertyName)
+      .get(context);
     if (activeSkill) {
       const botId = process.env.MicrosoftAppId;
 
       let endOfConversation = {
         type: ActivityTypes.EndOfConversation,
-        code: 'RootSkillError'
+        code: "RootSkillError",
       };
       endOfConversation = TurnContext.applyConversationReference(
-        endOfConversation, TurnContext.getConversationReference(context.activity), true);
+        endOfConversation,
+        TurnContext.getConversationReference(context.activity),
+        true
+      );
 
       await conversationState.saveChanges(context, true);
-      await skillClient.postToSkill(botId, activeSkill, skillsConfig.skillHostEndpoint, endOfConversation);
+      await skillClient.postToSkill(
+        botId,
+        activeSkill,
+        skillsConfig.skillHostEndpoint,
+        endOfConversation
+      );
     }
   } catch (err) {
-    console.error(`\n [onTurnError] Exception caught on attempting to send EndOfConversation : ${err}`);
+    console.error(
+      `\n [onTurnError] Exception caught on attempting to send EndOfConversation : ${err}`
+    );
   }
 
   try {
     // Clear out state
     await conversationState.delete(context);
   } catch (err) {
-    console.error(`\n [onTurnError] Exception caught on attempting to Delete ConversationState : ${err}`);
+    console.error(
+      `\n [onTurnError] Exception caught on attempting to Delete ConversationState : ${err}`
+    );
   }
 };
 
@@ -177,17 +224,23 @@ const conversationState = new ConversationState(memoryStorage);
 const conversationIdFactory = new SkillConversationIdFactory(memoryStorage);
 
 // Create the credential provider;
-const credentialProvider = new SimpleCredentialProvider(process.env.MicrosoftAppId, process.env.MicrosoftAppPassword);
+const credentialProvider = new SimpleCredentialProvider(
+  process.env.MicrosoftAppId,
+  process.env.MicrosoftAppPassword
+);
 
 // Create the skill client
-const skillClient = new SkillHttpClient(credentialProvider, conversationIdFactory);
+const skillClient = new SkillHttpClient(
+  credentialProvider,
+  conversationIdFactory
+);
 
 // Create the main dialog.
 const dialog = new SetupDialog(conversationState, skillsConfig);
 const bot = new HostBot(dialog, conversationState, skillsConfig, skillClient);
 
 // Listen for incoming activities and route them to your bot main dialog.
-server.post('/api/messages', async (req, res) => {
+server.post("/api/messages", async (req, res) => {
   // Route received a request to adapter for processing
   await adapter.process(req, res, async (turnContext) => {
     // route to bot activity handler.
@@ -196,6 +249,12 @@ server.post('/api/messages', async (req, res) => {
 });
 
 // Create and initialize the skill classes
-const handler = new SkillHandler(adapter, bot, conversationIdFactory, credentialProvider, authConfig);
+const handler = new SkillHandler(
+  adapter,
+  bot,
+  conversationIdFactory,
+  credentialProvider,
+  authConfig
+);
 const skillEndpoint = new ChannelServiceRoutes(handler);
-skillEndpoint.register(server, '/api/skills');
+skillEndpoint.register(server, "/api/skills");
