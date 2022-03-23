@@ -14,7 +14,7 @@ WORKDIR /app
 COPY ${folder} .
 
 # Install dependencies
-RUN npm run preinstall
+RUN node $INIT_CWD/Utils/prepare.mjs replace
 RUN npm install
 
 # Run the application
