@@ -116,16 +116,15 @@ stages:
                 botName: "${{ bot.displayName }}"
               version: "$(DEPENDENCIESVERSIONNUMBER)"
 
-          # Set BotBuilder source and version
+          # Set BotBuilder registry source
           - task: PowerShell@2
-            displayName: 'Set BotBuilder source and version'
+            displayName: 'Set BotBuilder registry source'
             inputs:
               targetType: inline
               workingDirectory: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ bot.project.directory }}'
               failOnStderr: true
               script: |
                 $registry = "$(DEPENDENCIESSOURCE)";
-                $version = "$(DEPENDENCIESVERSIONNUMBER)";
 
                 # Remove yarn.lock file to prevent outdated dependencies references from being misinterpreted by Security Audit.
                 Remove-Item -path "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/yarn.lock"
@@ -133,11 +132,10 @@ stages:
                 Write-Host "Setting the registry '$registry' in the '.npmrc' file.";
                 New-Item -Path . -Name ".npmrc" -ItemType "file" -Value "registry=$registry";
 
-                Write-Host "Setting the version '$version' in the 'BotBuilderVersion' environment variable.";
-                Write-Host "##vso[task.setvariable variable=BotBuilderVersion]$version"
-
           - task: AzureCLI@2
             displayName: "Build and Push Container"
+            env:
+              BotBuilderVersion: "$(DEPENDENCIESVERSIONNUMBER)"
             inputs:
               azureSubscription: "${{ parameters.azureSubscription }}"
               addSpnToEnvironment: true
