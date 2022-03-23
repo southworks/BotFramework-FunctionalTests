@@ -14,6 +14,7 @@ WORKDIR /app
 COPY ${folder} .
 
 # Install dependencies
+RUN npm run preinstall
 RUN npm install
 
 # Run the application

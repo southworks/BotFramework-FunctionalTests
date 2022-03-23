@@ -8,8 +8,8 @@
   "scripts": {
     "start": "node index.js",
     "watch": "nodemon index.js",
-    "preinstall": "node ../Utils/prepare.mjs replace",
-    "postinstall": "node ../Utils/prepare.mjs restore"
+    "preinstall": "node $INIT_CWD/Utils/prepare.mjs replace",
+    "postinstall": "node $INIT_CWD/Utils/prepare.mjs restore"
   },
   "repository": {
     "type": "git",
