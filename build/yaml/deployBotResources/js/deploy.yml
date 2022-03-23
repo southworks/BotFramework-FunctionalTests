@@ -145,9 +145,9 @@ stages:
                 az acr login --name ${{ bot.container.registry }} --username="$env:SERVICEPRINCIPALID" --password="$env:SERVICEPRINCIPALKEY"
                 $container = "${{ bot.container.registry }}.azurecr.io/${{ bot.name }}:v$(DEPENDENCIESVERSIONNUMBER)";
 
-                # Copy Utils and Dockerfile
-                copy "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/Utils" .
-                copy "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/Dockerfile" .
+                # Move Utils and Dockerfile
+                move "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/Utils" .
+                move "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/Bots/JavaScript/Dockerfile" .
 
                 # Delete Container
                 $repositories = az acr repository list --name ${{ bot.container.registry }} | ConvertFrom-Json;
