@@ -3,11 +3,11 @@
 
 // @ts-check
 
-import path from "path";
-import { existsSync } from "fs";
-import { readFile, writeFile, mkdir, rm, readdir } from "fs/promises";
-import { fileURLToPath } from "url";
-import { spawn } from "child_process";
+import path from 'path';
+import { existsSync } from 'fs';
+import { readFile, writeFile, mkdir, rm, readdir } from 'fs/promises';
+import { fileURLToPath } from 'url';
+import { spawn } from 'child_process';
 
 /**
  * Path variables
@@ -15,10 +15,10 @@ import { spawn } from "child_process";
 const paths = {
   // @ts-ignore
   dirname: () => path.dirname(fileURLToPath(import.meta.url)),
-  env: () => path.resolve(paths.dirname(), "../.env"),
-  package: () => path.resolve(process.cwd(), "package.json"),
+  env: () => path.resolve(paths.dirname(), '../.env'),
+  package: () => path.resolve(process.cwd(), 'package.json'),
   packageTemp: (name) => path.resolve(paths.temp(), `package.${name}.json`),
-  temp: () => path.resolve(paths.dirname(), "temp"),
+  temp: () => path.resolve(paths.dirname(), 'temp')
 };
 
 main();
@@ -27,25 +27,26 @@ main();
  * The root functionality of the script, it reads and process based on the cmd arguments.
  * @returns {Promise<void>}
  */
-async function main() {
+async function main () {
   const [, script, action] = process.argv;
 
   switch (action) {
-    case "replace":
+    case 'replace': {
       const env = await readEnv();
       await replacePackage(env);
       break;
+    }
 
-    case "restore":
-      spawn("node", [script, "detached"], {
-        stdio: "ignore",
-        detached: true,
+    case 'restore':
+      spawn('node', [script, 'detached'], {
+        stdio: 'ignore',
+        detached: true
       }).unref();
       // Wait a bit before finishing the process, giving time to the 'spawn' to start.
       await wait(250);
       break;
 
-    case "detached":
+    case 'detached':
       do {
         await wait(250);
       } while (isRunning(process.ppid));
@@ -63,17 +64,17 @@ async function main() {
  * Reads the environment variables from the root, project and OS.
  * @returns {Promise<Record<string, string>>}
  */
-async function readEnv() {
-  const pkgEnv = await readFile(".env", "utf8");
-  const rootEnv = await readFile(paths.env(), "utf8");
+async function readEnv () {
+  const pkgEnv = await readFile('.env', 'utf8');
+  const rootEnv = await readFile(paths.env(), 'utf8');
 
-  const env = [pkgEnv, rootEnv].join("\n");
-  const lines = env.replace(/\r\n?/gm, "\n").split("\n");
+  const env = [pkgEnv, rootEnv].join('\n');
+  const lines = env.replace(/\r\n?/gm, '\n').split('\n');
 
   const result = lines
     .filter((e) => e?.trim())
     .reduce((acc, val) => {
-      const [key, value] = val.split("=");
+      const [key, value] = val.split('=');
       acc[key] = value;
       return acc;
     }, {});
@@ -92,10 +93,10 @@ async function readEnv() {
  * @param {Record<string, string>} env
  * @returns {Promise<void>}
  */
-async function replacePackage(env) {
-  const raw = await readFile(paths.package(), "utf8");
+async function replacePackage (env) {
+  const raw = await readFile(paths.package(), 'utf8');
   const processed = Object.entries(env).reduce(
-    (acc, [key, val]) => acc.replace(new RegExp(`\\$${key}`, "gmi"), val),
+    (acc, [key, val]) => acc.replace(new RegExp(`\\$${key}`, 'gmi'), val),
     raw
   );
 
@@ -116,11 +117,11 @@ async function replacePackage(env) {
  * Restores the original package.json.
  * @returns {Promise<void>}
  */
-async function restorePackage() {
-  const raw = await readFile(paths.package(), "utf8");
+async function restorePackage () {
+  const raw = await readFile(paths.package(), 'utf8');
   const json = JSON.parse(raw);
   const temp = paths.packageTemp(json.name);
-  const original = await readFile(temp, "utf8");
+  const original = await readFile(temp, 'utf8');
 
   await writeFile(paths.package(), original);
   const files = await readdir(paths.temp());
@@ -137,11 +138,11 @@ async function restorePackage() {
  * @param {number} pid
  * @returns {boolean}
  */
-function isRunning(pid) {
+function isRunning (pid) {
   try {
     return process.kill(pid, 0);
   } catch (e) {
-    return e.code === "EPERM";
+    return e.code === 'EPERM';
   }
 }
 
@@ -150,8 +151,8 @@ function isRunning(pid) {
  * @param {number} time
  * @returns {Promise<void>}
  */
-function wait(time) {
-  return new Promise((res) => setTimeout(res, time));
+function wait (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 /**
@@ -159,7 +160,7 @@ function wait(time) {
  * @param {string} value
  * @returns {string}
  */
-function escape(value) {
+function escape (value) {
   // Escape string [\ ' "]
-  return value.replace(/[\\$'"]/g, "\\$&");
+  return value.replace(/[\\$'"]/g, '\\$&');
 }
