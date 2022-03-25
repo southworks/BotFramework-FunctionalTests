@@ -14,7 +14,8 @@ WORKDIR /app
 COPY ${folder} .
 
 # Install dependencies
-RUN yarn install
+RUN node Utils/prepare.mjs replace
+RUN npm install --ignore-scripts
 
 # Run the application
-CMD yarn start
+CMD npm start
