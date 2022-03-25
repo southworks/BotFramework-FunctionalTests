@@ -11,6 +11,6 @@
   },
   "scripts": {
     "lint": "semistandard",
-    "i": "yarn workspaces foreach run preinstall && yarn install && yarn workspaces foreach run postinstall"
+    "prepareAndInstall": "yarn workspaces foreach run preinstall && yarn install && yarn workspaces foreach run postinstall"
   }
 }
