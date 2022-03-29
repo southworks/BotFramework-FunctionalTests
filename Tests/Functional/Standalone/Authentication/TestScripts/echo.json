@@ -1,0 +1,68 @@
+{
+  "items": [
+    {
+      "type": "conversationUpdate",
+      "role": "user"
+    },
+    {
+      "type": "message",
+      "role": "user",
+      "text": "Hello!"
+    },
+    {
+      "type": "message",
+      "role": "bot",
+      "text": "Echo: Hello!",
+      "assertions": [
+        "type == 'message'",
+        "from.role == 'bot'",
+        "recipient.role == 'user'",
+        "locale == 'en-us'",
+        "text == 'Echo: Hello!'",
+        "inputHint == 'acceptingInput'"
+      ]
+    },
+    {
+      "type": "message",
+      "role": "bot",
+      "text": "Say \"end\" or \"stop\" and I'll end the conversation and back to the parent.",
+      "assertions": [
+        "type == 'message'",
+        "from.role == 'bot'",
+        "recipient.role == 'user'",
+        "locale == 'en-us'",
+        "text == 'Say \"end\" or \"stop\" and I\\'ll end the conversation and back to the parent.'",
+        "inputHint == 'acceptingInput'"
+      ]
+    },
+    {
+      "type": "message",
+      "role": "user",
+      "text": "end"
+    },
+    {
+      "type": "message",
+      "role": "bot",
+      "text": "Ending conversation from the skill...",
+      "assertions": [
+        "type == 'message'",
+        "from.role == 'bot'",
+        "recipient.role == 'user'",
+        "locale == 'en-us'",
+        "text == 'Ending conversation from the skill...'",
+        "inputHint == 'acceptingInput'"
+      ]
+    },
+    {
+      "type": "endOfConversation",
+      "role": "bot",
+      "assertions": [
+        "type == 'endOfConversation'",
+        "from.role == 'bot'",
+        "recipient.role == 'user'",
+        "locale == 'en-us'",
+        "code == 'completedSuccessfully'"
+      ]
+    }
+  ]
+}
