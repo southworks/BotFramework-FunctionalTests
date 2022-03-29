@@ -3,7 +3,8 @@
 
 using System;
 using System.Collections.Generic;
-using TranscriptTestRunner;
+using SkillFunctionalTests.Standalone.Authentication;
+using SkillFunctionalTests.Standalone.Common;
 
 namespace SkillFunctionalTests.Skills.Common
 {
@@ -39,6 +40,37 @@ namespace SkillFunctionalTests.Skills.Common
                                     count++;
                                 }
                             }
+                        }
+                    }
+                }
+            }
+
+            return testCases;
+        }
+
+        public IEnumerable<object[]> BuildTestCases(List<string> channelIds, List<Bot> bots, List<MicrosoftAppType> appTypes, List<string> scripts, Func<TestCase, bool> shouldExclude = null)
+        {
+            var testCases = new List<object[]>();
+            var count = 1;
+            foreach (var channelId in channelIds)
+            {
+                foreach (var script in scripts)
+                {
+                    foreach (var bot in bots)
+                    {
+                        foreach (var appType in appTypes)
+                        {
+                            var authTestCase = new AuthTestCase
+                            {
+                                Description = $"{script}, {bot}, {appType}, {channelId}",
+                                ChannelId = channelId,
+                                Bot = bot,
+                                AppType = appType,
+                                Script = script
+                            };
+
+                            testCases.Add(new object[] { new TestCaseDataObject(authTestCase) });
+                            count++;
                         }
                     }
                 }
