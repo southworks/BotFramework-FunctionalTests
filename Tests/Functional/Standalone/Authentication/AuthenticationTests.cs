@@ -35,14 +35,16 @@ namespace SkillsFunctionalTests.Standalone.Authentication
             var bots = new List<Bot>
             {
                 Bot.EchoBotDotNet,
-                Bot.EchoBotJS
+                
+                //Bot.EchoBotJS
             };
 
             var auth = new List<MicrosoftAppType>
             {
                 MicrosoftAppType.MultiTenant,
-                MicrosoftAppType.SingleTenant,
-                MicrosoftAppType.UserAssignedMsi
+                
+                //MicrosoftAppType.SingleTenant,
+                //MicrosoftAppType.UserAssignedMsi
             };
 
             var scripts = new List<string> { "Echo.json" };
@@ -63,7 +65,7 @@ namespace SkillsFunctionalTests.Standalone.Authentication
             var authTestCase = testData.GetObject<AuthTestCase>();
             Logger.LogInformation(JsonConvert.SerializeObject(authTestCase, Formatting.Indented));
 
-            var options = TestAuthclientOptions[authTestCase.Bot];
+            var options = TestAuthClientOptions[authTestCase.Bot][authTestCase.AppType];
 
             var runner = new XUnitTestRunner(new TestClientFactory(authTestCase.ChannelId, options, Logger).GetTestClient(), TestRequestTimeout, ThinkTime, Logger);
 

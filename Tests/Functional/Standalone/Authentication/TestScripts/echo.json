@@ -6,6 +6,19 @@
     },
     {
       "type": "message",
+      "role": "bot",
+      "text": "Welcome to the echo skill bot. \n\nThis is a skill, you will need to call it from another bot to use it.",
+      "assertions": [
+        "type == 'message'",
+        "from.role == 'bot'",
+        "recipient.role == 'user'",
+        "text == 'Welcome to the echo skill bot. \n\nThis is a skill, you will need to call it from another bot to use it.'",
+        "speak == 'Welcome to the echo skill bot. This is a skill, you will need to call it from another bot to use it.'",
+        "inputHint == 'acceptingInput'"
+      ]
+    },
+    {
+      "type": "message",
       "role": "user",
       "text": "Hello!"
     },
@@ -17,7 +30,6 @@
         "type == 'message'",
         "from.role == 'bot'",
         "recipient.role == 'user'",
-        "locale == 'en-us'",
         "text == 'Echo: Hello!'",
         "inputHint == 'acceptingInput'"
       ]
@@ -30,7 +42,6 @@
         "type == 'message'",
         "from.role == 'bot'",
         "recipient.role == 'user'",
-        "locale == 'en-us'",
         "text == 'Say \"end\" or \"stop\" and I\\'ll end the conversation and back to the parent.'",
         "inputHint == 'acceptingInput'"
       ]
@@ -48,7 +59,6 @@
         "type == 'message'",
         "from.role == 'bot'",
         "recipient.role == 'user'",
-        "locale == 'en-us'",
         "text == 'Ending conversation from the skill...'",
         "inputHint == 'acceptingInput'"
       ]
@@ -60,7 +70,6 @@
         "type == 'endOfConversation'",
         "from.role == 'bot'",
         "recipient.role == 'user'",
-        "locale == 'en-us'",
         "code == 'completedSuccessfully'"
       ]
     }

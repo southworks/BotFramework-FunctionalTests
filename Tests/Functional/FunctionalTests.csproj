@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Standalone\" />
+    <Folder Include="Standalone\Authentication\TestScripts\" />
   </ItemGroup>
 
   <ProjectExtensions>
