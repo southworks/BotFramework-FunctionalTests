@@ -53,6 +53,7 @@
 
   <ItemGroup>
     <Folder Include="Standalone\" />
+    <Folder Include="Standalone\Authentication\" />
   </ItemGroup>
 
   <ProjectExtensions>

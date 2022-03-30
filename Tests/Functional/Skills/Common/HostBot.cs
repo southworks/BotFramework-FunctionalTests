@@ -44,10 +44,5 @@ namespace SkillFunctionalTests.Skills.Common
         /// Host implemented using Python and waterfall dialogs.
         /// </summary>
         WaterfallHostBotPython,
-
-        /// <summary>
-        /// Host implemented for LegacyTests.
-        /// </summary>
-        EchoHostBot
     }
 }

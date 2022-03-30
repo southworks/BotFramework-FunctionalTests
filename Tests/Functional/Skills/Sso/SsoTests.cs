@@ -4,20 +4,22 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Bot.Connector;
-using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using SkillFunctionalTests.Common;
 using SkillFunctionalTests.Skills.Common;
-using TranscriptTestRunner;
-using TranscriptTestRunner.XUnit;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace SkillFunctionalTests.Skills.Sso
 {
-    public class SsoTests : ScriptTestBase
+    public class SsoTests : SkillsTestBase
     {
+        private static readonly List<string> Scripts = new List<string>
+        {
+            "Sso.json"
+        };
+
         private readonly string _testScriptsFolder = Directory.GetCurrentDirectory() + @"/Skills/Sso/TestScripts";
 
         public SsoTests(ITestOutputHelper output)
@@ -25,48 +27,13 @@ namespace SkillFunctionalTests.Skills.Sso
         {
         }
 
-        public static IEnumerable<object[]> TestCases()
-        {
-            var channelIds = new List<string> { Channels.Directline };
-            var deliverModes = new List<string>
-            {
-                DeliveryModes.Normal,
-                DeliveryModes.ExpectReplies,
-            };
-
-            var hostBots = new List<HostBot>
-            {
-                HostBot.WaterfallHostBotDotNet,
-                HostBot.WaterfallHostBotJS,
-                HostBot.WaterfallHostBotPython
-            };
-
-            var targetSkills = new List<string>
-            {
-                SkillBotNames.WaterfallSkillBotDotNet,
-                SkillBotNames.WaterfallSkillBotJS,
-                SkillBotNames.WaterfallSkillBotPython
-            };
-
-            var scripts = new List<string>
-            {
-                "Sso.json",
-            };
-
-            var testCaseBuilder = new TestCaseBuilder();
-
-            var testCases = testCaseBuilder.BuildTestCases(channelIds, deliverModes, hostBots, targetSkills, scripts);
-            foreach (var testCase in testCases)
-            {
-                yield return testCase;
-            }
-        }
+        public static IEnumerable<object[]> TestCases() => BuildTestCases(scripts: Scripts, hosts: WaterfallHostBots, skills: WaterfallSkillBots);
 
         [Theory]
         [MemberData(nameof(TestCases))]
-        public Task RunTestCases(TestCaseDataObject testData)
+        public Task RunTestCases(TestCaseDataObject<SkillsTestCase> testData)
         {
-            var testCase = testData.GetObject<TestCase>();
+            var testCase = testData.GetObject();
             Logger.LogInformation(JsonConvert.SerializeObject(testCase, Formatting.Indented));
             
             // TODO: Implement tests and scripts
