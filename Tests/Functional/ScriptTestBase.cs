@@ -18,9 +18,8 @@ namespace SkillFunctionalTests
         public ScriptTestBase(ITestOutputHelper output)
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                
-                //.AddJsonFile("appsettings.Development.json", true, true)
+                .AddJsonFile("appsettings.json")                
+                .AddJsonFile("appsettings.Development.json", true, true)
                 .AddEnvironmentVariables()
                 .Build();
 
@@ -38,10 +37,7 @@ namespace SkillFunctionalTests
 
             TestRequestTimeout = int.Parse(configuration["TestRequestTimeout"]);
             TestClientOptions = configuration.GetSection("HostBotClientOptions").Get<Dictionary<HostBot, DirectLineTestClientOptions>>();
-
             TestAuthClientOptions = configuration.GetSection("AuthBotClientOptions").Get<Dictionary<Bot, IDictionary<MicrosoftAppType, DirectLineTestClientOptions>>>();
-            
-            //TestAuthclientOptions = configuration.GetSection("AuthBotClientOptions").Get<Dictionary<Bot, Dictionary<MicrosoftAppType, DirectLineTestClientOptions>>>();
             ThinkTime = int.Parse(configuration["ThinkTime"]);
         }
 

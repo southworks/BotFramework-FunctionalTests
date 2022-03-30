@@ -42,9 +42,8 @@ namespace SkillsFunctionalTests.Standalone.Authentication
             var auth = new List<MicrosoftAppType>
             {
                 MicrosoftAppType.MultiTenant,
-                
-                //MicrosoftAppType.SingleTenant,
-                //MicrosoftAppType.UserAssignedMsi
+                MicrosoftAppType.SingleTenant,
+                MicrosoftAppType.UserAssignedMsi
             };
 
             var scripts = new List<string> { "Echo.json" };
