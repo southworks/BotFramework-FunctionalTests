@@ -58,9 +58,7 @@ namespace SkillFunctionalTests.Skills.Common
             SkillBot.WaterfallSkillBotDotNet,
             SkillBot.WaterfallSkillBotJS,
             SkillBot.WaterfallSkillBotPython,
-
-            // TODO: Enable this when the port to composer is ready
-            //SkillBotNames.ComposerSkillBotDotNet
+            SkillBot.ComposerSkillBotDotNet
         };
 
         public static IEnumerable<object[]> BuildTestCases(

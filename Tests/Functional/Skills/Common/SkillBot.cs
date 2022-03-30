@@ -6,57 +6,52 @@ namespace SkillFunctionalTests.Skills.Common
     public enum SkillBot
     {
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Echo skill implemented using Composer and the DotNet runtime.
         /// </summary>
         EchoSkillBotComposerDotNet,
 
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Echo skill implemented using using DotNet 3.1.
         /// </summary>
         EchoSkillBotDotNet,
 
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Echo v3 skill implemented using using DotNet 3.1.
         /// </summary>
         EchoSkillBotDotNetV3,
 
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Echo skill implemented using using JS.
         /// </summary>
         EchoSkillBotJS,
 
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Echo v3 skill implemented using using JS.
         /// </summary>
         EchoSkillBotJSV3,
 
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Echo skill implemented using using Python.
         /// </summary>
         EchoSkillBotPython,
 
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Waterfall skill implemented using using DotNet 3.1.
         /// </summary>
         WaterfallSkillBotDotNet,
 
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Waterfall skill implemented using using JS.
         /// </summary>
         WaterfallSkillBotJS,
 
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Waterfall skill implemented using using Python.
         /// </summary>
         WaterfallSkillBotPython,
 
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
-        /// </summary>
-        EchoSkillBot,
-
-        /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Waterfall host implemented using Composer and the DotNet runtime.
         /// </summary>
         ComposerSkillBotDotNet,
     }

@@ -30,7 +30,7 @@ namespace SkillFunctionalTests.Skills.SingleTurn
         {
         }
 
-        public static bool ShouldExclude(SkillsTestCase test)
+        public static bool Exclude(SkillsTestCase test)
         {
             // This local function is used to exclude ExpectReplies test cases for v3 bots
             if (test.DeliveryMode == Microsoft.Bot.Schema.DeliveryModes.ExpectReplies)
@@ -42,7 +42,7 @@ namespace SkillFunctionalTests.Skills.SingleTurn
             return false;
         }
 
-        public static IEnumerable<object[]> TestCases() => BuildTestCases(scripts: Scripts, hosts: SimpleHostBots, skills: EchoSkillBots, exclude: ShouldExclude);
+        public static IEnumerable<object[]> TestCases() => BuildTestCases(scripts: Scripts, hosts: SimpleHostBots, skills: EchoSkillBots, exclude: Exclude);
 
         [Theory]
         [MemberData(nameof(TestCases))]

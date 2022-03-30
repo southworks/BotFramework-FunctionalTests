@@ -23,7 +23,7 @@ namespace SkillFunctionalTests.Skills.FileUpload
     {
         private static readonly List<string> Scripts = new List<string>
         {
-            "Sso.json"
+            "FileUpload1.json"
         };
 
         private readonly string _testScriptsFolder = Directory.GetCurrentDirectory() + @"/Skills/FileUpload/TestScripts";

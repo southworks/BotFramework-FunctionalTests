@@ -11,14 +11,14 @@ using Xunit.Abstractions;
 namespace SkillFunctionalTests.Skills.CardActions
 {
     [Trait("TestCategory", "CardActions")]
-    public class AnimationCardTests : CardBaseTests
+    public class ReceiptCardTests : CardBaseTests
     {
         private static readonly List<string> Scripts = new List<string>
         {
-            "Animation.json"
+            "Receipt.json"
         };
 
-        public AnimationCardTests(ITestOutputHelper output)
+        public ReceiptCardTests(ITestOutputHelper output)
             : base(output)
         {
         }

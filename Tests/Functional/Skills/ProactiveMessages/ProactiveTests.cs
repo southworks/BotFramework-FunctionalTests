@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Bot.Connector;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -33,7 +32,13 @@ namespace SkillFunctionalTests.Skills.ProactiveMessages
         {
         }
 
-        public static IEnumerable<object[]> TestCases() => BuildTestCases(scripts: Scripts, hosts: WaterfallHostBots, skills: WaterfallSkillBots);
+        public static bool Exclude(SkillsTestCase test)
+        {
+            // TODO: Enable after Composer supports proactive messages.
+            return test.Skill == SkillBot.ComposerSkillBotDotNet;
+        }
+
+        public static IEnumerable<object[]> TestCases() => BuildTestCases(scripts: Scripts, hosts: WaterfallHostBots, skills: WaterfallSkillBots, exclude: Exclude);
 
         [Theory]
         [MemberData(nameof(TestCases))]

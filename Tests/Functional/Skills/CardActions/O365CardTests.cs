@@ -11,19 +11,25 @@ using Xunit.Abstractions;
 namespace SkillFunctionalTests.Skills.CardActions
 {
     [Trait("TestCategory", "CardActions")]
-    public class AnimationCardTests : CardBaseTests
+    public class O365CardTests : CardBaseTests
     {
         private static readonly List<string> Scripts = new List<string>
         {
-            "Animation.json"
+            "O365.json"
         };
 
-        public AnimationCardTests(ITestOutputHelper output)
+        public O365CardTests(ITestOutputHelper output)
             : base(output)
         {
         }
 
-        public static IEnumerable<object[]> TestCases() => TestCases(scripts: Scripts);
+        public static bool Exclude(SkillsTestCase test)
+        {
+            // BUG: O365 fails with ExpectReplies for WaterfallSkillBotPython (remove when https://github.com/microsoft/BotFramework-FunctionalTests/issues/328 is fixed).
+            return test.Skill == SkillBot.WaterfallSkillBotPython && test.DeliveryMode == Microsoft.Bot.Schema.DeliveryModes.ExpectReplies;
+        }
+
+        public static IEnumerable<object[]> TestCases() => TestCases(scripts: Scripts, exclude: Exclude);
 
         [Theory]
         [MemberData(nameof(TestCases))]
