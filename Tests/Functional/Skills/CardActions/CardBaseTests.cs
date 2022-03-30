@@ -36,8 +36,6 @@ namespace SkillFunctionalTests.Skills.CardActions
             List<string> scripts = default,
             Func<SkillsTestCase, bool> exclude = default) => BuildTestCases(scripts: scripts, hosts: WaterfallHostBots, skills: WaterfallSkillBots, exclude: Exclude(exclude));
 
-        [Theory]
-        [MemberData(nameof(TestCases))]
         public virtual async Task RunTestCases(TestCaseDataObject<SkillsTestCase> testData)
         {
             var testCase = testData.GetObject();

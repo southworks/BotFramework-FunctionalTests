@@ -27,6 +27,6 @@ namespace SkillFunctionalTests.Skills.CardActions
 
         [Theory]
         [MemberData(nameof(TestCases))]
-        public override Task RunTestCases(TestCaseDataObject<SkillsTestCase> testData) => RunTestCases(testData);
+        public override Task RunTestCases(TestCaseDataObject<SkillsTestCase> testData) => base.RunTestCases(testData);
     }
 }
