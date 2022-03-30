@@ -51,11 +51,6 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Standalone\" />
-    <Folder Include="Standalone\Authentication\" />
-  </ItemGroup>
-
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties />

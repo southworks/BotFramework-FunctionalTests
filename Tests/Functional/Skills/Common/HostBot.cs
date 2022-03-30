@@ -6,17 +6,17 @@ namespace SkillFunctionalTests.Skills.Common
     public enum HostBot
     {
         /// <summary>
-        /// Waterfall host implemented using Composer and the dotnet runtime.
+        /// Waterfall host implemented using Composer and the DotNet runtime.
         /// </summary>
         ComposerHostBotDotNet,
 
         /// <summary>
-        /// Simple host implemented using Composer and the dotnet runtime.
+        /// Simple host implemented using Composer and the DotNet runtime.
         /// </summary>
         SimpleHostBotComposerDotNet,
 
         /// <summary>
-        /// Simple host implemented using dotnet 3.1.
+        /// Simple host implemented using DotNet 3.1.
         /// </summary>
         SimpleHostBotDotNet,
 
@@ -31,7 +31,7 @@ namespace SkillFunctionalTests.Skills.Common
         SimpleHostBotPython,
 
         /// <summary>
-        /// Host implemented using dotnet and waterfall dialogs.
+        /// Host implemented using DotNet and waterfall dialogs.
         /// </summary>
         WaterfallHostBotDotNet,
 

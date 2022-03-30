@@ -16,11 +16,6 @@ namespace SkillFunctionalTests.Skills.Common
         {
         }
 
-        public static List<string> Channels { get; } = new List<string>
-        {
-            Microsoft.Bot.Connector.Channels.Directline
-        };
-
         public static List<string> DeliveryModes { get; } = new List<string>
         {
             Microsoft.Bot.Schema.DeliveryModes.Normal,

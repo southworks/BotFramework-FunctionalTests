@@ -50,7 +50,6 @@ namespace SkillFunctionalTests.Common
         /// <summary>
         /// Gets the test data object for the specified .Net type.
         /// </summary>
-        /// <typeparam name="T">The type of the object to be returned.</typeparam>
         /// <returns>The test object instance.</returns>
         public TClass GetObject()
         {
