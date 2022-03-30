@@ -1,8 +1,9 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+from typing import List
 from botbuilder.core import ActivityHandler, MessageFactory, TurnContext
-from botbuilder.schema import Activity, ActivityTypes, EndOfConversationCodes
+from botbuilder.schema import Activity, ActivityTypes, ChannelAccount, EndOfConversationCodes
 
 class EchoBot(ActivityHandler):
     async def on_message_activity(self, turn_context: TurnContext):
@@ -30,3 +31,21 @@ class EchoBot(ActivityHandler):
         # avoided as the conversation may have been deleted.
         # Perform cleanup of resources if needed.
         pass
+
+    async def on_members_added_activity(
+        self, members_added: List[ChannelAccount], turn_context: TurnContext
+    ):
+        text = (
+            "Welcome to the waterfall skill bot. \n\n"
+            "This is a skill, you will need to call it from another bot to use it."
+        )
+
+        for member in members_added:
+            if member.id != turn_context.activity.recipient.id:
+                await turn_context.send_activity(
+                    Activity(
+                        type=ActivityTypes.message,
+                        text=text,
+                        speak=text.replace("\n\n", ""),
+                    )
+                )

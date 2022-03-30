@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
@@ -45,6 +46,20 @@ namespace Microsoft.BotFrameworkFunctionalTests.EchoSkillBot.Bots
             // avoided as the conversation may have been deleted.
             // Perform cleanup of resources if needed.
             return Task.CompletedTask;
+        }
+
+        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        {
+            var welcomeText = "Welcome to the echo skill bot. \n\nThis is a skill, you will need to call it from another bot to use it.";
+            foreach (var member in membersAdded)
+            {
+                if (member.Id != turnContext.Activity.Recipient.Id)
+                {
+                    var activity = MessageFactory.Text(welcomeText);
+                    activity.Speak = welcomeText.Replace("\n\n", string.Empty);
+                    await turnContext.SendActivityAsync(activity, cancellationToken);
+                }
+            }
         }
     }
 }
