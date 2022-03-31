@@ -24,6 +24,14 @@ parameters:
     displayName: KeyVault name
     type: string
 
+  - name: resourceSuffix
+    displayName: Azure resources' name suffix
+    type: string
+
+  - name: sharedResourceGroup
+    displayName: Shared Resource Group
+    type: string
+
 steps:
   - task: AzureCLI@2
     displayName: "Get AppId & AppSecret"

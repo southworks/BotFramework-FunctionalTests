@@ -84,6 +84,8 @@ stages:
               azureSubscription: "${{ parameters.azureSubscription }}"
               botName: "${{ bot.name }}"
               keyVault: "${{ parameters.keyVault }}"
+              resourceSuffix: "${{ parameters.resourceSuffix }}"
+              sharedResourceGroup: "${{ parameters.sharedResourceGroup }}"
 
           # Use Net Core version
           - ${{ if ne(bot.project.netCoreVersion, '') }}:

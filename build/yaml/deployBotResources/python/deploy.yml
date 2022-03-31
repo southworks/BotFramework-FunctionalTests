@@ -78,9 +78,12 @@ stages:
             parameters:
               appId: ${{ bot.appId }}
               appSecret: ${{ bot.appSecret }}
+              appType: ${{ bot.appType }}
               azureSubscription: "${{ parameters.azureSubscription }}"
               botName: "${{ bot.name }}"
               keyVault: "${{ parameters.keyVault }}"
+              resourceSuffix: "${{ parameters.resourceSuffix }}"
+              sharedResourceGroup: "${{ parameters.sharedResourceGroup }}"
 
           # Prepare .env file, deleting all the declared skills, so it uses only the settings define in Azure
           - ${{ if eq(bot.type, 'Host') }}:
