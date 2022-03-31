@@ -32,11 +32,8 @@ namespace SkillFunctionalTests.Skills.SignIn
         {
         }
 
-        public static bool Exclude(SkillsTestCase test)
-        {
-            // TODO: Enable after fixing issue (The test is failing with timeout after the signIn).
-            return test.Skill == SkillBot.ComposerSkillBotDotNet;
-        }
+        // TODO: Enable after fixing issue (The test is failing with timeout after the signIn).
+        public static bool Exclude(SkillsTestCase test) => test.Skill == SkillBot.ComposerSkillBotDotNet;
 
         public static IEnumerable<object[]> TestCases() => BuildTestCases(scripts: Scripts, hosts: WaterfallHostBots, skills: WaterfallSkillBots, exclude: Exclude);
 

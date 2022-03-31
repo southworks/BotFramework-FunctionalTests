@@ -32,9 +32,10 @@ namespace SkillFunctionalTests.Skills.CardActions
             return (SkillsTestCase test) => test.Skill == SkillBot.ComposerSkillBotDotNet || (exclude != null && exclude(test));
         }
 
-        public static IEnumerable<object[]> TestCases(
-            List<string> scripts = default,
-            Func<SkillsTestCase, bool> exclude = default) => BuildTestCases(scripts: scripts, hosts: WaterfallHostBots, skills: WaterfallSkillBots, exclude: Exclude(exclude));
+        public static IEnumerable<object[]> TestCases(List<string> scripts = default, Func<SkillsTestCase, bool> exclude = default)
+        {
+            return BuildTestCases(scripts: scripts, hosts: WaterfallHostBots, skills: WaterfallSkillBots, exclude: Exclude(exclude));
+        }
 
         public virtual async Task RunTestCases(TestCaseDataObject<SkillsTestCase> testData)
         {

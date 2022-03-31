@@ -52,9 +52,7 @@ namespace SkillFunctionalTests.Skills.SingleTurn
             Logger.LogInformation(JsonConvert.SerializeObject(testCase, Formatting.Indented));
 
             var options = TestClientOptions[testCase.Bot];
-
-            var client = new TestClientFactory(testCase.Channel, options, Logger).GetTestClient();
-            var runner = new XUnitTestRunner(client, TestRequestTimeout, ThinkTime, Logger);
+            var runner = new XUnitTestRunner(new TestClientFactory(testCase.Channel, options, Logger).GetTestClient(), TestRequestTimeout, ThinkTime, Logger);
 
             var testParams = new Dictionary<string, string>
             {

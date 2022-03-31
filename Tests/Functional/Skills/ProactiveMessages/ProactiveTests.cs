@@ -32,11 +32,8 @@ namespace SkillFunctionalTests.Skills.ProactiveMessages
         {
         }
 
-        public static bool Exclude(SkillsTestCase test)
-        {
-            // TODO: Enable after Composer supports proactive messages.
-            return test.Skill == SkillBot.ComposerSkillBotDotNet;
-        }
+        // TODO: Enable after Composer supports proactive messages.
+        public static bool Exclude(SkillsTestCase test) => test.Skill == SkillBot.ComposerSkillBotDotNet;
 
         public static IEnumerable<object[]> TestCases() => BuildTestCases(scripts: Scripts, hosts: WaterfallHostBots, skills: WaterfallSkillBots, exclude: Exclude);
 
