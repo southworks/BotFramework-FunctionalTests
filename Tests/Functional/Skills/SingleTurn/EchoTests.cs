@@ -28,7 +28,6 @@ namespace SkillFunctionalTests.Skills.SingleTurn
 
         public static IEnumerable<object[]> TestCases()
         {
-            var channelIds = new List<string> { Channels.Directline };
             var deliverModes = new List<string>
             {
                 DeliveryModes.Normal,
@@ -72,7 +71,7 @@ namespace SkillFunctionalTests.Skills.SingleTurn
                 return false;
             }
 
-            var testCases = testCaseBuilder.BuildTestCases(channelIds, deliverModes, hostBots, targetSkills, scripts, ShouldExclude);
+            var testCases = testCaseBuilder.BuildTestCases(Channels, deliverModes, hostBots, targetSkills, scripts, ShouldExclude);
             foreach (var testCase in testCases)
             {
                 yield return testCase;

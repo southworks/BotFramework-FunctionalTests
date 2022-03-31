@@ -4,7 +4,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Bot.Connector;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -28,7 +27,6 @@ namespace SkillFunctionalTests.Skills.MessageWithAttachment
 
         public static IEnumerable<object[]> TestCases()
         {
-            var channelIds = new List<string> { Channels.Directline };
             var deliverModes = new List<string>
             {
                 DeliveryModes.Normal,
@@ -58,7 +56,7 @@ namespace SkillFunctionalTests.Skills.MessageWithAttachment
 
             var testCaseBuilder = new TestCaseBuilder();
 
-            var testCases = testCaseBuilder.BuildTestCases(channelIds, deliverModes, hostBots, targetSkills, scripts);
+            var testCases = testCaseBuilder.BuildTestCases(Channels, deliverModes, hostBots, targetSkills, scripts);
             foreach (var testCase in testCases)
             {
                 yield return testCase;
