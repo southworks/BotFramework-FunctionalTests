@@ -51,10 +51,6 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Standalone\" />
-  </ItemGroup>
-
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties />

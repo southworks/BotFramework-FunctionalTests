@@ -6,6 +6,8 @@ using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SkillFunctionalTests.Skills.Common;
+using SkillFunctionalTests.Standalone.Authentication;
+using SkillFunctionalTests.Standalone.Common;
 using TranscriptTestRunner.TestClients;
 using Xunit.Abstractions;
 
@@ -35,6 +37,7 @@ namespace SkillFunctionalTests
 
             TestRequestTimeout = int.Parse(configuration["TestRequestTimeout"]);
             TestClientOptions = configuration.GetSection("HostBotClientOptions").Get<Dictionary<HostBot, DirectLineTestClientOptions>>();
+            TestAuthClientOptions = configuration.GetSection("AuthBotClientOptions").Get<Dictionary<Bot, Dictionary<MicrosoftAppType, DirectLineTestClientOptions>>>();
             ThinkTime = int.Parse(configuration["ThinkTime"]);
         }
 
@@ -44,6 +47,8 @@ namespace SkillFunctionalTests
         };
 
         public Dictionary<HostBot, DirectLineTestClientOptions> TestClientOptions { get; }
+
+        public Dictionary<Bot, Dictionary<MicrosoftAppType, DirectLineTestClientOptions>> TestAuthClientOptions { get; }
 
         public ILogger Logger { get; }
 
