@@ -38,6 +38,11 @@ namespace SkillFunctionalTests
             ThinkTime = int.Parse(configuration["ThinkTime"]);
         }
 
+        public static List<string> Channels { get; } = new List<string>
+        {
+            Microsoft.Bot.Connector.Channels.Directline
+        };
+
         public Dictionary<HostBot, DirectLineTestClientOptions> TestClientOptions { get; }
 
         public ILogger Logger { get; }
