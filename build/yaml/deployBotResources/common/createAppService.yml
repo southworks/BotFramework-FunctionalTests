@@ -79,15 +79,9 @@ steps:
       scriptType: pscore
       scriptLocation: inlineScript
       inlineScript: |
-        if("MSI" -eq "${{ parameters.appType }}") {
-          $appId = (az identity show --name "${{ parameters.botName }}${{ parameters.resourceSuffix }}" --resource-group "${{ parameters.sharedResourceGroup }}" | ConvertFrom-Json).clientId;
-        } else {
-          $appId = "${{ parameters.appId }}";
-        }
-
         # General
         $settings = @(
-          @{ key="appId"                        ; value=$appId }
+          @{ key="appId"                        ; value="${{ parameters.appId }}" }
           @{ key="appSecret"                    ; value="${{ parameters.appSecret }}" }
           @{ key="appType"                      ; value="${{ parameters.appType }}" }
           @{ key="botName"                      ; value="${{ parameters.botName }}${{ parameters.resourceSuffix }}-$(BUILD.BUILDID)" }
