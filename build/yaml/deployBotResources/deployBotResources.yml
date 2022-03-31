@@ -517,7 +517,7 @@ stages:
         # JS SingleTenant bots
         - name: "bffnsimplehostbotjsst"
           type: "Host"
-          displayName: "JS Simple Host Bot st"
+          displayName: "JS Simple Host Bot SingleTenant"
           appId: $(BFFNSIMPLEHOSTBOTJSSTAPPID)
           appSecret: $(BFFNECHOSKILLBOTJSSTAPPSECRET)
           appType: "SingleTenant"
@@ -533,7 +533,7 @@ stages:
 
         - name: "bffnechoskillbotjsst"
           type: "Skill"
-          displayName: "JS Echo Skill Bot st"
+          displayName: "JS Echo Skill Bot SingleTenant"
           appId: $(BFFNECHOSKILLBOTJSSTAPPID)
           appSecret: $(BFFNECHOSKILLBOTJSSTAPPSECRET)
           appType: "SingleTenant"
