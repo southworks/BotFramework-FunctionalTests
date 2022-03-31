@@ -7,6 +7,11 @@ parameters:
     displayName: App Service Plan name
     type: string
 
+  - name: appType
+    displayName: Type of Bot Authentication. MultiTenant, SingleTenant, MSI.
+    type: string
+    default: "MultiTenant"
+
   - name: azureSubscription
     displayName: Azure Service Connection
     type: string
@@ -198,12 +203,13 @@ stages:
               pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}/${{ bot.name }}.zip"
               artifactName: dotnet-$(BUILD.BUILDID)
 
-          # Create App Service and Bot Channel Registration
+          # Create App Service and Azure Bot
           - template: ../common/createAppService.yml
             parameters:
               appId: $(APPID)
               appInsight: "${{ parameters.appInsight }}"
               appSecret: $(APPSECRET)
+              appType: "${{ parameters.appType }}"
               appServicePlan: "${{ parameters.appServicePlan }}"
               azureSubscription: "${{ parameters.azureSubscription }}"
               botGroup: "${{ parameters.resourceGroup }}"

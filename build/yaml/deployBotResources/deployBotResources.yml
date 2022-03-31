@@ -142,10 +142,14 @@ variables:
   # BffnEchoSkillBotComposerDotNetAppSecret: (optional) App Secret for BffnEchoSkillBotComposerDotNet bot.
   # BffnEchoSkillBotDotNetAppId: (optional) App Id for BffnEchoSkillBotDotNet bot.
   # BffnEchoSkillBotDotNetAppSecret: (optional) App Secret for BffnEchoSkillBotDotNet bot.
+  # BffnEchoSkillBotDotNetSTAppId: (optional) App Id for BffnEchoSkillBotDotNetST bot.
+  # BffnEchoSkillBotDotNetSTAppSecret: (optional) App Secret for BffnEchoSkillBotDotNetST bot.
   # BffnEchoSkillBotDotNetV3AppId: (optional) App Id for BffnEchoSkillBotDotNetV3 bot.
   # BffnEchoSkillBotDotNetV3AppSecret: (optional) App Secret for BffnEchoSkillBotDotNetV3 bot.
   # BffnEchoSkillBotJSAppId: (optional) App Id for BffnEchoSkillBotJS bot.
   # BffnEchoSkillBotJSAppSecret: (optional) App Secret for BffnEchoSkillBotJS bot.
+  # BffnEchoSkillBotJSSTAppId: (optional) App Id for BffnEchoSkillBotJSST bot.
+  # BffnEchoSkillBotJSSTAppSecret: (optional) App Secret for BffnEchoSkillBotJSST bot.
   # BffnEchoSkillBotJSV3AppId: (optional) App Id for BffnEchoSkillBotJSV3 bot.
   # BffnEchoSkillBotJSV3AppSecret: (optional) App Secret for BffnEchoSkillBotJSV3 bot.
   # BffnEchoSkillBotPythonAppId: (optional) App Id for BffnEchoSkillBotPython bot.
@@ -154,8 +158,12 @@ variables:
   # BffnSimpleHostBotComposerDotNetAppSecret: (optional) App Secret for BffnSimpleHostBotComposerDotNet bot.
   # BffnSimpleHostBotDotNetAppId: (optional) App Id for BffnSimpleHostBotDotNet bot.
   # BffnSimpleHostBotDotNetAppSecret: (optional) App Secret for BffnSimpleHostBotDotNet bot.
+  # BffnSimpleHostBotDotNetSTAppId: (optional) App Id for BffnSimpleHostBotDotNetST bot.
+  # BffnSimpleHostBotDotNetSTAppSecret: (optional) App Secret for BffnSimpleHostBotDotNetST bot.
   # BffnSimpleHostBotJSAppId: (optional) App Id for BffnSimpleHostBotJS bot.
   # BffnSimpleHostBotJSAppSecret: (optional) App Secret for BffnSimpleHostBotJS bot.
+  # BffnSimpleHostBotJSSTAppId: (optional) App Id for BffnSimpleHostBotJSST bot.
+  # BffnSimpleHostBotJSSTAppSecret: (optional) App Secret for BffnSimpleHostBotJSST bot.
   # BffnSimpleHostBotPythonAppId: (optional) App Id for BffnSimpleHostBotPython bot.
   # BffnSimpleHostBotPythonAppSecret: (optional) App Secret for BffnSimpleHostBotPython bot.
   # BffnWaterfallHostBotDotNetAppId: (optional) App Id for BffnWaterfallHostBotDotNet bot.
@@ -356,6 +364,64 @@ stages:
             registry: ${{ parameters.dependenciesRegistryDotNetSkills }}
             version: ${{ parameters.dependenciesVersionDotNetSkills }}
 
+        # DotNet SingleTenant bots
+        - name: "bffnsimplehostbotdotnetst"
+          dependsOn: "Deploy_bffnechoskillbotcomposerdotnet"
+          type: "Host"
+          displayName: "DotNet Simple Host Bot SingleTenant"
+          appId: $(BFFNSIMPLEHOSTBOTDOTNETSTAPPID)
+          appSecret: $(BFFNSIMPLEHOSTBOTDOTNETSTAPPSECRET)
+          appType: "SingleTenant"
+          project:
+            directory: 'Bots/DotNet/SimpleHostBot'
+            name: "SimpleHostBot.csproj"
+            netCoreVersion: "3.1.x"
+          dependency:
+            registry: ${{ parameters.dependenciesRegistryDotNetHosts }}
+            version: ${{ parameters.dependenciesVersionDotNetHosts }}
+
+        - name: "bffnechoskillbotdotnetst"
+          dependsOn: "Deploy_bffncomposerhostbotdotnet"
+          type: "Skill"
+          displayName: "DotNet Echo Skill Bot SingleTenant"
+          appId: $(BFFNECHOSKILLBOTDOTNETSTAPPID)
+          appSecret: $(BFFNECHOSKILLBOTDOTNETSTAPPSECRET)
+          appType: "SingleTenant"
+          project: 
+            directory: 'Bots/DotNet/EchoSkillBot'
+            name: "EchoSkillBot.csproj"
+            netCoreVersion: "3.1.x"
+          dependency:
+            registry: ${{ parameters.dependenciesRegistryDotNetSkills }}
+            version: ${{ parameters.dependenciesVersionDotNetSkills }}
+
+        # DotNet MSI bots
+        - name: "bffnsimplehostbotdotnetmsi"
+          dependsOn: "Deploy_bffnwaterfallskillbotdotnet"
+          type: "Host"
+          displayName: "DotNet Simple Host Bot MSI"
+          appType: "MSI"
+          project:
+            directory: 'Bots/DotNet/SimpleHostBot'
+            name: "SimpleHostBot.csproj"
+            netCoreVersion: "3.1.x"
+          dependency:
+            registry: ${{ parameters.dependenciesRegistryDotNetHosts }}
+            version: ${{ parameters.dependenciesVersionDotNetHosts }}
+
+        - name: "bffnechoskillbotdotnetmsi"
+          dependsOn: "Deploy_bffnsimplehostbotcomposerdotnet"
+          type: "Skill"
+          displayName: "DotNet Echo Skill Bot MSI"
+          appType: "MSI"
+          project: 
+            directory: 'Bots/DotNet/EchoSkillBot'
+            name: "EchoSkillBot.csproj"
+            netCoreVersion: "3.1.x"
+          dependency:
+            registry: ${{ parameters.dependenciesRegistryDotNetSkills }}
+            version: ${{ parameters.dependenciesVersionDotNetSkills }}
+
 # JS
   - template: js/deploy.yml
     parameters:
@@ -372,6 +438,7 @@ stages:
       sharedResourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
       virtualNetwork: "$(INTERNALVIRTUALNETWORKNAME)"
       bots:
+        # JS bots
         - name: "bffnsimplehostbotjs"
           type: "Host"
           displayName: "JS Simple Host Bot"
@@ -445,6 +512,68 @@ stages:
           container:
             registry: "$(INTERNALCONTAINERREGISTRYNAME)"
             port: "36420"
+            command: "npm start"
+
+        # JS SingleTenant bots
+        - name: "bffnsimplehostbotjsst"
+          type: "Host"
+          displayName: "JS Simple Host Bot st"
+          appId: $(BFFNSIMPLEHOSTBOTJSSTAPPID)
+          appSecret: $(BFFNECHOSKILLBOTJSSTAPPSECRET)
+          appType: "SingleTenant"
+          project:
+            directory: 'Bots/JavaScript/SimpleHostBot'
+          dependency:
+            registry: ${{ parameters.dependenciesRegistryJSHosts }}
+            version: ${{ parameters.dependenciesVersionJSHosts }}
+          container:
+            registry: "$(INTERNALCONTAINERREGISTRYNAME)"
+            port: "36000"
+            command: "npm start"
+
+        - name: "bffnechoskillbotjsst"
+          type: "Skill"
+          displayName: "JS Echo Skill Bot st"
+          appId: $(BFFNECHOSKILLBOTJSSTAPPID)
+          appSecret: $(BFFNECHOSKILLBOTJSSTAPPSECRET)
+          appType: "SingleTenant"
+          project: 
+            directory: 'Bots/JavaScript/EchoSkillBot'
+          dependency:
+            registry: ${{ parameters.dependenciesRegistryJSSkills }}
+            version: ${{ parameters.dependenciesVersionJSSkills }}
+          container:
+            registry: "$(INTERNALCONTAINERREGISTRYNAME)"
+            port: "36400"
+            command: "npm start"
+
+        # JS MSI bots
+        - name: "bffnsimplehostbotjsmsi"
+          type: "Host"
+          displayName: "JS Simple Host Bot MSI"
+          appType: "MSI"
+          project:
+            directory: 'Bots/JavaScript/SimpleHostBot'
+          dependency:
+            registry: ${{ parameters.dependenciesRegistryJSHosts }}
+            version: ${{ parameters.dependenciesVersionJSHosts }}
+          container:
+            registry: "$(INTERNALCONTAINERREGISTRYNAME)"
+            port: "36000"
+            command: "npm start"
+
+        - name: "bffnechoskillbotjsmsi"
+          type: "Skill"
+          displayName: "JS Echo Skill Bot MSI"
+          appType: "MSI"
+          project: 
+            directory: 'Bots/JavaScript/EchoSkillBot'
+          dependency:
+            registry: ${{ parameters.dependenciesRegistryJSSkills }}
+            version: ${{ parameters.dependenciesVersionJSSkills }}
+          container:
+            registry: "$(INTERNALCONTAINERREGISTRYNAME)"
+            port: "36400"
             command: "npm start"
 
 # Python

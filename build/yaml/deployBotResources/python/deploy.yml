@@ -166,13 +166,14 @@ stages:
               pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ bot.name }}.zip"
               artifactName: python-$(BUILD.BUILDID)
 
-          # Create App Service and Bot Channel Registration
+          # Create App Service and Azure Bot
           - template: ../common/createAppService.yml
             parameters:
               appId: $(APPID)
               appSecret: $(APPSECRET)
               appInsight: "${{ parameters.appInsight }}"
               appServicePlan: "${{ parameters.appServicePlan }}"
+              appType: "${{ parameters.appType }}"
               azureSubscription: "${{ parameters.azureSubscription }}"
               botGroup: "${{ parameters.resourceGroup }}"
               botName: "${{ bot.name }}"
