@@ -8,7 +8,7 @@ parameters:
     type: string
 
   - name: appType
-    displayName: Type of Bot Authentication. MultiTenant, SingleTenant, MSI.
+    displayName: Type of Bot Authentication. MultiTenant, SingleTenant, UserAssignedMSI.
     type: string
     default: "MultiTenant"
 
@@ -45,10 +45,10 @@ steps:
         $source = ""
         $withAppSecret = $true;
 
-        if("MSI" -eq "${{ parameters.appType }}") {
+        if("UserAssignedMSI" -eq "${{ parameters.appType }}") {
           $appId = (az identity show --name "${{ parameters.botName }}${{ parameters.resourceSuffix }}" --resource-group "${{ parameters.sharedResourceGroup }}" | ConvertFrom-Json).clientId;
           $secret | Add-Member -MemberType NoteProperty -Name AppId -Value $appId
-          $source = "MSI ${{ parameters.botName }}${{ parameters.resourceSuffix }}";
+          $source = "UserAssignedMSI ${{ parameters.botName }}${{ parameters.resourceSuffix }}";
           $withAppSecret = $false;
 
         } elseif ([string]::IsNullOrEmpty("${{ parameters.appId }}")) {

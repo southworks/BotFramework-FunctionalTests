@@ -404,12 +404,12 @@ stages:
             registry: ${{ parameters.dependenciesRegistryDotNetSkills }}
             version: ${{ parameters.dependenciesVersionDotNetSkills }}
 
-        # DotNet MSI bots
+        # DotNet UserAssignedMSI bots
         - name: "bffnsimplehostbotdotnetmsi"
           dependsOn: "Deploy_bffnwaterfallskillbotdotnet"
           type: "Host"
           displayName: "DotNet Simple Host Bot MSI"
-          appType: "MSI"
+          appType: "UserAssignedMSI"
           project:
             directory: 'Bots/DotNet/SimpleHostBot'
             name: "SimpleHostBot.csproj"
@@ -421,8 +421,8 @@ stages:
         - name: "bffnechoskillbotdotnetmsi"
           dependsOn: "Deploy_bffnsimplehostbotcomposerdotnet"
           type: "Skill"
-          displayName: "DotNet Echo Skill Bot MSI"
-          appType: "MSI"
+          displayName: "DotNet Echo Skill Bot UserAssignedMSI"
+          appType: "UserAssignedMSI"
           project: 
             directory: 'Bots/DotNet/EchoSkillBot'
             name: "EchoSkillBot.csproj"
@@ -561,11 +561,11 @@ stages:
             port: "36400"
             command: "npm start"
 
-        # JS MSI bots
+        # JS UserAssignedMSI bots
         - name: "bffnsimplehostbotjsmsi"
           type: "Host"
-          displayName: "JS Simple Host Bot MSI"
-          appType: "MSI"
+          displayName: "JS Simple Host Bot UserAssignedMSI"
+          appType: "UserAssignedMSI"
           project:
             directory: 'Bots/JavaScript/SimpleHostBot'
           dependency:
@@ -578,8 +578,8 @@ stages:
 
         - name: "bffnechoskillbotjsmsi"
           type: "Skill"
-          displayName: "JS Echo Skill Bot MSI"
-          appType: "MSI"
+          displayName: "JS Echo Skill Bot UserAssignedMSI"
+          appType: "UserAssignedMSI"
           project: 
             directory: 'Bots/JavaScript/EchoSkillBot'
           dependency:

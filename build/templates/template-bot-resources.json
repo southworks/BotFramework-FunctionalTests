@@ -10,6 +10,7 @@
     },
     "appSecret": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Active Directory App Password, set as MicrosoftAppPassword in the Web App's Application Settings."
       }
@@ -24,9 +25,9 @@
     "appType": {
       "type": "string",
       "defaultValue": "MultiTenant",
-      "allowedValues": ["MultiTenant", "SingleTenant", "MSI"],
+      "allowedValues": ["MultiTenant", "SingleTenant", "UserAssignedMSI"],
       "metadata": {
-        "description": "Type of Bot Authentication. set as MicrosoftAppType in the Web App's Application Settings. Allowed values are: MultiTenant, SingleTenant, MSI. Defaults to \"MultiTenant\"."
+        "description": "Type of Bot Authentication, set as MicrosoftAppType in the Web App's Application Settings. Allowed values are: MultiTenant, SingleTenant, UserAssignedMSI. Defaults to \"MultiTenant\"."
       }
     },
     "botName": {
@@ -42,18 +43,18 @@
         "description": "The pricing tier of the Bot Service Registration. Acceptable values are F0 and S1."
       }
     },
-    "MSIResourceName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-          "description": "The User-Assigned Managed Identity Resource used for the Bot's Authentication. Defaults to \"\"."
-      }
-    },
     "projectTag": {
       "type": "string"
     },
     "sharedResourceGroup": {
       "type": "string"
+    },
+    "userAssignedMSIName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "The User-Assigned Managed Identity Resource used for the Bot's Authentication. Defaults to \"\"."
+      }
     },
     "virtualNetwork": {
       "type": "string"
@@ -67,7 +68,7 @@
     "botEndpoint": "[concat('https://', variables('siteHost'), '/api/messages')]",
     "publishingUsername": "[concat('$', parameters('botName'))]",
     "tenantId": "[subscription().tenantId]",
-    "msiResourceId": "[concat(subscription().id, '/resourceGroups/', parameters('sharedResourceGroup'), '/providers/', 'Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('MSIResourceName'))]",
+    "msiResourceId": "[concat(subscription().id, '/resourceGroups/', parameters('sharedResourceGroup'), '/providers/', 'Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('userAssignedMSIName'))]",
     "appTypeDef": {
       "MultiTenant": {
         "tenantId": "",
@@ -79,7 +80,7 @@
         "msiResourceId": "",
         "identity": { "type": "None" }
       },
-      "MSI": {
+      "UserAssignedMSI": {
         "tenantId": "[variables('tenantId')]",
         "msiResourceId": "[variables('msiResourceId')]",
         "identity": {

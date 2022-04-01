@@ -17,7 +17,7 @@ parameters:
     type: string
 
   - name: appType
-    displayName: Type of Bot Authentication. MultiTenant, SingleTenant, MSI.
+    displayName: Type of Bot Authentication. MultiTenant, SingleTenant, UserAssignedMSI.
     type: string
     default: "MultiTenant"
 
@@ -89,7 +89,7 @@ steps:
           @{ key="projectTag"                   ; value="${{ parameters.projectTag }}" }
           @{ key="sharedResourceGroup"          ; value="${{ parameters.sharedResourceGroup }}" }
           @{ key="botLocation"                  ; value="westus" }
-          @{ key="MSIResourceName"              ; value="${{ parameters.botName }}${{ parameters.resourceSuffix }}" }
+          @{ key="userAssignedMSIName"          ; value="${{ parameters.botName }}${{ parameters.resourceSuffix }}" }
         )
 
         # Pricing Tier
