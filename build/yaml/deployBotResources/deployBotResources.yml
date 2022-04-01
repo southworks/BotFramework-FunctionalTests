@@ -243,6 +243,7 @@ stages:
           displayName: "DotNet Simple Host Bot"
           appId: $(BFFNSIMPLEHOSTBOTDOTNETAPPID)
           appSecret: $(BFFNSIMPLEHOSTBOTDOTNETAPPSECRET)
+          appType: "MultiTenant"
           project:
             directory: 'Bots/DotNet/SimpleHostBot'
             name: "SimpleHostBot.csproj"
@@ -257,6 +258,7 @@ stages:
           displayName: "DotNet Echo Skill Bot"
           appId: $(BFFNECHOSKILLBOTDOTNETAPPID)
           appSecret: $(BFFNECHOSKILLBOTDOTNETAPPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/DotNet/EchoSkillBot'
             name: "EchoSkillBot.csproj"
@@ -272,6 +274,7 @@ stages:
           displayName: "DotNet Echo Skill Bot v3"
           appId: $(BFFNECHOSKILLBOTDOTNETV3APPID)
           appSecret: $(BFFNECHOSKILLBOTDOTNETV3APPSECRET)
+          appType: "MultiTenant"
           project:
             directory: 'Bots/DotNet/EchoSkillBot-v3'
             name: "EchoSkillBot-v3.csproj"
@@ -285,6 +288,7 @@ stages:
           displayName: "DotNet Waterfall Host Bot"
           appId: $(BFFNWATERFALLHOSTBOTDOTNETAPPID)
           appSecret: $(BFFNWATERFALLHOSTBOTDOTNETAPPSECRET)
+          appType: "MultiTenant"
           project:
             directory: 'Bots/DotNet/WaterfallHostBot'
             name: "WaterfallHostBot.csproj"
@@ -299,6 +303,7 @@ stages:
           displayName: "DotNet Waterfall Skill Bot"
           appId: $(BFFNWATERFALLSKILLBOTDOTNETAPPID)
           appSecret: $(BFFNWATERFALLSKILLBOTDOTNETAPPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/DotNet/WaterfallSkillBot'
             name: "WaterfallSkillBot.csproj"
@@ -314,6 +319,7 @@ stages:
           displayName: "DotNet Simple Composer Host Bot"
           appId: $(BFFNSIMPLEHOSTBOTCOMPOSERDOTNETAPPID)
           appSecret: $(BFFNSIMPLEHOSTBOTCOMPOSERDOTNETAPPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/DotNet/SimpleHostBotComposer'
             name: "SimpleHostBotComposer.csproj"
@@ -328,6 +334,7 @@ stages:
           displayName: "DotNet Echo Composer Skill Bot"
           appId: $(BFFNECHOSKILLBOTCOMPOSERDOTNETAPPID)
           appSecret: $(BFFNECHOSKILLBOTCOMPOSERDOTNETAPPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/DotNet/EchoSkillBotComposer'
             name: "EchoSkillBotComposer.csproj"
@@ -342,6 +349,7 @@ stages:
           displayName: "DotNet Composer Host Bot"
           appId: $(BFFNCOMPOSERHOSTBOTDOTNETAPPID)
           appSecret: $(BFFNCOMPOSERHOSTBOTDOTNETAPPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/DotNet/ComposerHostBotDotNet'
             name: "ComposerHostBotDotNet.csproj"
@@ -356,6 +364,7 @@ stages:
           displayName: "DotNet Composer Skill Bot"
           appId: $(BFFNCOMPOSERSKILLBOTDOTNETAPPID)
           appSecret: $(BFFNCOMPOSERSKILLBOTDOTNETAPPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/DotNet/ComposerSkillBotDotNet'
             name: "ComposerSkillBotDotNet.csproj"
@@ -444,6 +453,7 @@ stages:
           displayName: "JS Simple Host Bot"
           appId: $(BFFNSIMPLEHOSTBOTJSAPPID)
           appSecret: $(BFFNSIMPLEHOSTBOTJSAPPSECRET)
+          appType: "MultiTenant"
           project:
             directory: 'Bots/JavaScript/SimpleHostBot'
           dependency:
@@ -459,6 +469,7 @@ stages:
           displayName: "JS Echo Skill Bot"
           appId: $(BFFNECHOSKILLBOTJSAPPID)
           appSecret: $(BFFNECHOSKILLBOTJSAPPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/JavaScript/EchoSkillBot'
           dependency:
@@ -474,6 +485,7 @@ stages:
           displayName: "JS Echo Skill Bot v3"
           appId: $(BFFNECHOSKILLBOTJSV3APPID)
           appSecret: $(BFFNECHOSKILLBOTJSV3APPSECRET)
+          appType: "MultiTenant"
           project:
             directory: 'Bots/JavaScript/EchoSkillBot-v3'
           dependency:
@@ -489,6 +501,7 @@ stages:
           displayName: "JS Waterfall Host Bot"
           appId: $(BFFNWATERFALLHOSTBOTJSAPPID)
           appSecret: $(BFFNWATERFALLHOSTBOTJSAPPSECRET)
+          appType: "MultiTenant"
           project:
             directory: 'Bots/JavaScript/WaterfallHostBot'
           dependency:
@@ -504,6 +517,7 @@ stages:
           displayName: "JS Waterfall Skill Bot"
           appId: $(BFFNWATERFALLSKILLBOTJSAPPID)
           appSecret: $(BFFNWATERFALLSKILLBOTJSAPPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/JavaScript/WaterfallSkillBot'
           dependency:
@@ -597,6 +611,7 @@ stages:
           displayName: "Python Simple Host Bot"
           appId: $(BFFNSIMPLEHOSTBOTPYTHONAPPID)
           appSecret: $(BFFNSIMPLEHOSTBOTPYTHONAPPSECRET)
+          appType: "MultiTenant"
           project:
             directory: 'Bots/Python/SimpleHostBot'
           dependency:
@@ -612,6 +627,7 @@ stages:
           displayName: "Python Echo Skill Bot"
           appId: $(BFFNECHOSKILLBOTPYTHONAPPID)
           appSecret: $(BFFNECHOSKILLBOTPYTHONAPPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/Python/EchoSkillBot'
           dependency:
@@ -627,6 +643,7 @@ stages:
           displayName: "Python Waterfall Host Bot"
           appId: $(BFFNWATERFALLHOSTBOTPYTHONAPPID)
           appSecret: $(BFFNWATERFALLHOSTBOTPYTHONAPPSECRET)
+          appType: "MultiTenant"
           project:
             directory: 'Bots/Python/WaterfallHostBot'
           dependency:
@@ -642,6 +659,7 @@ stages:
           displayName: "Python Waterfall Skill Bot"
           appId: $(BFFNWATERFALLSKILLBOTPYTHONAPPID)
           appSecret: $(BFFNWATERFALLSKILLBOTPYTHONAPPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/Python/WaterfallSkillBot'
           dependency:
