@@ -408,7 +408,7 @@ stages:
         - name: "bffnsimplehostbotdotnetmsi"
           dependsOn: "Deploy_bffnwaterfallskillbotdotnet"
           type: "Host"
-          displayName: "DotNet Simple Host Bot MSI"
+          displayName: "DotNet Simple Host Bot UserAssignedMSI"
           appType: "UserAssignedMSI"
           project:
             directory: 'Bots/DotNet/SimpleHostBot'
