@@ -79,7 +79,7 @@
         "msiResourceId": "",
         "identity": { "type": "None" }
       },
-      "UserAssignedMsi": {
+      "MSI": {
         "tenantId": "[variables('tenantId')]",
         "msiResourceId": "[variables('msiResourceId')]",
         "identity": {
