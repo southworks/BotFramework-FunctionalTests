@@ -13,15 +13,11 @@ param (
   [Parameter(Mandatory = $true)]
   [string]$EchoSkillBotDotNetAppId,
   [Parameter(Mandatory = $true)]
-  [string]$EchoSkillBotDotNetMSIAppId,
-  [Parameter(Mandatory = $true)]
   [string]$EchoSkillBotDotNetSTAppId,
   [Parameter(Mandatory = $true)]
   [string]$EchoSkillBotDotNetV3AppId,
   [Parameter(Mandatory = $true)]
   [string]$EchoSkillBotJSAppId,
-  [Parameter(Mandatory = $true)]
-  [string]$EchoSkillBotJSMSIAppId,
   [Parameter(Mandatory = $true)]
   [string]$EchoSkillBotJSSTAppId,
   [Parameter(Mandatory = $true)]
@@ -79,7 +75,11 @@ function AddBotsAppIdFromKeyVault {
     $function:AddTimeStamp = $using:AddTimeStampDef
     $keyVault = $using:keyVault
 
-    if ([string]::IsNullOrEmpty($bot.appId)) {
+    if($appTypes.UserAssignedMSI -eq $bot.appType) {
+      $bot.appId = (az identity show --name $ResourceSuffix --resource-group $ResourceGroup | ConvertFrom-Json).clientId;
+      Write-Host $(AddTimeStamp -text "$($bot.key): Using AppId from the UserAssignedMSI resource.");
+
+    } elseif ([string]::IsNullOrEmpty($bot.appId)) {
       Write-Host $(AddTimeStamp -text "$($bot.key): Unable to find the AppId in the Pipeline Variables, proceeding to search in the KeyVault '$keyVault'.");
 
       $entry = az keyvault secret list --vault-name $keyVault --query "[?name == 'Bffn$($bot.key)AppId']" | ConvertFrom-Json;
@@ -388,6 +388,13 @@ $types = @{
   Composer    = 2
 }
 
+# Type of bot authentication.
+$appTypes = @{
+  MultiTenant     = "MultiTenant"
+  SingleTenant    = "SingleTenant"
+  UserAssignedMSI = "UserAssignedMSI"
+}
+
 # Bots Resource Groups
 $groups = @{
   DotNet = "$ResourceGroup-DotNet"
@@ -473,6 +480,7 @@ $consumers = @(
 
 $skills = @(
   @{
+    appType       = $appTypes.MultiTenant
     key           = "EchoSkillBotDotNet"
     keyComposer   = "echoSkillBotDotNet" 
     botName       = "bffnechoskillbotdotnet"
@@ -481,6 +489,7 @@ $skills = @(
     group         = "Echo"
   }
   @{
+    appType       = $appTypes.UserAssignedMSI
     key           = "EchoSkillBotDotNetMSI"
     keyComposer   = "echoSkillBotDotNetMSI" 
     botName       = "bffnechoskillbotdotnetmsi"
@@ -489,6 +498,7 @@ $skills = @(
     group         = "Echo"
   }
   @{
+    appType       = $appTypes.SingleTenant
     key           = "EchoSkillBotDotNetST"
     keyComposer   = "echoSkillBotDotNetST" 
     botName       = "bffnechoskillbotdotnetst"
@@ -497,6 +507,7 @@ $skills = @(
     group         = "Echo"
   }
   @{
+    appType       = $appTypes.MultiTenant
     key           = "EchoSkillBotDotNetV3"
     keyComposer   = "echoSkillBotDotNetV3" 
     botName       = "bffnechoskillbotdotnetv3"
@@ -505,6 +516,7 @@ $skills = @(
     group         = "Echo"
   }
   @{
+    appType       = $appTypes.MultiTenant
     key           = "EchoSkillBotComposerDotNet"
     keyComposer   = "echoSkillBotComposerDotNet" 
     botName       = "bffnechoskillbotcomposerdotnet"
@@ -513,6 +525,7 @@ $skills = @(
     group         = "Echo"
   }
   @{
+    appType       = $appTypes.MultiTenant
     key           = "WaterfallSkillBotDotNet"
     keyComposer   = "waterfallSkillBotDotNet" 
     botName       = "bffnwaterfallskillbotdotnet"
@@ -521,6 +534,7 @@ $skills = @(
     group         = "Waterfall"
   }
   @{
+    appType       = $appTypes.MultiTenant
     key           = "ComposerSkillBotDotNet"
     keyComposer   = "composerSkillBotDotNet" 
     botName       = "bffncomposerskillbotdotnet"
@@ -529,6 +543,7 @@ $skills = @(
     group         = "Waterfall"
   }
   @{
+    appType       = $appTypes.MultiTenant
     key           = "EchoSkillBotJS"
     keyComposer   = "echoSkillBotJs" 
     botName       = "bffnechoskillbotjs"
@@ -537,6 +552,7 @@ $skills = @(
     group         = "Echo"
   }
   @{
+    appType       = $appTypes.UserAssignedMSI
     key           = "EchoSkillBotJSMSI"
     keyComposer   = "echoSkillBotJsMSI" 
     botName       = "bffnechoskillbotjsmsi"
@@ -545,6 +561,7 @@ $skills = @(
     group         = "Echo"
   }
   @{
+    appType       = $appTypes.SingleTenant
     key           = "EchoSkillBotJSST"
     keyComposer   = "echoSkillBotJsST" 
     botName       = "bffnechoskillbotjsst"
@@ -553,6 +570,7 @@ $skills = @(
     group         = "Echo"
   }
   @{
+    appType       = $appTypes.MultiTenant
     key           = "EchoSkillBotJSV3"
     keyComposer   = "echoSkillBotJsV3" 
     botName       = "bffnechoskillbotjsv3"
@@ -561,6 +579,7 @@ $skills = @(
     group         = "Echo"
   }
   @{
+    appType       = $appTypes.MultiTenant
     key           = "WaterfallSkillBotJS"
     keyComposer   = "waterfallSkillBotJS" 
     botName       = "bffnwaterfallskillbotjs"
@@ -569,6 +588,7 @@ $skills = @(
     group         = "Waterfall"
   }
   @{
+    appType       = $appTypes.MultiTenant
     key           = "EchoSkillBotPython"
     keyComposer   = "echoSkillBotPython" 
     botName       = "bffnechoskillbotpython"
@@ -577,6 +597,7 @@ $skills = @(
     group         = "Echo"
   }
   @{
+    appType       = $appTypes.MultiTenant
     key           = "WaterfallSkillBotPython"
     keyComposer   = "waterfallSkillBotPython" 
     botName       = "bffnwaterfallskillbotpython"
