@@ -51,7 +51,7 @@ steps:
       arguments: >
         -Scenario "${{ parameters.scenario }}"
         -ResourceGroup "${{ parameters.resourceGroup }}"
-        -ResourceSuffix "${{ parameters.resourceSuffix }}${{ buildIdSuffix }}"
+        -ResourceSuffix "${{ parameters.resourceSuffix }}${{ parameters.buildIdSuffix }}"
         -SharedResourceSuffix "${{ parameters.resourceSuffix }}"
         -KeyVault "${{ parameters.keyVault }}"
         -ComposerSkillBotDotNetAppId "${{ parameters.appIds.ComposerSkillBotDotNet }}"
