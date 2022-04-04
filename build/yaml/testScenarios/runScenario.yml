@@ -58,9 +58,10 @@ stages:
               parameters:
                 appIds: "${{ parameters.appIds }}"
                 azureSubscription: "${{ parameters.azureSubscription }}"
+                buildIdSuffix: "$(BUILDIDSUFFIX)"
                 keyVault: "${{ parameters.keyVault }}"
                 resourceGroup: "${{ parameters.resourceGroup }}"
-                resourceSuffix: "${{ parameters.resourceSuffix }}$(BUILDIDSUFFIX)"
+                resourceSuffix: "${{ parameters.resourceSuffix }}"
                 scenario: "${{ scenario.name }}"
 
             - task: UseDotNet@2

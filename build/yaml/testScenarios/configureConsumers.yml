@@ -20,6 +20,10 @@ parameters:
   displayName: Azure Service Connection
   type: string
 
+- name: buildIdSuffix
+  displayName: Build Id Suffix
+  type: string
+
 - name: keyVault
   displayName: KeyVault name
   type: string
@@ -47,7 +51,8 @@ steps:
       arguments: >
         -Scenario "${{ parameters.scenario }}"
         -ResourceGroup "${{ parameters.resourceGroup }}"
-        -ResourceSuffix "${{ parameters.resourceSuffix }}"
+        -ResourceSuffix "${{ parameters.resourceSuffix }}${{ buildIdSuffix }}"
+        -SharedResourceSuffix "${{ parameters.resourceSuffix }}"
         -KeyVault "${{ parameters.keyVault }}"
         -ComposerSkillBotDotNetAppId "${{ parameters.appIds.ComposerSkillBotDotNet }}"
         -EchoSkillBotComposerDotNetAppId "${{ parameters.appIds.EchoSkillBotComposerDotNet }}"
