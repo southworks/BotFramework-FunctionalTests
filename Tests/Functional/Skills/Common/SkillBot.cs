@@ -6,52 +6,72 @@ namespace SkillFunctionalTests.Skills.Common
     public enum SkillBot
     {
         /// <summary>
-        /// Echo skill implemented using Composer and the DotNet runtime.
+        /// Echo MultiTenant skill implemented using Composer and the DotNet runtime.
         /// </summary>
         EchoSkillBotComposerDotNet,
 
         /// <summary>
-        /// Echo skill implemented using using DotNet 3.1.
+        /// Echo MultiTenant skill implemented using using DotNet 3.1.
         /// </summary>
         EchoSkillBotDotNet,
 
         /// <summary>
-        /// Echo v3 skill implemented using using DotNet 3.1.
+        /// Echo UserAssignedMSI skill implemented using using DotNet 3.1.
+        /// </summary>
+        EchoSkillBotDotNetMSI,
+
+        /// <summary>
+        /// Echo SingleTenant skill implemented using using DotNet 3.1.
+        /// </summary>
+        EchoSkillBotDotNetST,
+
+        /// <summary>
+        /// Echo MultiTenant v3 skill implemented using using DotNet 3.1.
         /// </summary>
         EchoSkillBotDotNetV3,
 
         /// <summary>
-        /// Echo skill implemented using using JS.
+        /// Echo MultiTenant skill implemented using using JS.
         /// </summary>
         EchoSkillBotJS,
 
         /// <summary>
-        /// Echo v3 skill implemented using using JS.
+        /// Echo UserAssignedMSI skill implemented using using JS.
+        /// </summary>
+        EchoSkillBotJSMSI,
+
+        /// <summary>
+        /// Echo SingleTenant skill implemented using using JS.
+        /// </summary>
+        EchoSkillBotJSST,
+
+        /// <summary>
+        /// Echo MultiTenant v3 skill implemented using using JS.
         /// </summary>
         EchoSkillBotJSV3,
 
         /// <summary>
-        /// Echo skill implemented using using Python.
+        /// Echo MultiTenant skill implemented using using Python.
         /// </summary>
         EchoSkillBotPython,
 
         /// <summary>
-        /// Waterfall skill implemented using using DotNet 3.1.
+        /// Waterfall MultiTenant skill implemented using using DotNet 3.1.
         /// </summary>
         WaterfallSkillBotDotNet,
 
         /// <summary>
-        /// Waterfall skill implemented using using JS.
+        /// Waterfall MultiTenant skill implemented using using JS.
         /// </summary>
         WaterfallSkillBotJS,
 
         /// <summary>
-        /// Waterfall skill implemented using using Python.
+        /// Waterfall MultiTenant skill implemented using using Python.
         /// </summary>
         WaterfallSkillBotPython,
 
         /// <summary>
-        /// Waterfall host implemented using Composer and the DotNet runtime.
+        /// Waterfall MultiTenant skill implemented using Composer and the DotNet runtime.
         /// </summary>
         ComposerSkillBotDotNet,
     }

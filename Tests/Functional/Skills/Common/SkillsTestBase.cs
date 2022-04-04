@@ -38,6 +38,18 @@ namespace SkillFunctionalTests.Skills.Common
             HostBot.WaterfallHostBotPython,
         };
 
+        public static List<HostBot> SimpleHostMSIBots { get; } = new List<HostBot>
+        {
+            HostBot.SimpleHostBotDotNetMSI,
+            HostBot.SimpleHostBotJSMSI,
+        };
+
+        public static List<HostBot> SimpleHostSTBots { get; } = new List<HostBot>
+        {
+            HostBot.SimpleHostBotDotNetST,
+            HostBot.SimpleHostBotJSST,
+        };
+
         public static List<SkillBot> EchoSkillBots { get; } = new List<SkillBot>
         {
             SkillBot.EchoSkillBotComposerDotNet,
@@ -54,6 +66,18 @@ namespace SkillFunctionalTests.Skills.Common
             SkillBot.WaterfallSkillBotJS,
             SkillBot.WaterfallSkillBotPython,
             SkillBot.ComposerSkillBotDotNet
+        };
+
+        public static List<SkillBot> EchoSkillMSIBots { get; } = new List<SkillBot>
+        {
+            SkillBot.EchoSkillBotDotNetMSI,
+            SkillBot.EchoSkillBotJSMSI
+        };
+
+        public static List<SkillBot> EchoSkillSTBots { get; } = new List<SkillBot>
+        {
+            SkillBot.EchoSkillBotDotNetST,
+            SkillBot.EchoSkillBotJSST
         };
 
         public static IEnumerable<object[]> BuildTestCases(

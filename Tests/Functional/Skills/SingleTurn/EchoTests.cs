@@ -2,29 +2,17 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using SkillFunctionalTests.Common;
 using SkillFunctionalTests.Skills.Common;
-using TranscriptTestRunner;
-using TranscriptTestRunner.XUnit;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace SkillFunctionalTests.Skills.SingleTurn
 {
     [Trait("TestCategory", "SingleTurn")]
-    public class EchoTests : SkillsTestBase
+    public class EchoTests : EchoBaseTests
     {
-        private static readonly List<string> Scripts = new List<string>
-        {
-            "EchoMultiSkill.json"
-        };
-
-        private readonly string _testScriptsFolder = Directory.GetCurrentDirectory() + @"/Skills/SingleTurn/TestScripts";
-
         public EchoTests(ITestOutputHelper output)
             : base(output)
         {
@@ -46,21 +34,6 @@ namespace SkillFunctionalTests.Skills.SingleTurn
 
         [Theory]
         [MemberData(nameof(TestCases))]
-        public async Task RunTestCases(TestCaseDataObject<SkillsTestCase> testData)
-        {
-            var testCase = testData.GetObject();
-            Logger.LogInformation(JsonConvert.SerializeObject(testCase, Formatting.Indented));
-
-            var options = TestClientOptions[testCase.Bot];
-            var runner = new XUnitTestRunner(new TestClientFactory(testCase.Channel, options, Logger).GetTestClient(), TestRequestTimeout, ThinkTime, Logger);
-
-            var testParams = new Dictionary<string, string>
-            {
-                { "DeliveryMode", testCase.DeliveryMode },
-                { "TargetSkill", testCase.Skill.ToString() }
-            };
-
-            await runner.RunTestAsync(Path.Combine(_testScriptsFolder, testCase.Script), testParams);
-        }
+        public override Task RunTestCases(TestCaseDataObject<SkillsTestCase> testData) => base.RunTestCases(testData);
     }
 }
