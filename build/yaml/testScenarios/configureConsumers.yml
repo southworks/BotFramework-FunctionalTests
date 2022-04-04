@@ -6,8 +6,12 @@ parameters:
     ComposerSkillBotDotNet: ""
     EchoSkillBotComposerDotNet: ""
     EchoSkillBotDotNet: ""
+    EchoSkillBotDotNetMSI: ""
+    EchoSkillBotDotNetST: ""
     EchoSkillBotDotNetV3: ""
     EchoSkillBotJS: ""
+    EchoSkillBotJSMSI: ""
+    EchoSkillBotJSST: ""
     EchoSkillBotJSV3: ""
     EchoSkillBotPython: ""
     WaterfallSkillBotDotNet: ""
@@ -415,6 +419,18 @@ steps:
             configType    = $types.Appsettings
           }
           @{
+            key           = "SimpleHostBotDotNetMSI"
+            botName       = "bffnsimplehostbotdotnetmsi"
+            resourceGroup = $groups.DotNet
+            configType    = $types.Appsettings
+          }
+          @{
+            key           = "SimpleHostBotDotNetST"
+            botName       = "bffnsimplehostbotdotnetst"
+            resourceGroup = $groups.DotNet
+            configType    = $types.Appsettings
+          }
+          @{
             key           = "SimpleHostBotComposerDotNet"
             botName       = "bffnsimplehostbotcomposerdotnet"
             resourceGroup = $groups.DotNet
@@ -435,6 +451,18 @@ steps:
           @{
             key           = "SimpleHostBotJS"
             botName       = "bffnsimplehostbotjs"
+            resourceGroup = $groups.JS
+            configType    = $types.Env
+          }
+          @{
+            key           = "SimpleHostBotJSMSI"
+            botName       = "bffnsimplehostbotjsmsi"
+            resourceGroup = $groups.JS
+            configType    = $types.Env
+          }
+          @{
+            key           = "SimpleHostBotJSST"
+            botName       = "bffnsimplehostbotjsst"
             resourceGroup = $groups.JS
             configType    = $types.Env
           }
@@ -464,6 +492,22 @@ steps:
             keyComposer   = "echoSkillBotDotNet" 
             botName       = "bffnechoskillbotdotnet"
             appId         = "${{ parameters.appIds.EchoSkillBotDotNet }}"
+            resourceGroup = $groups.DotNet
+            group         = "Echo"
+          }
+          @{
+            key           = "EchoSkillBotDotNetMSI"
+            keyComposer   = "echoSkillBotDotNetMSI" 
+            botName       = "bffnechoskillbotdotnetmsi"
+            appId         = "${{ parameters.appIds.EchoSkillBotDotNetMSI }}"
+            resourceGroup = $groups.DotNet
+            group         = "Echo"
+          }
+          @{
+            key           = "EchoSkillBotDotNetST"
+            keyComposer   = "echoSkillBotDotNetST" 
+            botName       = "bffnechoskillbotdotnetst"
+            appId         = "${{ parameters.appIds.EchoSkillBotDotNetST }}"
             resourceGroup = $groups.DotNet
             group         = "Echo"
           }
@@ -504,6 +548,22 @@ steps:
             keyComposer   = "echoSkillBotJs" 
             botName       = "bffnechoskillbotjs"
             appId         = "${{ parameters.appIds.EchoSkillBotJS }}"
+            resourceGroup = $groups.JS
+            group         = "Echo"
+          }
+          @{
+            key           = "EchoSkillBotJSMSI"
+            keyComposer   = "echoSkillBotJsMSI" 
+            botName       = "bffnechoskillbotjsmsi"
+            appId         = "${{ parameters.appIds.EchoSkillBotJSMSI }}"
+            resourceGroup = $groups.JS
+            group         = "Echo"
+          }
+          @{
+            key           = "EchoSkillBotJSST"
+            keyComposer   = "echoSkillBotJsST" 
+            botName       = "bffnechoskillbotjsst"
+            appId         = "${{ parameters.appIds.EchoSkillBotJSST }}"
             resourceGroup = $groups.JS
             group         = "Echo"
           }
@@ -558,6 +618,21 @@ steps:
               "EchoSkillBotJS",
               "EchoSkillBotJSV3",
               "EchoSkillBotPython"
+            );
+          }
+          @{ 
+            name      = "Authentication"; 
+            consumers = @(
+              "SimpleHostBotDotNetMSI",
+              "SimpleHostBotDotNetST",
+              "SimpleHostBotJSMSI",
+              "SimpleHostBotJSST"
+            );
+            skills    = @(
+              "EchoSkillBotDotNetMSI",
+              "EchoSkillBotDotNetST",
+              "EchoSkillBotJSMSI",
+              "EchoSkillBotJSST"
             );
           }
           @{ 
