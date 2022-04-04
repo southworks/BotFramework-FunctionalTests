@@ -74,12 +74,14 @@ function AddBotsAppIdFromKeyVault {
     $bot = $_;
     $function:AddTimeStamp = $using:AddTimeStampDef
     $keyVault = $using:keyVault
+    $appTypes = $using:appTypes
 
-    if($appTypes.UserAssignedMSI -eq $bot.appType) {
+    if ($appTypes.UserAssignedMSI -eq $bot.appType) {
       $bot.appId = (az identity show --name $ResourceSuffix --resource-group $ResourceGroup | ConvertFrom-Json).clientId;
       Write-Host $(AddTimeStamp -text "$($bot.key): Using AppId from the UserAssignedMSI resource.");
 
-    } elseif ([string]::IsNullOrEmpty($bot.appId)) {
+    }
+    elseif ([string]::IsNullOrEmpty($bot.appId)) {
       Write-Host $(AddTimeStamp -text "$($bot.key): Unable to find the AppId in the Pipeline Variables, proceeding to search in the KeyVault '$keyVault'.");
 
       $entry = az keyvault secret list --vault-name $keyVault --query "[?name == 'Bffn$($bot.key)AppId']" | ConvertFrom-Json;
