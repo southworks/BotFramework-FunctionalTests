@@ -75,9 +75,10 @@ function AddBotsAppIdFromKeyVault {
     $function:AddTimeStamp = $using:AddTimeStampDef
     $keyVault = $using:keyVault
     $appTypes = $using:appTypes
+    $resourceGroup = $using:ResourceGroup
 
     if ($appTypes.UserAssignedMSI -eq $bot.appType) {
-      $bot.appId = (az identity show --name $ResourceSuffix --resource-group $ResourceGroup | ConvertFrom-Json).clientId;
+      $bot.appId = (az identity show --name $bot.resourceBotName --resource-group $resourceGroup | ConvertFrom-Json).clientId;
       Write-Host $(AddTimeStamp -text "$($bot.key): Using AppId from the UserAssignedMSI resource.");
 
     }
@@ -665,15 +666,15 @@ Write-Host $(AddTimeStamp -text "Filtering bots by '$Scenario' scenario ...");
 $consumersToConfigure = FilterBotsByScenario -bots $consumers -scenarios $scenarios -scenario $Scenario;
 $skillsToConfigure = FilterBotsByScenario -bots $skills -scenarios $scenarios -scenario $Scenario;
 
+Write-Host $(AddTimeStamp -text "Adding the suffix '$ResourceSuffix' to the bot resources ...");
+$consumersToConfigure = AddBotsSuffix -bots $consumersToConfigure -suffix $ResourceSuffix
+$skillsToConfigure = AddBotsSuffix -bots $skillsToConfigure -suffix $ResourceSuffix
+
 Write-Host $(AddTimeStamp -text "Loading the Skills AppIds from the KeyVault '$KeyVault' when no Pipeline Variable is provided.");
 $skillsToConfigure = AddBotsAppIdFromKeyVault -bots $skillsToConfigure -keyVault $KeyVault
 
 Write-Host $(AddTimeStamp -text "Filtering bots that have an AppId assigned ...");
 $skillsToConfigure = FilterBotsWithAppId -bots $skillsToConfigure
-
-Write-Host $(AddTimeStamp -text "Adding the suffix '$ResourceSuffix' to the bot resources ...");
-$consumersToConfigure = AddBotsSuffix -bots $consumersToConfigure -suffix $ResourceSuffix
-$skillsToConfigure = AddBotsSuffix -bots $skillsToConfigure -suffix $ResourceSuffix
 
 Write-Host $(AddTimeStamp -text "Filtering existing Resource Groups ...");
 $resourceGroups = FilterResourceGroupsByExistence -groups $groups
