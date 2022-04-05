@@ -7,6 +7,8 @@ param (
   [Parameter(Mandatory = $true)]
   [string]$ResourceSuffix,
   [Parameter(Mandatory = $true)]
+  [string]$SharedResourceGroup,
+  [Parameter(Mandatory = $true)]
   [string]$SharedResourceSuffix,
   [Parameter(Mandatory = $false)]
   [string]$ComposerSkillBotDotNetAppId,
@@ -78,10 +80,10 @@ function AddBotsAppIdFromKeyVault {
     $keyVault = $using:keyVault
     $appTypes = $using:appTypes
     $sharedResourceSuffix = $using:SharedResourceSuffix
-    $resourceGroup = $using:ResourceGroup
+    $sharedResourceGroup = $using:SharedResourceGroup
 
     if ($appTypes.UserAssignedMSI -eq $bot.appType) {
-      $bot.appId = (az identity show --name "$($bot.botName)$sharedResourceSuffix" --resource-group $resourceGroup | ConvertFrom-Json).clientId;
+      $bot.appId = (az identity show --name "$($bot.botName)$sharedResourceSuffix" --resource-group $sharedResourceGroup | ConvertFrom-Json).clientId;
       Write-Host $(AddTimeStamp -text "$($bot.key): Using AppId from the UserAssignedMSI resource.");
 
     }

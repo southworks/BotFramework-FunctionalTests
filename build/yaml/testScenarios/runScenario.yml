@@ -40,6 +40,10 @@ parameters:
   displayName: Azure resources' name suffix
   type: string
 
+- name: sharedResourceGroup
+  displayName: Shared Resource Group
+  type: string
+
 - name: scenarios
   displayName: Test Scenarios
   type: object
@@ -62,6 +66,7 @@ stages:
                 keyVault: "${{ parameters.keyVault }}"
                 resourceGroup: "${{ parameters.resourceGroup }}"
                 resourceSuffix: "${{ parameters.resourceSuffix }}"
+                sharedResourceGroup: "${{ parameters.sharedResourceGroup }}"
                 scenario: "${{ scenario.name }}"
 
             - task: UseDotNet@2

@@ -24,6 +24,7 @@ variables:
   # AzureSubscription: Service Connection Name to Manage Azure resources.
   # ResourceGroup: (optional) Name of the Resource Group where the bots are deployed.
   # ResourceSuffix: (optional) Alphanumeric suffix to add to the resources' name to avoid collisions.
+  # SharedResourceGroup: (optional) Name of the Shared Resource Group.
 
   ## Bots Configuration (Define these variables in Azure)
   # BffnComposerSkillBotDotNetAppId: (optional) App Id for BffnComposerSkillBotDotNet bot.
@@ -44,6 +45,7 @@ variables:
   InternalKeyVaultName: "bffnbotkeyvault$(INTERNALRESOURCESUFFIX)"
   InternalResourceGroupName: $[coalesce(variables['RESOURCEGROUP'], 'BFFN')]
   InternalResourceSuffix: $[coalesce(variables['RESOURCESUFFIX'], '')]
+  InternalSharedResourceGroupName: $[coalesce(variables['SHAREDRESOURCEGROUP'], 'BFFN-Shared')]
 
 pool:
   vmImage: "windows-2019"
@@ -103,6 +105,7 @@ stages:
       keyVault: "$(INTERNALKEYVAULTNAME)"
       resourceGroup: "$(INTERNALRESOURCEGROUPNAME)"
       resourceSuffix: "$(INTERNALRESOURCESUFFIX)"
+      sharedResourceGroup: "$(INTERNALSHAREDRESOURCEGROUPNAME)"
       scenarios:
         - name: Waterfall
           dependsOn: [Download_Variables]
