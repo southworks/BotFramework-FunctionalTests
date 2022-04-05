@@ -8,29 +8,29 @@ param (
   [string]$ResourceSuffix,
   [Parameter(Mandatory = $true)]
   [string]$SharedResourceSuffix,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$ComposerSkillBotDotNetAppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$EchoSkillBotComposerDotNetAppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$EchoSkillBotDotNetAppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$EchoSkillBotDotNetSTAppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$EchoSkillBotDotNetV3AppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$EchoSkillBotJSAppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$EchoSkillBotJSSTAppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$EchoSkillBotJSV3AppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$EchoSkillBotPythonAppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$WaterfallSkillBotDotNetAppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$WaterfallSkillBotJSAppId,
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$WaterfallSkillBotPythonAppId,
   [Parameter(Mandatory = $false)]
   [string]$KeyVault = ""
