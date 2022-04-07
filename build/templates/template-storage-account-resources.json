@@ -34,26 +34,36 @@
     }
   },
   "resources": [
+    // {
+    //   "type": "Microsoft.Storage/storageAccounts",
+    //   "apiVersion": "2021-06-01",
+    //   "name": "[parameters('storageAccountName')]",
+    //   "location": "[parameters('location')]",
+    //   "sku": {
+    //     "name": "[parameters('storageAccountType')]"
+    //   },
+    //   "kind": "StorageV2",
+    //   "properties": {}
+    // }
     {
-      "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2021-06-01",
-      "name": "[parameters('storageAccountName')]",
+      "name": "storagececiclassic",
+      "type": "Microsoft.ClassicStorage/storageAccounts",
       "location": "[parameters('location')]",
-      "sku": {
-        "name": "[parameters('storageAccountType')]"
-      },
-      "kind": "StorageV2",
-      "properties": {}
+      "apiVersion": "2015-06-01",
+      "dependsOn": [ ],
+      "properties": {
+          "accountType": "[parameters('storageAccountType')]"
+      }
     }
   ],
   "outputs": {
     "storageAccountName": {
       "type": "string",
-      "value": "[parameters('storageAccountName')]"
+      "value": "storagececiclassic"
     },
     "storageAccountId": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+      "value": "[resourceId('Microsoft.ClassicStorage/storageAccounts', 'storagececiclassic')]"
     }
   }
 }
