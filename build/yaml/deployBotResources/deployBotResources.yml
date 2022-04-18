@@ -18,12 +18,11 @@ parameters:
   - name: dependenciesRegistryDotNetHosts
     displayName: DotNet Hosts Registry
     type: string
-    default: https://pkgs.dev.azure.com/joelmut1333/functional-tests/_packaging/testing-sdk/npm/registry/
+    default: Artifacts
     values:
     - Artifacts
     - MyGet
     - NuGet
-    - https://pkgs.dev.azure.com/joelmut1333/functional-tests/_packaging/testing-sdk/npm/registry/ 
 
   - name: dependenciesVersionDotNetSkills
     displayName: DotNet Skills Version
@@ -60,10 +59,11 @@ parameters:
   - name: dependenciesRegistryJSHosts
     displayName: JS Hosts Registry
     type: string
-    default: MyGet
+    default: https://pkgs.dev.azure.com/joelmut1333/functional-tests/_packaging/testing-sdk/npm/registry/
     values:
     - MyGet
     - Npm
+    - https://pkgs.dev.azure.com/joelmut1333/functional-tests/_packaging/testing-sdk/npm/registry/
 
   - name: dependenciesVersionJSSkills
     displayName: JS Skills Version
@@ -73,10 +73,11 @@ parameters:
   - name: dependenciesRegistryJSSkills
     displayName: JS Skills Registry
     type: string
-    default: MyGet
+    default: https://pkgs.dev.azure.com/joelmut1333/functional-tests/_packaging/testing-sdk/npm/registry/
     values:
     - MyGet
     - Npm
+    - https://pkgs.dev.azure.com/joelmut1333/functional-tests/_packaging/testing-sdk/npm/registry/
 
   - name: dependenciesVersionJSSkillsV3
     displayName: JS Skills V3 Version
