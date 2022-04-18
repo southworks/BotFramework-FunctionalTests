@@ -23,6 +23,7 @@ parameters:
     - Artifacts
     - MyGet
     - NuGet
+    - https://pkgs.dev.azure.com/joelmut1333/functional-tests/_packaging/testing-sdk/npm/registry/ 
 
   - name: dependenciesVersionDotNetSkills
     displayName: DotNet Skills Version
