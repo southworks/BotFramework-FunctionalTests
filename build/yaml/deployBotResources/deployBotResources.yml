@@ -18,7 +18,7 @@ parameters:
   - name: dependenciesRegistryDotNetHosts
     displayName: DotNet Hosts Registry
     type: string
-    default: Artifacts
+    default: https://pkgs.dev.azure.com/joelmut1333/functional-tests/_packaging/testing-sdk/npm/registry/
     values:
     - Artifacts
     - MyGet
