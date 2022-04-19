@@ -149,7 +149,16 @@ stages:
                 $dependencies
 
                 Write-Host "`nUsing the registry source: $registry";
-                New-Item -Path . -Name ".npmrc" -ItemType "file" -Value "registry=$registry";
+                # New-Item -Path . -Name ".npmrc" -ItemType "file" -Value "registry=$registry";
+                $value = "registry=https://pkgs.dev.azure.com/ceciliaavila2/_packaging/cecilia-test/npm/registry/
+                always-auth=true
+                //pkgs.dev.azure.com/ceciliaavila2/_packaging/cecilia-test/npm/registry/:username=VssSessionToken
+                ; This is an unencrypted authentication token. Treat it like a password. DO NOT share this value with anyone, including Microsoft support.
+                //pkgs.dev.azure.com/ceciliaavila2/_packaging/cecilia-test/npm/registry/:_password=YzJ2Z213ZnJhYmh6bjdpNDcyMjN2ZjdpYW4zYzY3bjJwZmVldmhnMzVyNjRqb210Z3JicQ==
+                ; The npm client won't use username and _password without an email set, but the service doesn't use the email value. The following is an arbitrarily made-up address.
+                //pkgs.dev.azure.com/ceciliaavila2/_packaging/cecilia-test/npm/registry/:email=not-used@example.com";
+
+                New-Item -Path . -Name ".npmrc" -ItemType "file" -Value $value;
 
           - task: AzureCLI@2
             displayName: "Build and Push Container"
