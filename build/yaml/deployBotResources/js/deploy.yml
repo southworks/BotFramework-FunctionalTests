@@ -138,7 +138,7 @@ stages:
                 $dependencies = @{}
 
                 $packagejson.dependencies.psobject.properties | ForEach-Object {
-                  $dependencies[$_.Name] = if ($_.Name -match "botbuilder*") { $version } else { $_.Value }
+                  $dependencies[$_.Name] = if ($_.Name -match "botbuilder*" -or $_.Name -match "botframework*") { $version } else { $_.Value }
                 }
 
                 $packagejson.dependencies = $dependencies
@@ -148,6 +148,11 @@ stages:
                 Write-Host "Updated BotBuilder packages version:";
                 $dependencies
 
+                $value = "";
+                
+                if($version -match "3.30*") {
+                  $value = "registry=$registry";
+                }else {
                 Write-Host "`nUsing the registry source: $registry";
                 # New-Item -Path . -Name ".npmrc" -ItemType "file" -Value "registry=$registry";
                 $value = "registry=https://pkgs.dev.azure.com/ceciliaavila2/_packaging/cecilia-test/npm/registry/
@@ -157,8 +162,9 @@ stages:
                 //pkgs.dev.azure.com/ceciliaavila2/_packaging/cecilia-test/npm/registry/:_password=YzJ2Z213ZnJhYmh6bjdpNDcyMjN2ZjdpYW4zYzY3bjJwZmVldmhnMzVyNjRqb210Z3JicQ==
                 ; The npm client won't use username and _password without an email set, but the service doesn't use the email value. The following is an arbitrarily made-up address.
                 //pkgs.dev.azure.com/ceciliaavila2/_packaging/cecilia-test/npm/registry/:email=not-used@example.com";
-
+                }
                 New-Item -Path . -Name ".npmrc" -ItemType "file" -Value $value;
+
 
           - task: AzureCLI@2
             displayName: "Build and Push Container"
