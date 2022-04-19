@@ -19,7 +19,7 @@ steps:
       failOnStderr: true
       script: |
         # Get Source
-        $sourceJSMyGet = "https://botbuilder.myget.org/F/botbuilder-v4-js-daily/npm/"
+        $sourceJSMyGet = "https://pkgs.dev.azure.com/ceciliaavila2/_packaging/cecilia-test/npm/registry/"
         $sourceJSv3MyGet = "https://botbuilder.myget.org/F/botbuilder-v3-js-daily/npm/"
         $sourceJSNpm = "https://registry.npmjs.com/"
         $versionNumber = "${{ parameters.version }}"
