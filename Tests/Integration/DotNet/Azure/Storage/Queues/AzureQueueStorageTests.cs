@@ -25,8 +25,8 @@ namespace IntegrationTests.Azure.Storage.Queues
         private readonly AzureQueueBaseFixture _azureQueueFixture;
         private readonly ITestOutputHelper _outputHandler;
 
-        private readonly Activity welcomeSample = new Activity { Type = ActivityTypes.Message, Text = "Welcome!" };
-        private readonly Activity greetingsSample = new Activity { Type = ActivityTypes.Message, Text = "Greetings!" };
+        private readonly Activity _welcomeSample = new Activity { Type = ActivityTypes.Message, Text = "Welcome!" };
+        private readonly Activity _greetingsSample = new Activity { Type = ActivityTypes.Message, Text = "Greetings!" };
 
         public AzureQueueStorageTests(ITestOutputHelper outputHandler, AzureQueueBaseFixture azureQueueFixture)
         {
@@ -60,25 +60,25 @@ namespace IntegrationTests.Azure.Storage.Queues
         [Fact]
         public async Task QueueActivity()
         {
-            await Storage.QueueActivityAsync(welcomeSample);
+            await Storage.QueueActivityAsync(_welcomeSample);
 
             var messages = await Client.ReceiveMessagesAsync();
             var activity = DeserializeQueueMessage(messages.Value.First());
 
             Assert.Equal(ActivityTypes.Message, activity.Type);
-            Assert.Equal(welcomeSample.Text, activity.Text);
+            Assert.Equal(_welcomeSample.Text, activity.Text);
         }
 
         [Fact]
         public async Task QueueMultipleActivities()
         {
-            await Storage.QueueActivityAsync(welcomeSample);
-            await Storage.QueueActivityAsync(greetingsSample);
+            await Storage.QueueActivityAsync(_welcomeSample);
+            await Storage.QueueActivityAsync(_greetingsSample);
 
             var initialMessages = (await Client.PeekMessagesAsync(3)).Value;
 
             var messages = await Client.ReceiveMessagesAsync();
-            var welcomeAcitivty = DeserializeQueueMessage(messages.Value.First());
+            var welcomeActivity = DeserializeQueueMessage(messages.Value.First());
 
             messages = await Client.ReceiveMessagesAsync();
             var greetingsActivity = DeserializeQueueMessage(messages.Value.First());
@@ -88,17 +88,17 @@ namespace IntegrationTests.Azure.Storage.Queues
             Assert.Equal(2, initialMessages.Length);
             Assert.Empty(finalMessages);
 
-            Assert.Equal(ActivityTypes.Message, welcomeAcitivty.Type);
-            Assert.Equal(welcomeSample.Text, welcomeAcitivty.Text);
+            Assert.Equal(ActivityTypes.Message, welcomeActivity.Type);
+            Assert.Equal(_welcomeSample.Text, welcomeActivity.Text);
 
             Assert.Equal(ActivityTypes.Message, greetingsActivity.Type);
-            Assert.Equal(greetingsSample.Text, greetingsActivity.Text);
+            Assert.Equal(_greetingsSample.Text, greetingsActivity.Text);
         }
 
         [Fact]
         public async Task QueueActivityWithExpiration()
         {
-            await Storage.QueueActivityAsync(welcomeSample, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+            await Storage.QueueActivityAsync(_welcomeSample, TimeSpan.Zero, TimeSpan.FromSeconds(1));
 
             await Task.Delay(1000);
 
@@ -110,7 +110,7 @@ namespace IntegrationTests.Azure.Storage.Queues
         [Fact]
         public async Task QueueActivityWithVisibility()
         {
-            await Storage.QueueActivityAsync(welcomeSample, TimeSpan.FromSeconds(1));
+            await Storage.QueueActivityAsync(_welcomeSample, TimeSpan.FromSeconds(1));
 
             var messages = await Client.ReceiveMessagesAsync();
 
@@ -151,7 +151,7 @@ namespace IntegrationTests.Azure.Storage.Queues
             Assert.Equal(JsonConvert.SerializeObject(cr), JsonConvert.SerializeObject(cr2));
         }
 
-        private Activity DeserializeQueueMessage(QueueMessage message)
+        private static Activity DeserializeQueueMessage(QueueMessage message)
         {
             var messageJson = Encoding.UTF8.GetString(Convert.FromBase64String(message.MessageText));
             var activity = JsonConvert.DeserializeObject<Activity>(messageJson);
