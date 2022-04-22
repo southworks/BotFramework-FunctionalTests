@@ -656,12 +656,12 @@ $configurations = @(
 $setupConsumers = $consumers;
 $setupSkills = $skills;
 
-Write-Host $(AddTimeStamp -text "Adding the suffix '$suffix' to the bot resources ...");
-$setupConsumers = AddBotsSuffix -bots $setupConsumers -suffix $suffix
-$setupSkills = AddBotsSuffix -bots $setupSkills -suffix $suffix
+Write-Host $(AddTimeStamp -text "Adding the suffix '$ResourceSuffix' to the bot resources ...");
+$setupConsumers = AddBotsSuffix -bots $setupConsumers -suffix $ResourceSuffix
+$setupSkills = AddBotsSuffix -bots $setupSkills -suffix $ResourceSuffix
 
 Write-Host $(AddTimeStamp -text "Loading the Skills AppIds from the KeyVault '$KeyVault' when no Pipeline Variable is provided.");
-$setupSkills = AddBotsAppIdFromKeyVault -bots $setupSkills -keyVault $keyVault
+$setupSkills = AddBotsAppIdFromKeyVault -bots $setupSkills -keyVault $KeyVault
 
 Write-Host $(AddTimeStamp -text "Filtering bots that have an AppId assigned ...");
 $setupSkills = FilterBotsWithAppId -bots $setupSkills
