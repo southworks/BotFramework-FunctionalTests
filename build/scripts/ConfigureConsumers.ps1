@@ -37,7 +37,7 @@ param (
 )
 
 # Helper Functions.
-
+$appSettingsPath = "Tests/Functional/appsettings.json";
 $noBotsFoundMessage = "No bots were found in the configuration.";
 
 function AddTimeStamp {
