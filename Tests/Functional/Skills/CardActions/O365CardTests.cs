@@ -26,7 +26,7 @@ namespace Microsoft.Bot.Builder.Tests.Functional.Skills.CardActions
         public static bool Exclude(SkillsTestCase test)
         {
             // BUG: O365 fails with ExpectReplies for WaterfallSkillBotPython (remove when https://github.com/microsoft/BotFramework-FunctionalTests/issues/328 is fixed).
-            return test.Skill == SkillBot.WaterfallSkillBotPython && test.DeliveryMode == Microsoft.Bot.Schema.DeliveryModes.ExpectReplies;
+            return test.Skill == SkillBot.WaterfallSkillBotPython && test.DeliveryMode == Schema.DeliveryModes.ExpectReplies;
         }
 
         public static IEnumerable<object[]> TestCases() => TestCases(scripts: Scripts, exclude: Exclude);

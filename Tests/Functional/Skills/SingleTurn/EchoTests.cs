@@ -20,7 +20,7 @@ namespace Microsoft.Bot.Builder.Tests.Functional.Skills.SingleTurn
         public static bool Exclude(SkillsTestCase test)
         {
             // This local function is used to exclude ExpectReplies test cases for v3 bots
-            if (test.DeliveryMode == Microsoft.Bot.Schema.DeliveryModes.ExpectReplies)
+            if (test.DeliveryMode == Schema.DeliveryModes.ExpectReplies)
             {
                 // Note: ExpectReplies is not supported by DotNetV3 and JSV3 skills.
                 return test.Skill == SkillBot.EchoSkillBotDotNetV3 || test.Skill == SkillBot.EchoSkillBotJSV3;
