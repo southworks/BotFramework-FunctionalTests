@@ -51,7 +51,7 @@ steps:
       scriptPath: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/build/scripts/ConfigureConsumers.ps1"
       arguments: >
         -ResourceGroup "${{ parameters.resourceGroup }}"
-        -ResourceSuffix "${{ parameters.resourceSuffix }}${{ parameters.deployBuildId }}"
+        -ResourceSuffix "${{ parameters.resourceSuffix }}-${{ parameters.deployBuildId }}"
         -SharedResourceGroup "${{ parameters.sharedResourceGroup }}"
         -SharedResourceSuffix "${{ parameters.resourceSuffix }}"
         -KeyVault "${{ parameters.keyVault }}"
