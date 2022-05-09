@@ -43,12 +43,14 @@ namespace Microsoft.Bot.Builder.FunctionalTestsBots.WaterfallSkillBot.Dialogs.Fi
                 var localFileName = Path.Combine(Path.GetTempPath(), file.Name);
                 string fileContent;
 
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
                 using (var webClient = new WebClient())
                 {
                     webClient.DownloadFile(remoteFileUrl, localFileName);
                     using var reader = new StreamReader(localFileName);
                     fileContent = await reader.ReadToEndAsync();
                 }
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
 
                 fileText += $"Attachment \"{file.Name}\" has been received.\r\n";
                 fileText += $"File content: {fileContent}\r\n";
