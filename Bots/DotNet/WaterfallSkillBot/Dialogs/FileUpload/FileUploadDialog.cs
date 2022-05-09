@@ -46,7 +46,7 @@ namespace Microsoft.Bot.Builder.FunctionalTestsBots.WaterfallSkillBot.Dialogs.Fi
                 string fileContent;
 
                 using var stream = await client.GetStreamAsync(remoteFileUrl, cancellationToken);
-                using (var fs = new FileStream(localFileName, FileMode.CreateNew))
+                using (var fs = new FileStream(localFileName, FileMode.Create))
                 {
                     await stream.CopyToAsync(fs, cancellationToken);
                 }
