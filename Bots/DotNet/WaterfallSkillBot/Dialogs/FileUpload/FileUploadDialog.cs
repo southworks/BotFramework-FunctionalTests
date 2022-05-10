@@ -37,7 +37,7 @@ namespace Microsoft.Bot.Builder.FunctionalTestsBots.WaterfallSkillBot.Dialogs.Fi
         private async Task<DialogTurnResult> HandleAttachmentStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var fileText = string.Empty;
-            var client = new HttpClient();
+            using var client = new HttpClient();
 
             foreach (var file in stepContext.Context.Activity.Attachments)
             {
