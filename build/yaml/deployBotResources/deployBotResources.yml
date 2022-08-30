@@ -262,6 +262,7 @@ stages:
           displayName: "DotNet Simple Host Bot 3.1"
           appId: $(BFFNSIMPLEHOSTBOTDOTNET31APPID)
           appSecret: $(BFFNSIMPLEHOSTBOTDOTNET31APPSECRET)
+          appType: "MultiTenant"
           project:
             directory: 'Bots/DotNet/SimpleHostBot-3.1'
             name: "Microsoft.Bot.Builder.FunctionalTestsBots.SimpleHostBot31.csproj"
@@ -291,6 +292,7 @@ stages:
           displayName: "DotNet Echo Skill Bot 3.1"
           appId: $(BFFNECHOSKILLBOTDOTNET31APPID)
           appSecret: $(BFFNECHOSKILLBOTDOTNET31APPSECRET)
+          appType: "MultiTenant"
           project: 
             directory: 'Bots/DotNet/EchoSkillBot-3.1'
             name: "Microsoft.Bot.Builder.FunctionalTestsBots.EchoSkillBot31.csproj"
