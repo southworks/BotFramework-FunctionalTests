@@ -26,6 +26,7 @@ namespace Microsoft.Bot.Builder.Tests.Functional.Skills.Common
         {
             HostBot.SimpleHostBotComposerDotNet,
             HostBot.SimpleHostBotDotNet,
+            HostBot.SimpleHostBotDotNet31,
             HostBot.SimpleHostBotJS,
             HostBot.SimpleHostBotPython,
         };
@@ -34,7 +35,6 @@ namespace Microsoft.Bot.Builder.Tests.Functional.Skills.Common
         {
             HostBot.ComposerHostBotDotNet,
             HostBot.WaterfallHostBotDotNet,
-            HostBot.SimpleHostBotDotNet31,
             HostBot.WaterfallHostBotJS,
             HostBot.WaterfallHostBotPython,
         };
