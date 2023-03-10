@@ -11,7 +11,7 @@
   <!-- This ensures that Directory.Build.props in parent folders are merged with this one -->
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'netcoreapp3.1'">
     <Reference Include="AdaptiveExpressions">
       <HintPath>$(MSBuildThisFileDirectory)\sdk\AdaptiveExpressions.dll</HintPath>
     </Reference>
