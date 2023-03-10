@@ -10,4 +10,97 @@
 
   <!-- This ensures that Directory.Build.props in parent folders are merged with this one -->
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <ItemGroup>
+    <Reference Include="AdaptiveExpressions">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\AdaptiveExpressions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Adapters.Facebook">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Adapters.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Adapters.Slack">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Adapters.Slack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Adapters.Twilio">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Adapters.Twilio.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Adapters.Webex">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Adapters.Webex.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.AI.Luis">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.AI.Luis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.AI.QnA">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.AI.QnA.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.ApplicationInsights">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Azure">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Azure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Azure.Blobs">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Azure.Blobs.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Azure.Queues">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Azure.Queues.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Dialogs">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Dialogs.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Dialogs.Adaptive">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Dialogs.Adaptive.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Dialogs.Adaptive.Testing">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Dialogs.Adaptive.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Dialogs.Debugging">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Dialogs.Debugging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Dialogs.Declarative">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Dialogs.Declarative.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Integration.ApplicationInsights.Core">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Integration.ApplicationInsights.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Integration.AspNet.Core">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Integration.AspNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.LanguageGeneration">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.LanguageGeneration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Parsers.LU">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Parsers.LU.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.TemplateManager">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.TemplateManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.TestBot.Shared">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.TestBot.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Builder.Testing">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Builder.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Configuration">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Connector">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Connector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Connector.Streaming">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Connector.Streaming.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Schema">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Schema.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Streaming">
+      <HintPath>$(MSBuildThisFileDirectory)\sdk\Microsoft.Bot.Streaming.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

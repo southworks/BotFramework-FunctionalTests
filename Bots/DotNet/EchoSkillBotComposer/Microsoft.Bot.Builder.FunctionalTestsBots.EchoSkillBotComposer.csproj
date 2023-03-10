@@ -12,8 +12,18 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
-    <PackageReference Include="Microsoft.Bot.Builder.AI.Luis" Version="$(BotBuilderVersion)" />
+    <!-- <PackageReference Include="Microsoft.Bot.Builder.AI.Luis" Version="$(BotBuilderVersion)" />
     <PackageReference Include="Microsoft.Bot.Builder.AI.QnA" Version="$(BotBuilderVersion)" />
-    <PackageReference Include="Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime" Version="$(BotBuilderVersion)" />
+    <PackageReference Include="Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime" Version="$(BotBuilderVersion)" /> -->
+<!--     
+		<ProjectReference Include="C:\repos\new\botbuilder-dotnet\libraries\Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime\Microsoft.Bot.Builder.Dialogs.Adaptive.Runtime.csproj" />
+		<ProjectReference Include="C:\repos\new\botbuilder-dotnet\libraries\Microsoft.Bot.Builder.AI.LUIS\Microsoft.Bot.Builder.AI.LUIS.csproj" />
+		<ProjectReference Include="C:\repos\new\botbuilder-dotnet\libraries\Microsoft.Bot.Builder.AI.QnA\Microsoft.Bot.Builder.AI.QnA.csproj" />
+		<ProjectReference Include="C:\repos\new\botbuilder-dotnet\libraries\Microsoft.Bot.Builder.ApplicationInsights\Microsoft.Bot.Builder.ApplicationInsights.csproj" />
+		<ProjectReference Include="C:\repos\new\botbuilder-dotnet\libraries\Microsoft.Bot.Builder.Azure\Microsoft.Bot.Builder.Azure.csproj" />
+		<ProjectReference Include="C:\repos\new\botbuilder-dotnet\libraries\Microsoft.Bot.Builder.Azure.Blobs\Microsoft.Bot.Builder.Azure.Blobs.csproj" />
+		<ProjectReference Include="C:\repos\new\botbuilder-dotnet\libraries\Microsoft.Bot.Builder.Dialogs.Adaptive\Microsoft.Bot.Builder.Dialogs.Adaptive.csproj" />
+		<ProjectReference Include="C:\repos\new\botbuilder-dotnet\libraries\integration\Microsoft.Bot.Builder.Integration.ApplicationInsights.Core\Microsoft.Bot.Builder.Integration.ApplicationInsights.Core.csproj" />
+		<ProjectReference Include="C:\repos\new\botbuilder-dotnet\libraries\integration\Microsoft.Bot.Builder.Integration.AspNet.Core\Microsoft.Bot.Builder.Integration.AspNet.Core.csproj" /> -->
   </ItemGroup>
 </Project>

@@ -13,7 +13,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
-    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="$(BotBuilderVersion)" />
+    <!--<PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="$(BotBuilderVersion)" />-->
+    <!-- <ProjectReference Include="C:\repos\new\botbuilder-dotnet\libraries\integration\Microsoft.Bot.Builder.Integration.AspNet.Core\Microsoft.Bot.Builder.Integration.AspNet.Core.csproj" /> -->
   </ItemGroup>
 
   <ItemGroup>
